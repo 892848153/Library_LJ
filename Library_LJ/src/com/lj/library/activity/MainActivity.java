@@ -1,9 +1,10 @@
-package com.lj.library_lj;
+package com.lj.library.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import com.lj.library.R;
 
 public class MainActivity extends Activity {
 
