@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.lj.library.bean.UserInfo;
 
 public class PreferenceUtil {
+
 	private final SharedPreferences sp;
 	private final SharedPreferences.Editor editor;
 

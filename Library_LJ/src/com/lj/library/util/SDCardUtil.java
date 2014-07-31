@@ -13,7 +13,7 @@ public class SDCardUtil {
 
 	/**
 	 * 
-	 * 获取SDCard路径
+	 * 获取SDCard路径.
 	 * 
 	 * @time 2014年6月9日 上午11:34:10
 	 * @author liuzenglong163@gmail.com
@@ -21,8 +21,9 @@ public class SDCardUtil {
 	 */
 	public static String getSDPath() {
 		File sdDir = null;
+		// 判断sd卡是否存在
 		boolean sdCardExist = Environment.getExternalStorageState().equals(
-				android.os.Environment.MEDIA_MOUNTED); // 判断sd卡是否存在
+				android.os.Environment.MEDIA_MOUNTED);
 		if (sdCardExist) {
 			sdDir = Environment.getExternalStorageDirectory(); // 获取根目录
 		}
