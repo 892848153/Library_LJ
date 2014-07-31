@@ -61,8 +61,6 @@ public class MyApplication extends Application {
 	 * 
 	 * 缓存用户信息，有内存和外村缓存.
 	 * 
-	 * @time 2014年5月20日 上午11:50:00
-	 * @author jie.liu
 	 * @param userInfo
 	 *            传入null表示退出
 	 */
@@ -84,8 +82,6 @@ public class MyApplication extends Application {
 	 * 
 	 * 获取用户的缓存信息.
 	 * 
-	 * @time 2014年5月20日 上午11:50:37
-	 * @author jie.liu
 	 * @return 用户没有登录则返回null
 	 */
 	public UserInfo getUserInfo() {
@@ -108,11 +104,9 @@ public class MyApplication extends Application {
 	}
 
 	/**
-	 * @todo 判断是否登录
-	 * @time 2014-5-22 下午4:26:03
-	 * @author liuzenglong163@gmail.com
+	 * 判断是否登录.
 	 */
-	public boolean doJugdgeLogin(Activity activity) {
+	public boolean doJugdgeLogin() {
 		if (getUserInfo() == null) {
 			return false;
 		} else {

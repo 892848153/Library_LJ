@@ -33,7 +33,10 @@ public class ImageFileCache {
 		removeCacheIfNecessary(getDirectory());
 	}
 
-	/** 从缓存中获取图片 **/
+	/**
+	 * 从缓存中获取图片.
+	 * 
+	 **/
 	public Bitmap getImage(final String url) {
 		final String path = getDirectory() + "/" + convertUrlToFileName(url);
 		File file = new File(path);
@@ -49,7 +52,10 @@ public class ImageFileCache {
 		return null;
 	}
 
-	/** 将图片存入文件缓存 **/
+	/**
+	 * 将图片存入文件缓存.
+	 * 
+	 **/
 	public void saveBitmap(Bitmap bm, String url) {
 		if (bm == null) {
 			return;
@@ -81,9 +87,7 @@ public class ImageFileCache {
 
 	/**
 	 * 
-	 * @todo 清空文件缓存
-	 * @time 2014-6-4 下午4:50:01
-	 * @author liuzenglong163@gmail.com
+	 * 清空文件缓存
 	 */
 	public void clearCache() {
 		removeCacheIfNecessary(getDirectory());
@@ -130,14 +134,20 @@ public class ImageFileCache {
 		return true;
 	}
 
-	/** 修改文件的最后修改时间 **/
+	/**
+	 * 修改文件的最后修改时间 .
+	 * 
+	 **/
 	public void updateFileTime(String path) {
 		File file = new File(path);
 		long newModifiedTime = System.currentTimeMillis();
 		file.setLastModified(newModifiedTime);
 	}
 
-	/** 计算sdcard上的剩余空间 **/
+	/**
+	 * 计算sdcard上的剩余空间.
+	 * 
+	 **/
 	private int freeSpaceOnSd() {
 		StatFs stat = new StatFs(Environment.getExternalStorageDirectory()
 				.getPath());
@@ -146,21 +156,27 @@ public class ImageFileCache {
 		return (int) sdFreeMB;
 	}
 
-	/** 将url转成文件名,文件名中不要有乱七八糟的符号，不然在低端机中创建文件会抛出异常 **/
+	/**
+	 * 将url转成文件名,文件名中不要有乱七八糟的符号，不然在低端机中创建文件会抛出异常.
+	 * 
+	 **/
 	private String convertUrlToFileName(String url) {
 		String[] strs = url.split("/");
 		String original = strs[strs.length - 1] + WHOLESALE_CONV;
 		return StringUtils.MD5(original);
 	}
 
-	/** 获得缓存目录 **/
+	/**
+	 * 获得缓存目录 .
+	 * 
+	 **/
 	private String getDirectory() {
 		String dir = SDCardUtil.getSDPath() + "/" + CACHDIR;
 		return dir;
 	}
 
 	/**
-	 * 根据文件的最后修改时间进行排序
+	 * 根据文件的最后修改时间进行排序.
 	 */
 	private class FileLastModifSort implements Comparator<File> {
 		@Override
@@ -177,9 +193,8 @@ public class ImageFileCache {
 
 	/**
 	 * 
-	 * @todo 删除图片在本地的外部缓存
-	 * @time 2014年5月20日 下午4:18:20
-	 * @author jie.liu
+	 * 删除图片在本地的外部缓存.
+	 * 
 	 * @param url
 	 */
 	public void removeFileFromCache(String url) {

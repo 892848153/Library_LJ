@@ -56,7 +56,7 @@ public class ImageMemoryCache {
 	}
 
 	/**
-	 * 从缓存中获取图片
+	 * 从缓存中获取图片.
 	 */
 	public Bitmap getBitmapFromCache(String url) {
 		Bitmap bitmap;
@@ -90,7 +90,7 @@ public class ImageMemoryCache {
 	}
 
 	/**
-	 * 添加图片到缓存
+	 * 添加图片到缓存.
 	 */
 	public void addBitmapToCache(String url, Bitmap bitmap) {
 		if (bitmap != null) {
@@ -102,9 +102,8 @@ public class ImageMemoryCache {
 
 	/**
 	 * 
-	 * @todo 把图片从硬缓存和软引用缓存中删除
-	 * @time 2014年5月20日 下午4:15:07
-	 * @author jie.liu
+	 * 把图片从硬缓存和软引用缓存中删除
+	 * 
 	 * @param url
 	 */
 	public void removeBitmpFromCache(String url) {
@@ -119,9 +118,7 @@ public class ImageMemoryCache {
 
 	/**
 	 * 
-	 * @todo 清空内存缓存
-	 * @time 2014-6-4 下午4:50:19
-	 * @author liuzenglong163@gmail.com
+	 * 清空内存缓存.
 	 */
 	public void clearCache() {
 		mSoftCache.clear();
@@ -131,9 +128,6 @@ public class ImageMemoryCache {
 	/**
 	 * 
 	 * 回收缓存中的图片资源.
-	 * 
-	 * @time 2014年7月16日 下午6:25:19
-	 * @author liuzenglong163@gmail.com
 	 */
 	public void recycleCache() {
 		for (Iterator<String> it = mSoftCache.keySet().iterator(); it.hasNext();) {

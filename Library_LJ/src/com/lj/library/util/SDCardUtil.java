@@ -15,8 +15,6 @@ public class SDCardUtil {
 	 * 
 	 * 获取SDCard路径.
 	 * 
-	 * @time 2014年6月9日 上午11:34:10
-	 * @author liuzenglong163@gmail.com
 	 * @return 返回SDCard绝对路径，如果SDCard没有挂载，则返回""
 	 */
 	public static String getSDPath() {
