@@ -2,7 +2,7 @@ package com.lj.library.util;
 
 import android.util.Log;
 
-import com.hct.zc.BuildConfig;
+import com.lj.library.BuildConfig;
 
 public class LogUtil {
 
