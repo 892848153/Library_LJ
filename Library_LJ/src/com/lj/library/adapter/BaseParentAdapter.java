@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 /**
@@ -14,24 +12,24 @@ import android.widget.BaseAdapter;
  * @time 2014年7月30日 下午4:17:32
  * @author jie.liu
  */
-public class BaseParentAdapter extends BaseAdapter {
+public abstract class BaseParentAdapter extends BaseAdapter {
 
 	public List<?> mItems;
 	public LayoutInflater mInflater;
 	public Activity mActivity;
 	public int mLayoutRes;
 
-	public BaseParentAdapter(List<?> mList, Activity mActivity) {
+	public BaseParentAdapter(List<?> items, Activity activity) {
 		super();
-		this.mItems = mList;
-		this.mActivity = mActivity;
-		this.mInflater = LayoutInflater.from(mActivity);
+		this.mItems = items;
+		this.mActivity = activity;
+		this.mInflater = LayoutInflater.from(activity);
 	}
 
-	public BaseParentAdapter(List<?> mList, Activity mActivity, int layoutRes) {
-		this.mItems = mList;
-		this.mActivity = mActivity;
-		this.mInflater = LayoutInflater.from(mActivity);
+	public BaseParentAdapter(List<?> items, Activity activity, int layoutRes) {
+		this.mItems = items;
+		this.mActivity = activity;
+		this.mInflater = LayoutInflater.from(activity);
 		this.mLayoutRes = layoutRes;
 	}
 
@@ -57,11 +55,5 @@ public class BaseParentAdapter extends BaseAdapter {
 			return position;
 		}
 		return 0;
-	}
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-
-		return null;
 	}
 }
