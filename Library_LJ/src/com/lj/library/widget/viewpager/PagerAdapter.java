@@ -11,15 +11,19 @@ import android.view.View;
  * @author jie.liu
  */
 
-public class DefaultPagerAdapter {
+public class PagerAdapter {
 
-	private final List<View> mPageViews;
+	private List<View> mPageViews;
 
-	public DefaultPagerAdapter() {
+	public PagerAdapter() {
 		mPageViews = new ArrayList<View>();
 	}
 
-	public DefaultPagerAdapter(List<View> views) {
+	public PagerAdapter(List<View> views) {
+		mPageViews = new ArrayList<View>(views);
+	}
+
+	public void setPages(List<View> views) {
 		mPageViews = new ArrayList<View>(views);
 	}
 
@@ -33,5 +37,9 @@ public class DefaultPagerAdapter {
 
 	public Object getItem(int position) {
 		return mPageViews.get(position);
+	}
+
+	public List<View> getPages() {
+		return mPageViews;
 	}
 }

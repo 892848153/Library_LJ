@@ -10,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 /**
- * 自定义ViewPager.
  * 
+ * @time 2014年8月6日 上午9:56:08
+ * @author jie.liu
+ */
+/**
+ * 
+ * @time 2014年8月6日 上午9:56:10
  * @author jie.liu
  */
 public class MyViewPager extends ViewGroup {
@@ -28,9 +33,9 @@ public class MyViewPager extends ViewGroup {
 
 	private float mLastMotionX;
 
-	private OnViewChangeListener mOnPageChangeListener;
+	private OnPageChangeListener mOnPageChangeListener;
 
-	private DefaultPagerAdapter mPagerAdapter;
+	private PagerAdapter mPagerAdapter;
 
 	public MyViewPager(Context context) {
 		super(context);
@@ -82,18 +87,40 @@ public class MyViewPager extends ViewGroup {
 		scrollTo(mCurScreen * width, 0);
 	}
 
+	/**
+	 * 根据当前页面在屏幕中所占的百分比，自动判断并滑动到合适的页面.
+	 */
 	public void snapToDestination() {
 		final int screenWidth = getWidth();
 		final int destScreen = (getScrollX() + screenWidth / 2) / screenWidth;
 		snapToScreen(destScreen);
 	}
 
+	/**
+	 * 平滑的滑动到目标页.
+	 * 
+	 * @param whichScreen
+	 */
 	public void snapToScreen(int whichScreen) {
 		// get the valid layout page
 		whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
 		if (getScrollX() != (whichScreen * getWidth())) {
 			final int delta = whichScreen * getWidth() - getScrollX();
 			mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta));
+			invalidate(); // Redraw the layout
+		}
+	}
+
+	/**
+	 * 不带动画效果的滑动到目标页.
+	 * 
+	 * @param whichScreen
+	 */
+	public void snapToScreenWithoutAnim(int whichScreen) {
+		mCurScreen = whichScreen;
+		whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
+		if (getScrollX() != (whichScreen * getWidth())) {
+			scrollTo(whichScreen * getWidth(), 0);
 			invalidate(); // Redraw the layout
 		}
 	}
@@ -110,9 +137,9 @@ public class MyViewPager extends ViewGroup {
 		if (residue == 0 && result != mCurScreen) {
 			mCurScreen = result;
 			if (mOnPageChangeListener != null) {
-				Log.i(TAG, "onVeiwChange     scrollX" + getScrollX()
+				Log.e(TAG, "onVeiwChange     scrollX" + getScrollX()
 						+ "   currenScreen:" + mCurScreen);
-				mOnPageChangeListener.OnViewChange(mCurScreen);
+				mOnPageChangeListener.OnPageChange(mCurScreen);
 			}
 		}
 	}
@@ -137,7 +164,6 @@ public class MyViewPager extends ViewGroup {
 			mLastMotionX = x;
 			break;
 		case MotionEvent.ACTION_MOVE:
-			Log.i("", "onTouchEvent  ACTION_MOVE");
 			int deltaX = (int) (mLastMotionX - x);
 			if (isCanMove(deltaX)) {
 				if (mVelocityTracker != null) {
@@ -193,7 +219,7 @@ public class MyViewPager extends ViewGroup {
 		return true;
 	}
 
-	public void SetOnViewChangeListener(OnViewChangeListener listener) {
+	public void SetOnViewChangeListener(OnPageChangeListener listener) {
 		mOnPageChangeListener = listener;
 	}
 
@@ -203,7 +229,7 @@ public class MyViewPager extends ViewGroup {
 	 * @param shouldCleanChildren
 	 *            是否清除当前的子控件
 	 */
-	public void setPagerAdapter(DefaultPagerAdapter adapter,
+	public void setPagerAdapter(PagerAdapter adapter,
 			boolean shouldCleanChildren) {
 		mPagerAdapter = adapter;
 		refreshPager(shouldCleanChildren);
@@ -214,7 +240,7 @@ public class MyViewPager extends ViewGroup {
 	 * 
 	 * @param adapter
 	 */
-	public void setPagerAdapter(DefaultPagerAdapter adapter) {
+	public void setPagerAdapter(PagerAdapter adapter) {
 		mPagerAdapter = adapter;
 		refreshPager(true);
 	}
@@ -230,5 +256,22 @@ public class MyViewPager extends ViewGroup {
 			addView(view);
 		}
 		requestLayout();
+	}
+
+	public void setCurrentScreen(int currentScreen) {
+		mCurScreen = currentScreen;
+		requestLayout();
+	}
+
+	public int getCurrentPage() {
+		return mCurScreen;
+	}
+
+	public int getPageCount() {
+		return mPagerAdapter.getCount();
+	}
+
+	public PagerAdapter getPagerAdapter() {
+		return mPagerAdapter;
 	}
 }
