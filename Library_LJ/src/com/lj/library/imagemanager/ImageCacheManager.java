@@ -56,12 +56,11 @@ public class ImageCacheManager {
 	 * @param imageView
 	 *            用来填充图片的控件， 不需要填充可传入null
 	 * @return 返回本地缓存图片的Bitmap对象，如果图片没有缓存在本地，<br/>
-	 *         则返回null并开始下载图片,下载完毕后自动将图片在本地做缓存
+	 *         则返回null并开始下载图片,下载完毕后自动将图片在本地做缓存.<br/>
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView) {
 		if (TextUtils.isEmpty(url)) {
-			LogUtil.d(mContext, "图片Url地址为空");
-			return null;
+			throw new NullPointerException("url == null");
 		}
 
 		// 从内存缓存中获取图片

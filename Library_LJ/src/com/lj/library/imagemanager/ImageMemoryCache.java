@@ -16,14 +16,14 @@ public class ImageMemoryCache {
 	 * 从内存读取数据速度是最快的，为了更大限度使用内存，这里使用了两层缓存。 硬引用缓存不会轻易被回收，用来保存常用数据，不常用的转入软引用缓存。
 	 */
 	private static final int SOFT_CACHE_SIZE = 15; // 软引用缓存容量
-	private static LruCache<String, Bitmap> mLruCache; // 硬引用缓存
-	private static LinkedHashMap<String, SoftReference<Bitmap>> mSoftCache; // 软引用缓存
+	private static LruCache<String, Bitmap> sLruCache; // 硬引用缓存
+	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftCache; // 软引用缓存
 
 	public ImageMemoryCache(Context context) {
 		int memClass = ((ActivityManager) context
 				.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 		int cacheSize = 1024 * 1024 * memClass / 8; // 硬引用缓存容量，为系统可用内存的1/8
-		mLruCache = new LruCache<String, Bitmap>(cacheSize) {
+		sLruCache = new LruCache<String, Bitmap>(cacheSize) {
 			@Override
 			protected int sizeOf(String key, Bitmap value) {
 				if (value != null)
@@ -37,10 +37,10 @@ public class ImageMemoryCache {
 					Bitmap oldValue, Bitmap newValue) {
 				if (oldValue != null)
 					// 硬引用缓存容量满的时候，会根据LRU算法把最近没有被使用的图片转入此软引用缓存
-					mSoftCache.put(key, new SoftReference<Bitmap>(oldValue));
+					sSoftCache.put(key, new SoftReference<Bitmap>(oldValue));
 			}
 		};
-		mSoftCache = new LinkedHashMap<String, SoftReference<Bitmap>>(
+		sSoftCache = new LinkedHashMap<String, SoftReference<Bitmap>>(
 				SOFT_CACHE_SIZE, 0.75f, true) {
 			private static final long serialVersionUID = 6040103833179403725L;
 
@@ -57,32 +57,34 @@ public class ImageMemoryCache {
 
 	/**
 	 * 从缓存中获取图片.
+	 * 
+	 * @param url
 	 */
 	public Bitmap getBitmapFromCache(String url) {
 		Bitmap bitmap;
 		// 先从硬引用缓存中获取
-		synchronized (mLruCache) {
-			bitmap = mLruCache.get(url);
+		synchronized (sLruCache) {
+			bitmap = sLruCache.get(url);
 			if (bitmap != null) {
 				// 如果找到的话，把元素移到LinkedHashMap的最前面，从而保证在LRU算法中是最后被删除
 				// 其实当调用get方法的时候，LruCache在此方法中会把元素移到最前面
-				mLruCache.remove(url);
-				mLruCache.put(url, bitmap);
+				sLruCache.remove(url);
+				sLruCache.put(url, bitmap);
 				return bitmap;
 			}
 		}
 		// 如果硬引用缓存中找不到，到软引用缓存中找
-		synchronized (mSoftCache) {
-			SoftReference<Bitmap> bitmapReference = mSoftCache.get(url);
+		synchronized (sSoftCache) {
+			SoftReference<Bitmap> bitmapReference = sSoftCache.get(url);
 			if (bitmapReference != null) {
 				bitmap = bitmapReference.get();
 				if (bitmap != null) {
 					// 将图片移回硬缓存
-					mLruCache.put(url, bitmap);
-					mSoftCache.remove(url);
+					sLruCache.put(url, bitmap);
+					sSoftCache.remove(url);
 					return bitmap;
 				} else {
-					mSoftCache.remove(url);
+					sSoftCache.remove(url);
 				}
 			}
 		}
@@ -94,8 +96,8 @@ public class ImageMemoryCache {
 	 */
 	public void addBitmapToCache(String url, Bitmap bitmap) {
 		if (bitmap != null) {
-			synchronized (mLruCache) {
-				mLruCache.put(url, bitmap);
+			synchronized (sLruCache) {
+				sLruCache.put(url, bitmap);
 			}
 		}
 	}
@@ -107,12 +109,12 @@ public class ImageMemoryCache {
 	 * @param url
 	 */
 	public void removeBitmpFromCache(String url) {
-		synchronized (mLruCache) {
-			mLruCache.remove(url);
+		synchronized (sLruCache) {
+			sLruCache.remove(url);
 		}
 
-		synchronized (mSoftCache) {
-			mSoftCache.remove(url);
+		synchronized (sSoftCache) {
+			sSoftCache.remove(url);
 		}
 	}
 
@@ -121,8 +123,8 @@ public class ImageMemoryCache {
 	 * 清空内存缓存.
 	 */
 	public void clearCache() {
-		mSoftCache.clear();
-		mLruCache.evictAll();
+		sSoftCache.clear();
+		sLruCache.evictAll();
 	}
 
 	/**
@@ -130,9 +132,9 @@ public class ImageMemoryCache {
 	 * 回收缓存中的图片资源.
 	 */
 	public void recycleCache() {
-		for (Iterator<String> it = mSoftCache.keySet().iterator(); it.hasNext();) {
+		for (Iterator<String> it = sSoftCache.keySet().iterator(); it.hasNext();) {
 			String key = it.next();
-			SoftReference<Bitmap> bitmapSoftRef = mSoftCache.get(key);
+			SoftReference<Bitmap> bitmapSoftRef = sSoftCache.get(key);
 			Bitmap bitmap = bitmapSoftRef.get();
 			if (bitmap != null) {
 				BitmapUtils.recycleBitmap(bitmap);
