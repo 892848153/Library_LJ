@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 /**
+ * 自定义ViewPager.
  * 
  * @author jie.liu
  */
