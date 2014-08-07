@@ -26,17 +26,19 @@ public class MyViewPager extends ViewGroup {
 
 	private VelocityTracker mVelocityTracker; // 用于判断甩动手势
 
-	private static final int SNAP_VELOCITY = 300;
-
 	private Scroller mScroller;
 
 	private int mCurScreen;
+
+	private int mScrollDuration = 500;
 
 	private float mLastMotionX;
 
 	private OnPageChangeListener mOnPageChangeListener;
 
 	private DefaultPagerAdapter mPagerAdapter;
+
+	private static final int SNAP_VELOCITY = 300;
 
 	public MyViewPager(Context context) {
 		super(context);
@@ -135,8 +137,17 @@ public class MyViewPager extends ViewGroup {
 		whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
 		if (getScrollX() != (whichScreen * getWidth())) {
 			final int delta = whichScreen * getWidth() - getScrollX();
-			mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta));
+			mScroller.startScroll(getScrollX(), 0, delta, 0,
+					getScrollDuration(delta));
 			invalidate(); // Redraw the layout
+		}
+	}
+
+	private int getScrollDuration(int delta) {
+		if (mScrollDuration < 100) {
+			return Math.abs(delta);
+		} else {
+			return mScrollDuration;
 		}
 	}
 
@@ -290,6 +301,10 @@ public class MyViewPager extends ViewGroup {
 	public void setCurrentScreen(int currentScreen) {
 		mCurScreen = currentScreen;
 		requestLayout();
+	}
+
+	public void setScrollTime(int mills) {
+		mScrollDuration = mills;
 	}
 
 	public int getCurrentPage() {
