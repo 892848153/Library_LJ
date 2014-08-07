@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
@@ -37,6 +38,10 @@ public class MyViewPager extends ViewGroup {
 	private PagerAdapter mPagerAdapter;
 
 	private List<ViewGroup> mParentViews;
+
+	private float mXoriginal = 0f;
+
+	private float mYoriginal = 0f;
 
 	private boolean mMaybeClickEvent = false;
 
@@ -123,9 +128,6 @@ public class MyViewPager extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		float xOriginal = 0;
-		float yOriginal = 0;
-
 		final int action = event.getAction();
 		final float x = event.getX();
 
@@ -137,8 +139,8 @@ public class MyViewPager extends ViewGroup {
 
 			// 为判断是否是点击事件做准备
 			mMaybeClickEvent = true;
-			xOriginal = event.getRawX();
-			yOriginal = event.getRawY();
+			mXoriginal = event.getRawX();
+			mYoriginal = event.getRawY();
 
 			// 滑动事件的处理
 			if (mVelocityTracker == null) {
@@ -155,13 +157,10 @@ public class MyViewPager extends ViewGroup {
 		case MotionEvent.ACTION_MOVE:
 			LogUtil.d(this, "onInterceptTouchEvent ACTION_MOVE");
 			// 判断是否是点击事件
-			// int scaledTouchSlop = ViewConfiguration.get(getContext())
-			// .getScaledTouchSlop();
-			float i = getResources().getDisplayMetrics().density;
-			LogUtil.i(this, i + "");
-			int scaledTouchSlop = (int) (i * 100); // 系统自带的距离:8太小了，不好判断是点击事件
-			float xDelta = Math.abs(xOriginal - event.getRawX());
-			float yDelta = Math.abs(yOriginal - event.getRawY());
+			int scaledTouchSlop = ViewConfiguration.get(getContext())
+					.getScaledTouchSlop();
+			float xDelta = Math.abs(mXoriginal - event.getRawX());
+			float yDelta = Math.abs(mYoriginal - event.getRawY());
 			if (xDelta >= scaledTouchSlop || yDelta >= scaledTouchSlop) {
 				LogUtil.d(this, "是滑动事件，不是点击事件");
 				// 说明是滑动事件，不会是点击事件.点击事件是down->up，但是用户很容易出现move，所以允许稍微的move

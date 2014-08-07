@@ -26,7 +26,7 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * 广告栏.
  * 
  * <pre>
- * List&lt;View&gt; viewLista = new ArrayList&lt;View&gt;();
+ * List&lt;View&gt; viewList = new ArrayList&lt;View&gt;();
  * ImageView imgView0 = new ImageView(this);
  * imgView0.setImageResource(R.drawable.bg_flash_top);
  * ImageView imgView1 = new ImageView(this);
@@ -38,13 +38,13 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * ImageView imgView4 = new ImageView(this);
  * imgView4.setImageResource(R.drawable.bg_flash_top);
  * 
- * viewLista.add(imgView0);
- * viewLista.add(imgView1);
- * viewLista.add(imgView2);
- * viewLista.add(imgView3);
- * viewLista.add(imgView4);
+ * viewList.add(imgView0);
+ * viewList.add(imgView1);
+ * viewList.add(imgView2);
+ * viewList.add(imgView3);
+ * viewList.add(imgView4);
  * 
- * PagerAdapter adapter = new Adapter(viewLista);
+ * PagerAdapter adapter = new Adapter(viewList);
  * BannerView banner = (BannerView) findViewById(R.id.banner);
  * banner.setPagerAdapter(adapter);
  * // 默认是不能滚动的
