@@ -1,28 +1,26 @@
 package com.lj.library.widget.viewpager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
+import com.lj.library.util.LogUtil;
+
 /**
- * 
- * @time 2014年8月6日 上午9:56:08
- * @author jie.liu
- */
-/**
+ * 自定义ViewPager.
  * 
  * @time 2014年8月6日 上午9:56:10
  * @author jie.liu
  */
 public class MyViewPager extends ViewGroup {
-
-	private static final String TAG = MyViewPager.class.getSimpleName();
 
 	private VelocityTracker mVelocityTracker; // 用于判断甩动手势
 
@@ -36,7 +34,11 @@ public class MyViewPager extends ViewGroup {
 
 	private OnPageChangeListener mOnPageChangeListener;
 
-	private DefaultPagerAdapter mPagerAdapter;
+	private PagerAdapter mPagerAdapter;
+
+	private List<ViewGroup> mParentViews;
+
+	private boolean mMaybeClickEvent = false;
 
 	private static final int SNAP_VELOCITY = 300;
 
@@ -58,6 +60,7 @@ public class MyViewPager extends ViewGroup {
 	private void init(Context context) {
 		mCurScreen = 0;
 		mScroller = new Scroller(context);
+		mParentViews = new ArrayList<ViewGroup>();
 	}
 
 	@Override
@@ -118,6 +121,151 @@ public class MyViewPager extends ViewGroup {
 		return height;
 	}
 
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent event) {
+		float xOriginal = 0;
+		float yOriginal = 0;
+
+		final int action = event.getAction();
+		final float x = event.getX();
+
+		switch (action) {
+		case MotionEvent.ACTION_DOWN:
+			LogUtil.d(this, "onInterceptTouchEvent ACTION_DOWN");
+			// 当手指触到控件的时候，让父ScrollView交出ontouch权限，也就是让父scrollview停住不能滚动
+			setParentScrollable(false);
+
+			// 为判断是否是点击事件做准备
+			mMaybeClickEvent = true;
+			xOriginal = event.getRawX();
+			yOriginal = event.getRawY();
+
+			// 滑动事件的处理
+			if (mVelocityTracker == null) {
+				mVelocityTracker = VelocityTracker.obtain();
+				mVelocityTracker.addMovement(event);
+			}
+
+			if (!mScroller.isFinished()) {
+				mScroller.abortAnimation();
+			}
+
+			mLastMotionX = x;
+			break;
+		case MotionEvent.ACTION_MOVE:
+			LogUtil.d(this, "onInterceptTouchEvent ACTION_MOVE");
+			// 判断是否是点击事件
+			// int scaledTouchSlop = ViewConfiguration.get(getContext())
+			// .getScaledTouchSlop();
+			float i = getResources().getDisplayMetrics().density;
+			LogUtil.i(this, i + "");
+			int scaledTouchSlop = (int) (i * 100); // 系统自带的距离:8太小了，不好判断是点击事件
+			float xDelta = Math.abs(xOriginal - event.getRawX());
+			float yDelta = Math.abs(yOriginal - event.getRawY());
+			if (xDelta >= scaledTouchSlop || yDelta >= scaledTouchSlop) {
+				LogUtil.d(this, "是滑动事件，不是点击事件");
+				// 说明是滑动事件，不会是点击事件.点击事件是down->up，但是用户很容易出现move，所以允许稍微的move
+				mMaybeClickEvent = false;
+			}
+
+			// 滑动事件处理
+			int deltaX = (int) (mLastMotionX - x);
+			if (isCanMove(deltaX)) {
+				if (mVelocityTracker != null) {
+					mVelocityTracker.addMovement(event);
+				}
+
+				mLastMotionX = x;
+				scrollBy(deltaX, 0);
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			LogUtil.d(this, "onInterceptTouchEvent ACTION_UP");
+			// 滑动事件处理
+			int velocityX = 0;
+			if (mVelocityTracker != null) {
+				mVelocityTracker.addMovement(event);
+				mVelocityTracker.computeCurrentVelocity(1000);
+				velocityX = (int) mVelocityTracker.getXVelocity();
+			}
+
+			if (velocityX > SNAP_VELOCITY && mCurScreen > 0) {
+				LogUtil.i(this, "snap left");
+				snapToScreen(mCurScreen - 1);
+			} else if (velocityX < -SNAP_VELOCITY
+					&& mCurScreen < getChildCount() - 1) {
+				LogUtil.i(this, "snap right");
+				snapToScreen(mCurScreen + 1);
+			} else {
+				snapToDestination();
+			}
+
+			if (mVelocityTracker != null) {
+				mVelocityTracker.recycle();
+				mVelocityTracker = null;
+			}
+		case MotionEvent.ACTION_CANCEL:
+			LogUtil.d(this, "onInterceptTouchEvent ACTION_CANCEL");
+			// 当手指松开时，让父ScrollView重新拿到onTouch权限
+			setParentScrollable(true);
+			break;
+		default:
+			mMaybeClickEvent = false;
+			break;
+		}
+
+		// 这两个动作是最后的动作，所以在这决定要不要把事件传递下去， 如果是点击事件就传递下去
+		// 因为点击事件是ACTION_DOWN->ACTION_UP-CLICK, 所以会触发
+		if (MotionEvent.ACTION_UP == event.getAction()
+				|| MotionEvent.ACTION_CANCEL == event.getAction()) {
+			LogUtil.i(this, "maybeClick:" + mMaybeClickEvent);
+			if (mMaybeClickEvent) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		// 不是ACTION_UP或者ACTION_CANCEL时，则不是最后一个动作，
+		// 不是最后一个动作时，不拦截，交给孩子处理
+		return false;
+	}
+
+	/**
+	 * 
+	 * 是否把滚动事件交给父Scrollview.
+	 * 
+	 * @param flag
+	 */
+	private void setParentScrollable(boolean flag) {
+		for (ViewGroup parentView : mParentViews) {
+			parentView.requestDisallowInterceptTouchEvent(!flag);
+		}
+	}
+
+	/**
+	 * 增加包含它的可滑动的View，这样可以使滑动动作不冲突.
+	 * 
+	 * @param parentView
+	 */
+	public void addParentScrollView(ViewGroup parentView) {
+		if (!mParentViews.contains(parentView)) {
+			mParentViews.add(parentView);
+		}
+	}
+
+	private boolean isCanMove(int deltaX) {
+		if (getScrollX() <= 0 && deltaX < 0) {
+			return false;
+		}
+
+		if (getScrollX() >= (getChildCount() - 1) * getWidth() && deltaX > 0) {
+			return false;
+		}
+
+		return true;
+	}
+
 	/**
 	 * 根据当前页面在屏幕中所占的百分比，自动判断并滑动到合适的页面.
 	 */
@@ -139,7 +287,7 @@ public class MyViewPager extends ViewGroup {
 			final int delta = whichScreen * getWidth() - getScrollX();
 			mScroller.startScroll(getScrollX(), 0, delta, 0,
 					getScrollDuration(delta));
-			invalidate(); // Redraw the layout
+			invalidate();
 		}
 	}
 
@@ -177,86 +325,11 @@ public class MyViewPager extends ViewGroup {
 		if (residue == 0 && result != mCurScreen) {
 			mCurScreen = result;
 			if (mOnPageChangeListener != null) {
-				Log.e(TAG, "onVeiwChange     scrollX" + getScrollX()
-						+ "   currenScreen:" + mCurScreen);
+				// LogUtil.i(this, "onVeiwChange     scrollX" + getScrollX()
+				// + "   currenScreen:" + mCurScreen);
 				mOnPageChangeListener.OnPageChange(mCurScreen);
 			}
 		}
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		final int action = event.getAction();
-		final float x = event.getX();
-
-		switch (action) {
-		case MotionEvent.ACTION_DOWN:
-			Log.i("", "onTouchEvent  ACTION_DOWN");
-			if (mVelocityTracker == null) {
-				mVelocityTracker = VelocityTracker.obtain();
-				mVelocityTracker.addMovement(event);
-			}
-
-			if (!mScroller.isFinished()) {
-				mScroller.abortAnimation();
-			}
-
-			mLastMotionX = x;
-			break;
-		case MotionEvent.ACTION_MOVE:
-			int deltaX = (int) (mLastMotionX - x);
-			if (isCanMove(deltaX)) {
-				if (mVelocityTracker != null) {
-					mVelocityTracker.addMovement(event);
-				}
-
-				mLastMotionX = x;
-				scrollBy(deltaX, 0);
-			}
-			break;
-		case MotionEvent.ACTION_UP:
-			Log.i("", "onTouchEvent  ACTION_UP");
-			int velocityX = 0;
-			if (mVelocityTracker != null) {
-				mVelocityTracker.addMovement(event);
-				mVelocityTracker.computeCurrentVelocity(1000);
-				velocityX = (int) mVelocityTracker.getXVelocity();
-			}
-
-			if (velocityX > SNAP_VELOCITY && mCurScreen > 0) {
-				// Fling enough to move left
-				Log.e(TAG, "snap left");
-				snapToScreen(mCurScreen - 1);
-			} else if (velocityX < -SNAP_VELOCITY
-					&& mCurScreen < getChildCount() - 1) {
-				// Fling enough to move right
-				Log.e(TAG, "snap right");
-				snapToScreen(mCurScreen + 1);
-			} else {
-				snapToDestination();
-			}
-
-			if (mVelocityTracker != null) {
-				mVelocityTracker.recycle();
-				mVelocityTracker = null;
-			}
-
-			break;
-		}
-
-		return true;
-	}
-
-	private boolean isCanMove(int deltaX) {
-		if (getScrollX() <= 0 && deltaX < 0) {
-			return false;
-		}
-
-		if (getScrollX() >= (getChildCount() - 1) * getWidth() && deltaX > 0) {
-			return false;
-		}
-
-		return true;
 	}
 
 	public void SetOnViewChangeListener(OnPageChangeListener listener) {
@@ -269,8 +342,7 @@ public class MyViewPager extends ViewGroup {
 	 * @param shouldCleanChildren
 	 *            是否清除当前的子控件
 	 */
-	public void setPagerAdapter(DefaultPagerAdapter adapter,
-			boolean shouldCleanChildren) {
+	public void setAdapter(PagerAdapter adapter, boolean shouldCleanChildren) {
 		mPagerAdapter = adapter;
 		refreshPager(shouldCleanChildren);
 	}
@@ -280,7 +352,7 @@ public class MyViewPager extends ViewGroup {
 	 * 
 	 * @param adapter
 	 */
-	public void setPagerAdapter(DefaultPagerAdapter adapter) {
+	public void setAdapter(PagerAdapter adapter) {
 		mPagerAdapter = adapter;
 		refreshPager(true);
 	}
@@ -303,11 +375,11 @@ public class MyViewPager extends ViewGroup {
 		requestLayout();
 	}
 
-	public void setScrollTime(int mills) {
+	public void setScrollDuration(int mills) {
 		mScrollDuration = mills;
 	}
 
-	public int getCurrentPage() {
+	public int getCurrentScreen() {
 		return mCurScreen;
 	}
 
@@ -315,7 +387,7 @@ public class MyViewPager extends ViewGroup {
 		return mPagerAdapter.getCount();
 	}
 
-	public DefaultPagerAdapter getPagerAdapter() {
+	public PagerAdapter getPagerAdapter() {
 		return mPagerAdapter;
 	}
 }

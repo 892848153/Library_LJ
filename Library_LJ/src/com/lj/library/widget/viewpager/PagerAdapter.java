@@ -6,11 +6,11 @@ import java.util.List;
 import android.view.View;
 
 /**
+ * 为MyViewPager提供参数.
  * 
  * @time 2014年8月5日 下午3:59:52
  * @author jie.liu
  */
-
 public class PagerAdapter {
 
 	private List<View> mPageViews;
