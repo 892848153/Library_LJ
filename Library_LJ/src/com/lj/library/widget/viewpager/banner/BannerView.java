@@ -1,9 +1,10 @@
 package com.lj.library.widget.viewpager.banner;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import java.lang.ref.WeakReference;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,44 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.lj.library.R;
-import com.lj.library.widget.viewpager.PagerAdapter;
-import com.lj.library.widget.viewpager.MyViewPager;
-import com.lj.library.widget.viewpager.OnPageChangeListener;
-
 /**
- * 广告栏,可自动滚动.
- * <p/>
- * 示例:
- * 
- * <pre>
- * List&lt;View&gt; viewLista = new ArrayList&lt;View&gt;();
- * ImageView imgView0 = new ImageView(this);
- * imgView0.setImageResource(R.drawable.w03);
- * ImageView imgView1 = new ImageView(this);
- * imgView1.setImageResource(R.drawable.w01);
- * ImageView imgView2 = new ImageView(this);
- * imgView2.setImageResource(R.drawable.w02);
- * ImageView imgView3 = new ImageView(this);
- * imgView3.setImageResource(R.drawable.w03);
- * ImageView imgView4 = new ImageView(this);
- * imgView4.setImageResource(R.drawable.w01);
- * 
- * viewLista.add(imgView0);
- * viewLista.add(imgView1);
- * viewLista.add(imgView2);
- * viewLista.add(imgView3);
- * viewLista.add(imgView4);
- * 
- * DefaultPagerAdapter adapter = new DefaultPagerAdapter(viewLista);
- * BannerView banner = (BannerView) findViewById(R.id.banner);
- * banner.setPagerAdapter(adapter);
- * // 默认是不能滚动的
- * banner.enableCycleScroll();
- * // 开启自动滚动功能
- * banner.startAutoCycle();
- * banner.setCycleInterval(5000);
- * </pre>
+ * 广告栏.
  * 
  * @time 2014年8月6日 上午10:22:16
  * @author jie.liu
@@ -71,9 +36,11 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 
 	private int mPageCount;
 
-	private Timer mTimer;
+	private Handler mHandler;
 
 	private long mInterval = 3000;
+
+	private final int WHAT_AUTO_CYCLE = 0;
 
 	public BannerView(Context context) {
 		super(context);
@@ -92,6 +59,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 
 	private void init(Context context) {
 		mContext = context;
+		mHandler = new InternalHandler(this);
 		LayoutInflater inflater = LayoutInflater.from(mContext);
 		inflater.inflate(R.layout.banner_view, this);
 		mViewPager = (MyViewPager) findViewById(R.id.view_pager);
@@ -120,7 +88,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * 
 	 * @param adapter
 	 */
-	public void setPagerAdapter(PagerAdapter adapter) {
+	public void setPagerAdapter(DefaultPagerAdapter adapter) {
 		setPagerAdapter(adapter, true);
 	}
 
@@ -130,7 +98,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * @param shouldCleanChildren
 	 *            是否清除当前包含的子控件
 	 */
-	public void setPagerAdapter(PagerAdapter adapter,
+	public void setPagerAdapter(DefaultPagerAdapter adapter,
 			boolean shouldCleanChildren) {
 		mPageCount = adapter.getCount();
 		mViewPager.setPagerAdapter(adapter, shouldCleanChildren);
@@ -209,14 +177,13 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		int realCurrentPage = calcRealCurrPage(currentPage);
 		Log.e("CurrentPage", currentPage + "");
 		Log.e("realCurrentPage", realCurrentPage + "");
+
 		setcurrentPoint(realCurrentPage);
+		sendAutoCycleMsg();
+		snapToRightPage(currentPage);
+
 		if (mOutListener != null) {
 			mOutListener.OnPageChange(realCurrentPage);
-		}
-
-		int snapPage = calcSnapPage(currentPage);
-		if (currentPage == 0 || currentPage == mPageCount - 1) {
-			mViewPager.snapToScreenWithoutAnim(snapPage);
 		}
 	}
 
@@ -239,6 +206,27 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		return realCurrentPage;
 	}
 
+	private void setcurrentPoint(int position) {
+		if (position < 0 || position > mPageCount - 1) {
+			return;
+		}
+
+		int length = imgs.length;
+		for (int i = 0; i < length; i++) {
+			imgs[i].setEnabled(true);
+			if (i == position) {
+				imgs[i].setEnabled(false);
+			}
+		}
+	}
+
+	private void snapToRightPage(int currentPage) {
+		int snapPage = calcSnapPage(currentPage);
+		if (currentPage == 0 || currentPage == mPageCount - 1) {
+			mViewPager.snapToScreenWithoutAnim(snapPage);
+		}
+	}
+
 	/**
 	 * 计算需要滑动到的页面,用于首尾页的时候滑动.
 	 * 
@@ -258,37 +246,26 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		return snapPage;
 	}
 
-	private void setcurrentPoint(int position) {
-		if (position < 0 || position > mPageCount - 1) {
-			return;
-		}
-
-		int length = imgs.length;
-		for (int i = 0; i < length; i++) {
-			imgs[i].setEnabled(true);
-			if (i == position) {
-				imgs[i].setEnabled(false);
-			}
-		}
-	}
-
 	public void setCurrentPage(int currentPage) {
 		mViewPager.setCurrentScreen(currentPage);
 	}
 
 	public void startAutoCycle() {
-		if (mTimer != null) {
-			return;
-		}
+		sendAutoCycleMsg();
+	}
 
-		mTimer = new Timer();
-		mTimer.schedule(new CycleTask(), mInterval, mInterval);
+	private void sendAutoCycleMsg() {
+		clearAutoCycleMsgs();
+		mHandler.sendEmptyMessageDelayed(WHAT_AUTO_CYCLE, mInterval);
 	}
 
 	public void stopAutoCycle() {
-		if (mTimer != null) {
-			mTimer.cancel();
-			mTimer = null;
+		clearAutoCycleMsgs();
+	}
+
+	private void clearAutoCycleMsgs() {
+		if (mHandler.hasMessages(WHAT_AUTO_CYCLE)) {
+			mHandler.removeMessages(WHAT_AUTO_CYCLE);
 		}
 	}
 
@@ -304,17 +281,22 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		startAutoCycle();
 	}
 
-	private class CycleTask extends TimerTask {
+	private static class InternalHandler extends Handler {
+
+		private final WeakReference<BannerView> mViewRef;
+
+		public InternalHandler(BannerView view) {
+			mViewRef = new WeakReference<BannerView>(view);
+		}
 
 		@Override
-		public void run() {
-			mViewPager.post(new Runnable() {
+		public void handleMessage(Message msg) {
+			BannerView bannerView = mViewRef.get();
+			if (bannerView != null) {
+				bannerView.mViewPager.snapToScreen(bannerView.mViewPager
+						.getCurrentPage() + 1);
+			}
 
-				@Override
-				public void run() {
-					mViewPager.snapToScreen(mViewPager.getCurrentPage() + 1);
-				}
-			});
 		}
 	}
 }

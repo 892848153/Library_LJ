@@ -1,6 +1,7 @@
 package com.lj.library.widget.viewpager;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -35,7 +36,7 @@ public class MyViewPager extends ViewGroup {
 
 	private OnPageChangeListener mOnPageChangeListener;
 
-	private PagerAdapter mPagerAdapter;
+	private DefaultPagerAdapter mPagerAdapter;
 
 	public MyViewPager(Context context) {
 		super(context);
@@ -77,7 +78,21 @@ public class MyViewPager extends ViewGroup {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		// 获取孩子中最高的
+		int maxChildHeight = getMaxChildHeight(widthMeasureSpec);
+		int finalHeight = maxChildHeight;
+		Drawable background = getBackground();
+		if (background != null) {
+			int backHeight = background.getMinimumHeight();
+			// 孩子中最高的跟背景图片取最高的值为控件的高度
+			finalHeight = Math.max(maxChildHeight, backHeight);
+		}
+
+		heightMeasureSpec = MeasureSpec.makeMeasureSpec(finalHeight,
+				MeasureSpec.EXACTLY);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+		// 重新测量孩子的高度
 		final int width = MeasureSpec.getSize(widthMeasureSpec);
 		final int count = getChildCount();
 		for (int i = 0; i < count; i++) {
@@ -85,6 +100,20 @@ public class MyViewPager extends ViewGroup {
 		}
 
 		scrollTo(mCurScreen * width, 0);
+	}
+
+	private int getMaxChildHeight(int widthMeasureSpec) {
+		int height = 1;
+		for (int i = 0; i < getChildCount(); i++) {
+			View child = getChildAt(i);
+			// 为了获取孩子的高度，所以设置成 MeasureSpec.UNSPECIFIED模式
+			child.measure(widthMeasureSpec,
+					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+			int h = child.getMeasuredHeight();
+			if (h > height)
+				height = h;
+		}
+		return height;
 	}
 
 	/**
@@ -229,7 +258,7 @@ public class MyViewPager extends ViewGroup {
 	 * @param shouldCleanChildren
 	 *            是否清除当前的子控件
 	 */
-	public void setPagerAdapter(PagerAdapter adapter,
+	public void setPagerAdapter(DefaultPagerAdapter adapter,
 			boolean shouldCleanChildren) {
 		mPagerAdapter = adapter;
 		refreshPager(shouldCleanChildren);
@@ -240,7 +269,7 @@ public class MyViewPager extends ViewGroup {
 	 * 
 	 * @param adapter
 	 */
-	public void setPagerAdapter(PagerAdapter adapter) {
+	public void setPagerAdapter(DefaultPagerAdapter adapter) {
 		mPagerAdapter = adapter;
 		refreshPager(true);
 	}
@@ -271,7 +300,7 @@ public class MyViewPager extends ViewGroup {
 		return mPagerAdapter.getCount();
 	}
 
-	public PagerAdapter getPagerAdapter() {
+	public DefaultPagerAdapter getPagerAdapter() {
 		return mPagerAdapter;
 	}
 }
