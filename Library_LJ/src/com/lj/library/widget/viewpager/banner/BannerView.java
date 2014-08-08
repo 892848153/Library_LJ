@@ -49,6 +49,7 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * banner.setPagerAdapter(adapter);
  * // 默认是不能滚动的
  * banner.enableCycleScroll();
+ * banner.setCurrentPage(1);
  * // 开启自动滚动功能
  * banner.startAutoCycle();
  * banner.setCycleInterval(5000);
@@ -119,7 +120,22 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 
 		mCycleScrollable = true;
 		createIndicators();
-		setCurrentPage(1);
+	}
+
+	/**
+	 * 禁止无限循环滑动.
+	 */
+	public void disableCycleSroll() {
+		if (mCycleScrollable == false) {
+			return;
+		}
+
+		if (mAutoScrollable) {
+			stopAutoCycle();
+		}
+
+		mCycleScrollable = false;
+		createIndicators();
 	}
 
 	/**
