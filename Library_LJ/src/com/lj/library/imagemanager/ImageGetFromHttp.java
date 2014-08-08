@@ -5,7 +5,9 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpEntity;
@@ -33,13 +35,13 @@ public class ImageGetFromHttp {
 
 	private final WeakReference<Context> mContextWeakRef;
 
-	private final Map<String, WeakReference<ImageView>> mItems;
+	private final Map<String, List<WeakReference<ImageView>>> mItems;
 
 	private OnBitmapFromHttpListener mListener;
 
 	public ImageGetFromHttp(Context context) {
 		mContextWeakRef = new WeakReference<Context>(context);
-		mItems = new HashMap<String, WeakReference<ImageView>>();
+		mItems = new HashMap<String, List<WeakReference<ImageView>>>();
 	}
 
 	public void setOnGetFromHttpListener(OnBitmapFromHttpListener listener) {
@@ -54,9 +56,20 @@ public class ImageGetFromHttp {
 			return null;
 		}
 
-		mItems.put(url, new WeakReference<ImageView>(imageView));
+		putItem(url, imageView);
 		new NetworkAsynTask(url).execute();
 		return null;
+	}
+
+	private void putItem(String url, ImageView imageView) {
+		List<WeakReference<ImageView>> values = null;
+		if (mItems.containsKey(url)) {
+			values = mItems.get(url);
+		} else {
+			values = new ArrayList<WeakReference<ImageView>>();
+		}
+		values.add(new WeakReference<ImageView>(imageView));
+		mItems.put(url, values);
 	}
 
 	private class NetworkChecker {
@@ -152,13 +165,22 @@ public class ImageGetFromHttp {
 
 		@Override
 		protected void onPostExecute(Bitmap result) {
-			WeakReference<ImageView> ivWeakRef = mItems.get(mUrl);
-			ImageView imageView = ivWeakRef.get();
-			if (imageView != null && result != null) {
-				Log.i("ImageCacheManager", "网络上下载图片，填充图片到imageView");
-				imageView.setImageBitmap(result);
-			}
+			fillViewWithBitmap(result);
+			cacheBitmap(result);
+		}
 
+		private void fillViewWithBitmap(Bitmap result) {
+			List<WeakReference<ImageView>> values = mItems.get(mUrl);
+			for (WeakReference<ImageView> ivWeakRef : values) {
+				ImageView imageView = ivWeakRef.get();
+				if (imageView != null && result != null) {
+					Log.i("ImageCacheManager", "网络上下载图片，填充图片到imageView");
+					imageView.setImageBitmap(result);
+				}
+			}
+		}
+
+		private void cacheBitmap(Bitmap result) {
 			Context context = mContextWeakRef.get();
 			if (context != null && result != null) {
 				Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
