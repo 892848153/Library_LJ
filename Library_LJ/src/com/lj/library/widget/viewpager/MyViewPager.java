@@ -72,20 +72,21 @@ public class MyViewPager extends ViewGroup {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		if (changed) {
-			int childLeft = 0;
-			final int childCount = getChildCount();
+		// 注释掉changed是因为，多次调用setAdapter方法，changed为false，第二次调用增加的View不会显示出来.
+		// if (changed) {
+		int childLeft = 0;
+		final int childCount = getChildCount();
 
-			for (int i = 0; i < childCount; i++) {
-				final View childView = getChildAt(i);
-				if (childView.getVisibility() != View.GONE) {
-					final int childWidth = childView.getMeasuredWidth();
-					childView.layout(childLeft, 0, childLeft + childWidth,
-							childView.getMeasuredHeight());
-					childLeft += childWidth;
-				}
+		for (int i = 0; i < childCount; i++) {
+			final View childView = getChildAt(i);
+			if (childView.getVisibility() != View.GONE) {
+				final int childWidth = childView.getMeasuredWidth();
+				childView.layout(childLeft, 0, childLeft + childWidth,
+						childView.getMeasuredHeight());
+				childLeft += childWidth;
 			}
 		}
+		// }
 	}
 
 	@Override
