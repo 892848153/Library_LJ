@@ -37,6 +37,7 @@ public class MyViewPager extends ViewGroup {
 
 	private PagerAdapter mPagerAdapter;
 
+	/******************** 解决滑动冲突开始 *******************************/
 	private List<ViewGroup> mParentViews;
 
 	private float mXoriginal = 0f;
@@ -44,6 +45,7 @@ public class MyViewPager extends ViewGroup {
 	private float mYoriginal = 0f;
 
 	private boolean mMaybeClickEvent = false;
+	/******************** 解决滑动冲突 *******************************/
 
 	private static final int SNAP_VELOCITY = 300;
 
@@ -168,7 +170,7 @@ public class MyViewPager extends ViewGroup {
 			}
 
 			// 滑动事件处理
-			int deltaX = (int) (mLastMotionX - x);
+			int deltaX = calcDeltaX((int) (mLastMotionX - x));
 			if (isCanMove(deltaX)) {
 				if (mVelocityTracker != null) {
 					mVelocityTracker.addMovement(event);
@@ -188,13 +190,14 @@ public class MyViewPager extends ViewGroup {
 				velocityX = (int) mVelocityTracker.getXVelocity();
 			}
 
-			if (velocityX > SNAP_VELOCITY && mCurScreen > 0) {
+			int attachScreen = calcAttachScreen();
+			if (velocityX > SNAP_VELOCITY && attachScreen > 0) {
 				LogUtil.i(this, "snap left");
-				snapToScreen(mCurScreen - 1);
+				snapToScreen(attachScreen - 1);
 			} else if (velocityX < -SNAP_VELOCITY
-					&& mCurScreen < getChildCount() - 1) {
+					&& attachScreen < getChildCount() - 1) {
 				LogUtil.i(this, "snap right");
-				snapToScreen(mCurScreen + 1);
+				snapToScreen(attachScreen + 1);
 			} else {
 				snapToDestination();
 			}
@@ -253,12 +256,35 @@ public class MyViewPager extends ViewGroup {
 		}
 	}
 
+	/**
+	 * 由于手指滑动的便宜量可能过大，调用{@link #scrollBy(int, int)}之后会使内容溢出， 所以在这里需要更改下.
+	 * 
+	 * @param originalDeltaX
+	 * @return
+	 */
+	private int calcDeltaX(int originalDeltaX) {
+		int resultDelta = originalDeltaX;
+		int scrollX = getScrollX();
+		// 左滑时
+		if (resultDelta <= 0 && Math.abs(resultDelta) > scrollX) {
+			resultDelta = -scrollX;
+		}
+
+		// 右滑时
+		int slidingDistance = ((getChildCount() - 1) * getWidth())
+				- getScrollX();
+		if (resultDelta > 0 && resultDelta > slidingDistance) {
+			resultDelta = slidingDistance;
+		}
+		return resultDelta;
+	}
+
 	private boolean isCanMove(int deltaX) {
-		if (getScrollX() <= 0 && deltaX < 0) {
+		if (getScrollX() <= 0 && deltaX <= 0) {
 			return false;
 		}
 
-		if (getScrollX() >= (getChildCount() - 1) * getWidth() && deltaX > 0) {
+		if (getScrollX() >= (getChildCount() - 1) * getWidth() && deltaX >= 0) {
 			return false;
 		}
 
@@ -269,9 +295,21 @@ public class MyViewPager extends ViewGroup {
 	 * 根据当前页面在屏幕中所占的百分比，自动判断并滑动到合适的页面.
 	 */
 	public void snapToDestination() {
-		final int screenWidth = getWidth();
-		final int destScreen = (getScrollX() + screenWidth / 2) / screenWidth;
+		final int destScreen = calcAttachScreen();
 		snapToScreen(destScreen);
+	}
+
+	/**
+	 * 根据当前的偏移量计算出当前显示的应该算是哪一页.
+	 * <p/>
+	 * 哪个页面占据控件的二分之一以上就认为这页是当前显示的
+	 * 
+	 * @return
+	 */
+	private int calcAttachScreen() {
+		final int screenWidth = getWidth();
+		final int attachScreen = (getScrollX() + screenWidth / 2) / screenWidth;
+		return attachScreen;
 	}
 
 	/**
