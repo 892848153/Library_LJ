@@ -194,11 +194,23 @@ public class MyViewPager extends ViewGroup {
 			int attachScreen = calcAttachScreen();
 			if (velocityX > SNAP_VELOCITY && attachScreen > 0) {
 				LogUtil.i(this, "snap left");
-				snapToScreen(attachScreen - 1);
+				if (mCurScreen - attachScreen == 1) {
+					// 左侧页面属于attachScreen的时候
+					snapToScreen(attachScreen);
+				} else {
+					// 当前页或右侧界面属于attachScrren的时候
+					snapToScreen(attachScreen - 1);
+				}
 			} else if (velocityX < -SNAP_VELOCITY
 					&& attachScreen < getChildCount() - 1) {
 				LogUtil.i(this, "snap right");
-				snapToScreen(attachScreen + 1);
+				if (attachScreen - mCurScreen == 1) {
+					// 右侧界面属于attachScreen的时候
+					snapToScreen(attachScreen);
+				} else {
+					// 当前页或左侧界面属于attachScreen的时候
+					snapToScreen(attachScreen + 1);
+				}
 			} else {
 				snapToDestination();
 			}
