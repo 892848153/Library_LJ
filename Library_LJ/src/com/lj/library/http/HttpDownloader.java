@@ -29,9 +29,10 @@ public class HttpDownloader {
 	 * @param context
 	 * @param url
 	 * @param targetDir
+	 *            下载的文件将保存在这个文件夹下，文件夹不存在则会自动创建
 	 */
 	public void downloadFile(Activity context, String url, String targetDir) {
-		if (!new NetworkChecker().isNetworkAvailable(context)) {
+		if (!NetworkChecker.isNetworkAvailable(context)) {
 			if (mOnDwladResponse != null) {
 				mOnDwladResponse.onNetworkNotFound(url);
 			}
@@ -73,7 +74,7 @@ public class HttpDownloader {
 				if (filename == null || filename.length() < 1) {
 					filename = UUID.randomUUID() + "";
 				}
-				// String filename = mUrl.substring(mUrl.lastIndexOf("/") + 1);
+
 				if (!mTargetDir.endsWith(File.separator)) {
 					mTargetDir += File.separator;
 				}

@@ -24,7 +24,7 @@ public class HttpHelper {
 
 	public void post(Activity context, final String path,
 			final Map<String, String> params) {
-		if (!new NetworkChecker().isNetworkAvailable(context)) {
+		if (!NetworkChecker.isNetworkAvailable(context)) {
 			if (mOnResponse != null) {
 				mOnResponse.onHttpNetworkNotFound(path);
 			}
