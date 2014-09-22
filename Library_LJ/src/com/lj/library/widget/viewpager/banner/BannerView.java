@@ -452,7 +452,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		@Override
 		public void handleMessage(Message msg) {
 			BannerView bannerView = mViewRef.get();
-			if (bannerView != null) {
+			if (bannerView != null && !bannerView.isScolling()) {
 				bannerView.mViewPager.snapToScreen(bannerView.mViewPager
 						.getCurrentScreen() + 1);
 			}

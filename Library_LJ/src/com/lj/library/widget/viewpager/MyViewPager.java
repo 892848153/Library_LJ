@@ -381,6 +381,10 @@ public class MyViewPager extends ViewGroup {
 			}
 		}
 	}
+	
+	public boolean isScrolling() {
+		return getScrollX() % getWidth() == 0 ? false : true;
+	}
 
 	public void SetOnViewChangeListener(OnPageChangeListener listener) {
 		mOnPageChangeListener = listener;
