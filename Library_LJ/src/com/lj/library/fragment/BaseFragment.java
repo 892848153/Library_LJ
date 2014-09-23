@@ -28,4 +28,31 @@ public class BaseFragment extends Fragment {
 			manager.popBackStackImmediate();
 		}
 	}
+	
+	/**
+	 * 
+	 * 给Fragment设置主题,主题传递0，则采用系统的默认主题.
+	 * 
+	 * <pre>
+	 * public View onCreateView(LayoutInflater inflater, ViewGroup container,
+	 * 		Bundle savedInstanceState) {
+	 * 	LayoutInflater localInflater = setTheme(inflater);
+	 * 	View view = localInflater.inflate(R.layout.item_flagment_info, container,
+	 * 			false);
+	 * 	return view;
+	 * }
+	 * </pre>
+	 * 
+	 * 
+	 * @param inflater
+	 * @return
+	 */
+	protected LayoutInflater setTheme(LayoutInflater inflater) {
+		// 给Fragment设置主题,主题传递0，则采用系统的默认主题
+		final Context contextThemeWrapper = new ContextThemeWrapper(
+				getActivity(), 0);
+		LayoutInflater localInflater = inflater
+				.cloneInContext(contextThemeWrapper);
+		return localInflater;
+	}
 }
