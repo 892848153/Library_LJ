@@ -14,20 +14,49 @@ public class EncryptionUtils {
 
 	/**
 	 * MD5信息摘要算法.
+	 * <p/>
+	 * 对输入的内容进行信息摘要，获取到128bit的内容，将其转化成32位16进制的字符串.
 	 * 
-	 * @param s
+	 * @param content
+	 *            将要进行加密的内容
 	 * @return 返回32位16进制的字符串.
 	 */
-	public static final String getMD5(String s) {
+	public static final String getMD5(String content) {
+		return getEncrypt(content, "MD5");
+	}
+
+	/**
+	 * SHA信息摘要算法.
+	 * <p/>
+	 * 对输入的内容进行信息摘要，获取到160bit的内容，将其转化成40位16进制的字符串.
+	 * 
+	 * @param content
+	 *            输入的内容长度必须小于2^64位
+	 * @return 返回40位16进制的字符串.
+	 */
+	public static final String getSHA(String content) {
+		return getEncrypt(content, "SHA");
+	}
+
+	/**
+	 * 信息摘要加密算法.
+	 * 
+	 * @param content
+	 *            将要进行加密的内容
+	 * @param algorithmName
+	 *            算法名称
+	 * @return
+	 */
+	public static final String getEncrypt(String content, String algorithmName) {
 		char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 				'A', 'B', 'C', 'D', 'E', 'F' };
 		try {
-			byte[] btInput = s.getBytes();
-			// 获得MD5摘要算法的 MessageDigest 对象
-			MessageDigest mdInst = MessageDigest.getInstance("MD5");
+			byte[] btInput = content.getBytes();
+			// 获取信息摘要对象
+			MessageDigest mdInst = MessageDigest.getInstance(algorithmName);
 			// 使用指定的字节串更新摘要
 			mdInst.update(btInput);
-			// 将指定的"字节串"进行信息摘要,获取到"128bit"的结果,即16byte
+			// 将指定的"字节串"进行信息摘要,获取到固定长度的字节数组
 			byte[] md = mdInst.digest();
 			// 把密文转换成十六进制的字符串形式
 			int j = md.length;
@@ -40,7 +69,7 @@ public class EncryptionUtils {
 				// 后四个bit转成一个16进制的字符
 				str[k++] = hexDigits[byte0 & 0xf];
 			}
-			// 返回32个16进制的字符串
+			// 返回16进制的字符串
 			return new String(str);
 		} catch (Exception e) {
 			e.printStackTrace();
