@@ -94,7 +94,7 @@ public class ContextUtil {
 	}
 
 	/**
-	 * 因此键盘.
+	 * 隐藏键盘.
 	 * 
 	 * @param activity
 	 * @param editText
