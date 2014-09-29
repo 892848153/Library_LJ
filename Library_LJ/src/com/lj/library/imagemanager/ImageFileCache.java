@@ -15,8 +15,8 @@ import android.os.StatFs;
 import android.util.Log;
 
 import com.lj.library.constants.Constants;
+import com.lj.library.util.EncryptionUtils;
 import com.lj.library.util.SDCardUtil;
-import com.lj.library.util.StringUtils;
 
 public class ImageFileCache {
 
@@ -163,7 +163,7 @@ public class ImageFileCache {
 	private String convertUrlToFileName(String url) {
 		String[] strs = url.split("/");
 		String original = strs[strs.length - 1] + WHOLESALE_CONV;
-		return StringUtils.MD5(original);
+		return EncryptionUtils.getMD5(original);
 	}
 
 	/**

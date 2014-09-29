@@ -1,8 +1,11 @@
 package com.lj.library.fragment;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
 
 import com.lj.library.R;
 
@@ -28,7 +31,7 @@ public class BaseFragment extends Fragment {
 			manager.popBackStackImmediate();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * 给Fragment设置主题,主题传递0，则采用系统的默认主题.

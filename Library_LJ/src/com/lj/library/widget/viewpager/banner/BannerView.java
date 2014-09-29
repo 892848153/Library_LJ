@@ -441,6 +441,10 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		}
 	}
 
+	public boolean isScolling() {
+		return mViewPager.isScrolling();
+	}
+
 	private static class InternalHandler extends Handler {
 
 		private final WeakReference<BannerView> mViewRef;
