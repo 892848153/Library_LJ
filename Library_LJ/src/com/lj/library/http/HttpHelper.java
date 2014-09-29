@@ -12,6 +12,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 public class HttpHelper {
 
@@ -20,13 +21,13 @@ public class HttpHelper {
 	private static final String CHARSET = "UTF-8";
 	private static final int DEFAULT_CONNECTION_TIMEOUT = (20 * 1000); // milliseconds
 	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
-	private OnHttpResponse mOnResponse;
+	private OnHttpCallback mCallback;
 
 	public void post(Activity context, final String path,
 			final Map<String, String> params) {
 		if (!NetworkChecker.isNetworkAvailable(context)) {
-			if (mOnResponse != null) {
-				mOnResponse.onHttpNetworkNotFound(path);
+			if (mCallback != null) {
+				mCallback.onHttpNetworkNotFound(path);
 			}
 			return;
 		}
@@ -55,7 +56,7 @@ public class HttpHelper {
 
 		private final Map<String, String> mParams;
 
-		private int mRes;
+		private int mResponse;
 
 		public NetworkAsynTask(String path, Map<String, String> params) {
 			mPath = path;
@@ -87,8 +88,8 @@ public class HttpHelper {
 				outStream.flush();
 				outStream.close();
 
-				mRes = conn.getResponseCode();
-				if (mRes == RESPONSE_SUCCESS) {
+				mResponse = conn.getResponseCode();
+				if (mResponse == RESPONSE_SUCCESS) {
 					InputStream in = conn.getInputStream();
 					InputStreamReader reader = new InputStreamReader(in,
 							CHARSET);
@@ -100,19 +101,20 @@ public class HttpHelper {
 					reader.close();
 					in.close();
 				} else {
-					if (mOnResponse != null) {
-						mOnResponse.onHttpError(mPath, mRes);
+					if (mCallback != null) {
+						mCallback.onHttpError(mPath, mResponse);
 					}
 				}
 			} catch (Exception e) {
-				if (mOnResponse != null) {
-					mOnResponse.onHttpError(mPath, e);
+				if (mCallback != null) {
+					mCallback.onHttpError(mPath, e);
 				}
 				e.printStackTrace();
 			} finally {
 				if (null != conn) {
 					conn.disconnect();
 				}
+				mCallback = null;
 			}
 
 			return sb.toString();
@@ -120,22 +122,28 @@ public class HttpHelper {
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (mOnResponse != null) {
-				mOnResponse.onHttpReturn(mPath, mRes, result);
-				if (mRes == RESPONSE_SUCCESS) {
-					mOnResponse.onHttpSuccess(mPath, result);
+			if (mCallback != null) {
+				mCallback.onHttpReturn(mPath, mResponse, result);
+				if (mResponse == RESPONSE_SUCCESS) {
+					if (TextUtils.isEmpty(result)) {
+						mCallback.onHttpNothingReturn(mPath);
+					} else {
+						mCallback.onHttpSuccess(mPath, result);
+					}
+					mCallback.onHttpSuccess(mPath, result);
 				}
 			}
+			mCallback = null;
 		}
 	}
 
-	public void setOnHttpResponse(OnHttpResponse onHttpResponse) {
-		if (onHttpResponse != mOnResponse) {
-			mOnResponse = onHttpResponse;
+	public void setOnHttpCallback(OnHttpCallback onHttpResponse) {
+		if (onHttpResponse != mCallback) {
+			mCallback = onHttpResponse;
 		}
 	}
 
-	public interface OnHttpResponse {
+	public interface OnHttpCallback {
 		/***************** 使用方法：在BaseHttpActivity中实现此接口，可在子类中选择需要复写的方法 ****************/
 
 		/**
@@ -183,8 +191,15 @@ public class HttpHelper {
 		void onHttpError(String path, int response);
 
 		/**
+		 * 网络请求成功，但没有返回结果会调用此接口,运行在主线程.
 		 * 
-		 * 网络请求成功会调用此接口,运行在主线程.
+		 * @param path
+		 */
+		void onHttpNothingReturn(String path);
+
+		/**
+		 * 
+		 * 网络请求成功并返回结果会调用此接口,运行在主线程.
 		 * 
 		 * @param path
 		 *            请求的url
