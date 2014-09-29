@@ -1,15 +1,12 @@
 package com.lj.library.util;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
-
 import junit.framework.Assert;
-import android.widget.EditText;
+import android.widget.TextView;
 
 public class StringUtils {
 
-	public static String getText(EditText editText) {
-		return editText.getText().toString().trim();
+	public static String getText(TextView view) {
+		return view.getText().toString().trim();
 	}
 
 	public static String optimizePhone(String phone) {
@@ -21,22 +18,5 @@ public class StringUtils {
 		Assert.assertEquals(19, bankCard.length());
 		return bankCard.substring(0, 3) + "*******"
 				+ bankCard.substring(15, 19);
-	}
-
-	public static String MD5(String data) {
-		MessageDigest md;
-		try {
-			// 生成一个MD5加密计算摘要
-			md = MessageDigest.getInstance("MD5");
-			// 计算md5函数
-			md.update(data.getBytes());
-			// digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
-			// BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
-			String pwd = new BigInteger(1, md.digest()).toString(16);
-			return pwd;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return data;
 	}
 }

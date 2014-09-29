@@ -116,10 +116,10 @@ public class EncryptionUtils {
 	 * @return
 	 */
 	public static String getBASE64(byte[] b) {
-		return Base64.encodeToString(b, 0);
+		return Base64.encodeToString(b, Base64.DEFAULT);
 	}
 
 	public static byte[] fromBASE64(String s) {
-		return Base64.decode(s, 0);
+		return Base64.decode(s, Base64.DEFAULT);
 	}
 }
