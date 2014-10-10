@@ -100,10 +100,6 @@ public class HttpHelper {
 					}
 					reader.close();
 					in.close();
-				} else {
-					if (mCallback != null) {
-						mCallback.onHttpError(mPath, mResponse);
-					}
 				}
 			} catch (Exception e) {
 				if (mCallback != null) {
@@ -131,6 +127,8 @@ public class HttpHelper {
 						mCallback.onHttpSuccess(mPath, result);
 					}
 					mCallback.onHttpSuccess(mPath, result);
+				} else {
+					mCallback.onHttpError(mPath, mResponse);
 				}
 			}
 			mCallback = null;

@@ -14,13 +14,14 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 /**
+ * 从服务器下载文件.
  * 
  * @time 2014年9月3日 下午2:37:47
  * @author jie.liu
  */
 public class HttpDownloader {
 
-	private OnDownloadResponse mOnDwladResponse;
+	private OnDownloadListener mOnDwlodListener;
 
 	/**
 	 * 
@@ -33,8 +34,8 @@ public class HttpDownloader {
 	 */
 	public void downloadFile(Activity context, String url, String targetDir) {
 		if (!NetworkChecker.isNetworkAvailable(context)) {
-			if (mOnDwladResponse != null) {
-				mOnDwladResponse.onNetworkNotFound(url);
+			if (mOnDwlodListener != null) {
+				mOnDwlodListener.onNetworkNotFound(url);
 			}
 			return;
 		}
@@ -98,17 +99,15 @@ public class HttpDownloader {
 				}
 				// 完毕，关闭所有链接
 				os.flush();
-				os.close();
-				is.close();
 				return 0;
 			} catch (MalformedURLException e) {
-				if (mOnDwladResponse != null) {
-					mOnDwladResponse.onDownloadError(mUrl, e);
+				if (mOnDwlodListener != null) {
+					mOnDwlodListener.onDownloadError(mUrl, e);
 				}
 				e.printStackTrace();
 			} catch (IOException e) {
-				if (mOnDwladResponse != null) {
-					mOnDwladResponse.onDownloadError(mUrl, e);
+				if (mOnDwlodListener != null) {
+					mOnDwlodListener.onDownloadError(mUrl, e);
 				}
 				e.printStackTrace();
 			} finally {
@@ -133,24 +132,27 @@ public class HttpDownloader {
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (mOnDwladResponse != null && result.intValue() == 0) {
-				mOnDwladResponse.onDownloadSuccess(mUrl, mTargetFileUrl);
+			if (mOnDwlodListener != null) {
+				if (result.intValue() == 0) {
+					mOnDwlodListener.onDownloadSuccess(mUrl, mTargetFileUrl);
+				} else {
+					mOnDwlodListener.onDownloadFail(mUrl, mTargetFileUrl);
+				}
 			}
 		}
 	}
 
-	public void setOnDownloadResponse(OnDownloadResponse onDownloadResponse) {
-		mOnDwladResponse = onDownloadResponse;
+	public void setOnDownloadResponse(OnDownloadListener onDownloadListener) {
+		mOnDwlodListener = onDownloadListener;
 	}
 
-	public interface OnDownloadResponse {
+	public interface OnDownloadListener {
 
 		/**
 		 * 
-		 * 下载异常调用，运行在子线程
+		 * 下载异常调用，运行在子线程.
 		 * 
 		 * @time 2014年6月10日 上午10:42:39
-		 * @author jie.liu
 		 * @param url
 		 * @param e
 		 */
@@ -158,26 +160,31 @@ public class HttpDownloader {
 
 		/**
 		 * 
-		 * 未检测到网络调用，运行在主线程
+		 * 未检测到网络调用，运行在主线程.
 		 * 
 		 * @time 2014年6月10日 上午10:43:08
-		 * @author jie.liu
 		 * @param url
 		 */
 		void onNetworkNotFound(String url);
 
 		/**
 		 * 
-		 * 下载成功调用，运行在主线程
+		 * 下载成功调用，运行在主线程.
 		 * 
 		 * @time 2014年6月10日 上午10:43:33
-		 * @author jie.liu
 		 * @param url
 		 *            下载文件在服务器上的地址
 		 * @param targetUrl
 		 *            下载文件保存的地址
 		 */
 		void onDownloadSuccess(String url, String targetUrl);
-	}
 
+		/**
+		 * 下载失败，运行在主线程.
+		 * 
+		 * @param url
+		 * @param targetUrl
+		 */
+		void onDownloadFail(String url, String targetUrl);
+	}
 }
