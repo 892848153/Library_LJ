@@ -131,6 +131,7 @@ public class MyViewPager extends ViewGroup {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
+		LogUtil.i(this, "onInterceptTouchEvent");
 		final int action = event.getAction();
 		final float x = event.getX();
 
@@ -381,7 +382,7 @@ public class MyViewPager extends ViewGroup {
 			}
 		}
 	}
-	
+
 	public boolean isScrolling() {
 		return getScrollX() % getWidth() == 0 ? false : true;
 	}
@@ -418,7 +419,7 @@ public class MyViewPager extends ViewGroup {
 
 		int size = mPagerAdapter.getCount();
 		for (int i = 0; i < size; i++) {
-			View view = (View) mPagerAdapter.getItem(i);
+			View view = mPagerAdapter.getItem(i);
 			addView(view);
 		}
 		requestLayout();

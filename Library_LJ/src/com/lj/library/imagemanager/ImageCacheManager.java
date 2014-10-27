@@ -21,6 +21,8 @@ public class ImageCacheManager {
 	private final ImageMemoryCache mMemoryCache;
 	private final ImageFileCache mFileCache;
 	private final ImageGetFromHttp mHttpCache;
+	private boolean mCachInMemory;
+	private boolean mCachInDisk;
 
 	private OnBitmapFromHttpListener mListener;
 

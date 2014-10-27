@@ -24,6 +24,8 @@ import com.lj.library.widget.viewpager.PagerAdapter;
 
 /**
  * 广告栏.
+ * <p/>
+ * 例一:
  * 
  * <pre>
  * List&lt;View&gt; viewList = new ArrayList&lt;View&gt;();
@@ -44,7 +46,7 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * viewList.add(imgView3);
  * viewList.add(imgView4);
  * 
- * PagerAdapter adapter = new Adapter(viewList);
+ * PagerAdapter<UserInfo> adapter = new DefaultPagerAdapter(viewList)<UserInfo>;
  * BannerView banner = (BannerView) findViewById(R.id.banner);
  * banner.setPagerAdapter(adapter);
  * // 默认是不能滚动的
@@ -54,6 +56,35 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * banner.startAutoCycle();
  * banner.setCycleInterval(5000);
  * </pre>
+ * 
+ * 例二:
+ * 
+ * <pre>
+ * BannerView banner = (BannerView) findViewById(R.id.banner);
+ * PagerAdapter&lt;UserInfo&gt; pagerAdapter = new BannerAdapter();
+ * pagerAdapter.init(bean.main_info, true);
+ * mBanner.setAdapter(pagerAdapter);
+ * if (pagerAdapter.getCount() &gt;= 4) {
+ * 	mBanner.setCycleInterval(4000);
+ * 	mBanner.enableCycleScroll();
+ * 	mBanner.startAutoCycle();
+ * 	mBanner.setCurrentPage(1);
+ * }
+ * 
+ * private class BannerAdapter extends PagerAdapter&lt;ShCarInfoEntity&gt; {
+ * 
+ * 	&#064;Override
+ * 	public View getView(int position, UserInfo data) {
+ * 		View view = LayoutInflater.from(MainActivity.this).inflate(
+ * 				R.layout.banner_item, null);
+ * 		ImageView iv = (ImageView) view.findViewById(R.id.iv);
+ * 		ImageCacheManager manager = new ImageCacheManager(MainActivity.this);
+ * 		manager.getBitmap(data.headAddress, iv);
+ * 		return view;
+ * 	}
+ * }
+ * </pre>
+ * 
  * 
  * @time 2014年8月6日 上午10:22:16
  * @author jie.liu
@@ -119,7 +150,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 			return;
 
 		mCycleScrollable = true;
-		createIndicators();
+		invalidateIndicators();
 	}
 
 	/**
@@ -135,7 +166,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		}
 
 		mCycleScrollable = false;
-		createIndicators();
+		invalidateIndicators();
 	}
 
 	/**
@@ -165,7 +196,11 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	public void setAdapter(PagerAdapter adapter, boolean shouldCleanChildren) {
 		mPageCount = adapter.getCount();
 		mViewPager.setAdapter(adapter, shouldCleanChildren);
-		createIndicators();
+		invalidateIndicators();
+	}
+
+	public PagerAdapter getPagerAdapter() {
+		return mViewPager.getPagerAdapter();
 	}
 
 	/**
@@ -185,7 +220,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	/**
 	 * 创建提示点，会根据是否是循环滑动的来自动的适应点数.
 	 */
-	private void createIndicators() {
+	private void invalidateIndicators() {
 		mIndicatorLlyt.removeAllViews();
 		int indicatorCount = calcIndicatorCount();
 		performCreateIndicators(indicatorCount);

@@ -110,7 +110,6 @@ public class HttpHelper {
 				if (null != conn) {
 					conn.disconnect();
 				}
-				mCallback = null;
 			}
 
 			return sb.toString();
