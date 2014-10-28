@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
 
 /**
+ * 网络检查工具类.
  * 
  * @time 2014年9月3日 下午2:39:11
  * @author jie.liu
@@ -16,11 +17,11 @@ public class NetworkChecker {
 	/**
 	 * 判断网络是否连接.
 	 * 
-	 * @param activity
+	 * @param context
 	 * @return
 	 */
-	public static boolean isNetworkAvailable(Activity activity) {
-		ConnectivityManager connectivity = (ConnectivityManager) activity
+	public static boolean isNetworkAvailable(Context context) {
+		ConnectivityManager connectivity = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectivity != null) {
 			NetworkInfo[] info = connectivity.getAllNetworkInfo();

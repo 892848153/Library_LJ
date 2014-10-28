@@ -17,20 +17,32 @@ import com.lj.library.util.LogUtil;
 public class ImageCacheManager {
 
 	private final Context mContext;
+	private final boolean mCachInMemory;
+	private final boolean mCachInDisk;
 
 	private final ImageMemoryCache mMemoryCache;
 	private final ImageFileCache mFileCache;
 	private final ImageGetFromHttp mHttpCache;
-	private boolean mCachInMemory;
-	private boolean mCachInDisk;
 
 	private OnBitmapFromHttpListener mListener;
 
+	/**
+	 * 默认开启内存缓存与硬盘缓存.
+	 * 
+	 * @param context
+	 */
 	public ImageCacheManager(Context context) {
+		this(context, true, true);
+	}
+
+	public ImageCacheManager(Context context, boolean cachInMemory,
+			boolean cachInDisk) {
 		mContext = context;
+		mCachInMemory = cachInMemory;
+		mCachInDisk = cachInDisk;
 		mMemoryCache = new ImageMemoryCache(context);
 		mFileCache = new ImageFileCache();
-		mHttpCache = new ImageGetFromHttp(context);
+		mHttpCache = new ImageGetFromHttp(context, mCachInMemory, mCachInDisk);
 	}
 
 	public void setOnGetFromHttpListener(OnBitmapFromHttpListener listener) {
@@ -38,7 +50,7 @@ public class ImageCacheManager {
 	}
 
 	/**
-	 * 根据Url获取对应的图片，本地有混存图片则返回图像对象，要获取服务器端的图片，请设置监听
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
 	 * {@link OnBitmapFromHttpListener}.
 	 * 
 	 * @param url
@@ -50,7 +62,7 @@ public class ImageCacheManager {
 
 	/**
 	 * 
-	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象，否则从服务器下载图片.
 	 * <p/>
 	 * 要获取服务器端的图片，请设置监听 {@link OnBitmapFromHttpListener}.
 	 * 
@@ -58,7 +70,7 @@ public class ImageCacheManager {
 	 * @param imageView
 	 *            用来填充图片的控件， 不需要填充可传入null
 	 * @return 返回本地缓存图片的Bitmap对象，如果图片没有缓存在本地，<br/>
-	 *         则返回null并开始下载图片,下载完毕后自动将图片在本地做缓存.<br/>
+	 *         则返回null并开始下载图片,下载完毕后根据参数将图片在本地做缓存.<br/>
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView) {
 		if (TextUtils.isEmpty(url)) {
@@ -76,7 +88,9 @@ public class ImageCacheManager {
 				result = mHttpCache.downloadBitmap(url, imageView);
 			} else {
 				// 添加到内存缓存
-				mMemoryCache.addBitmapToCache(url, result);
+				if (mCachInMemory) {
+					mMemoryCache.addBitmapToCache(url, result);
+				}
 			}
 		}
 

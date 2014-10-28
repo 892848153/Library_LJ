@@ -20,18 +20,20 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
+import com.lj.library.http.NetworkChecker;
 import com.lj.library.imagemanager.ImageCacheManager.OnBitmapFromHttpListener;
 
 public class ImageGetFromHttp {
 	private static final String LOG_TAG = ImageGetFromHttp.class
 			.getSimpleName();
+
+	private final Context mContext;
+
+	private final boolean mMemoryCach, mDiskCach;
 
 	private final WeakReference<Context> mContextWeakRef;
 
@@ -39,7 +41,11 @@ public class ImageGetFromHttp {
 
 	private OnBitmapFromHttpListener mListener;
 
-	public ImageGetFromHttp(Context context) {
+	public ImageGetFromHttp(Context context, boolean memoryCach,
+			boolean diskCach) {
+		mContext = context;
+		mMemoryCach = memoryCach;
+		mDiskCach = diskCach;
 		mContextWeakRef = new WeakReference<Context>(context);
 		mItems = new HashMap<String, List<WeakReference<ImageView>>>();
 	}
@@ -49,7 +55,7 @@ public class ImageGetFromHttp {
 	}
 
 	public Bitmap downloadBitmap(String url, ImageView imageView) {
-		if (!new NetworkChecker().isNetworkAvailable()) {
+		if (!NetworkChecker.isNetworkAvailable(mContext)) {
 			if (mListener != null) {
 				mListener.onGetBitmapNetworkNotFound(url);
 			}
@@ -70,28 +76,6 @@ public class ImageGetFromHttp {
 		}
 		values.add(new WeakReference<ImageView>(imageView));
 		mItems.put(url, values);
-	}
-
-	private class NetworkChecker {
-		public boolean isNetworkAvailable() {
-			Context context = mContextWeakRef.get();
-			if (context == null) {
-				return false;
-			}
-
-			ConnectivityManager connectivity = (ConnectivityManager) context
-					.getSystemService(Context.CONNECTIVITY_SERVICE);
-			if (connectivity != null) {
-				NetworkInfo[] info = connectivity.getAllNetworkInfo();
-				if (info != null)
-					for (int i = 0; i < info.length; i++)
-						if (info[i].getState() == NetworkInfo.State.CONNECTED) {
-							return true;
-						}
-			}
-			Toast.makeText(context, "未检测到可用的网络", Toast.LENGTH_SHORT).show();
-			return false;
-		}
 	}
 
 	private class NetworkAsynTask extends AsyncTask<String, Void, Bitmap> {
@@ -183,13 +167,17 @@ public class ImageGetFromHttp {
 		private void cacheBitmap(Bitmap result) {
 			Context context = mContextWeakRef.get();
 			if (context != null && result != null) {
-				Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
-				ImageMemoryCache memoryCache = new ImageMemoryCache(context);
-				memoryCache.addBitmapToCache(mUrl, result);
+				if (mMemoryCach) {
+					Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
+					ImageMemoryCache memoryCache = new ImageMemoryCache(context);
+					memoryCache.addBitmapToCache(mUrl, result);
+				}
 
-				Log.i("ImageCacheManager", "缓存网络上下载的图片到本地文件");
-				ImageFileCache fileCache = new ImageFileCache();
-				fileCache.saveBitmap(result, mUrl);
+				if (mDiskCach) {
+					Log.i("ImageCacheManager", "缓存网络上下载的图片到本地文件");
+					ImageFileCache fileCache = new ImageFileCache();
+					fileCache.saveBitmap(result, mUrl);
+				}
 			}
 
 			if (mListener != null) {
