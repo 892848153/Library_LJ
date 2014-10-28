@@ -183,8 +183,8 @@ public class ImageGetFromHttp {
 			if (bitmap != null) {
 				Bitmap result = bitmap;
 				if (mTargetWidth != 0 && mTargetHeight != 0) {
-					result = ImageCompressor.scaleImage(bitmap, mTargetWidth,
-							mTargetHeight);
+					result = ImageCompressor.compressImage(bitmap,
+							mTargetWidth, mTargetHeight);
 				}
 				fillViewWithBitmap(result);
 				cacheBitmapIfNeed(result);
