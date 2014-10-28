@@ -36,6 +36,7 @@ public class ImageFileCache {
 	/**
 	 * 从缓存中获取图片.
 	 * 
+	 * @param url
 	 **/
 	public Bitmap getImage(final String url) {
 		final String path = getDirectory() + "/" + convertUrlToFileName(url);
@@ -55,6 +56,10 @@ public class ImageFileCache {
 	/**
 	 * 将图片存入文件缓存.
 	 * 
+	 * @param bm
+	 *            需要保存的对象
+	 * @param url
+	 *            用来产生文件名
 	 **/
 	public void saveBitmap(Bitmap bm, String url) {
 		if (bm == null) {
@@ -151,8 +156,8 @@ public class ImageFileCache {
 	private int freeSpaceOnSd() {
 		StatFs stat = new StatFs(Environment.getExternalStorageDirectory()
 				.getPath());
-		double sdFreeMB = ((double) stat.getAvailableBlocks() * (double) stat
-				.getBlockSize()) / MB;
+		double sdFreeMB = ((double) stat.getAvailableBlocksLong() * stat
+				.getBlockSizeLong()) / MB;
 		return (int) sdFreeMB;
 	}
 

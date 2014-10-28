@@ -35,6 +35,10 @@ public class ImageGetFromHttp {
 
 	private final boolean mMemoryCach, mDiskCach;
 
+	private int mTargetWidth;
+
+	private int mTargetHeight;
+
 	private final WeakReference<Context> mContextWeakRef;
 
 	private final Map<String, List<WeakReference<ImageView>>> mItems;
@@ -54,13 +58,40 @@ public class ImageGetFromHttp {
 		mListener = listener;
 	}
 
+	/**
+	 * 下载网络图片，并填充到控件上.
+	 * 
+	 * @param url
+	 * @param imageView
+	 *            不想显示可以传入null
+	 * @return
+	 */
 	public Bitmap downloadBitmap(String url, ImageView imageView) {
+		return downloadBitmap(url, imageView, 0, 0);
+	}
+
+	/**
+	 * 下载图片并进行压缩处理.
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param targetWidth
+	 *            图片将要压缩的目标宽度
+	 * @param targetHeight
+	 *            图片将要压缩的目标高度
+	 * @return
+	 */
+	public Bitmap downloadBitmap(String url, ImageView imageView,
+			int targetWidth, int targetHeight) {
 		if (!NetworkChecker.isNetworkAvailable(mContext)) {
 			if (mListener != null) {
 				mListener.onGetBitmapNetworkNotFound(url);
 			}
 			return null;
 		}
+
+		mTargetWidth = targetWidth;
+		mTargetHeight = targetHeight;
 
 		putItem(url, imageView);
 		new NetworkAsynTask(url).execute();
@@ -148,23 +179,30 @@ public class ImageGetFromHttp {
 		}
 
 		@Override
-		protected void onPostExecute(Bitmap result) {
-			fillViewWithBitmap(result);
-			cacheBitmap(result);
+		protected void onPostExecute(Bitmap bitmap) {
+			if (bitmap != null) {
+				Bitmap result = bitmap;
+				if (mTargetWidth != 0 && mTargetHeight != 0) {
+					result = ImageCompressor.scaleImage(bitmap, mTargetWidth,
+							mTargetHeight);
+				}
+				fillViewWithBitmap(result);
+				cacheBitmapIfNeed(result);
+			}
 		}
 
 		private void fillViewWithBitmap(Bitmap result) {
 			List<WeakReference<ImageView>> values = mItems.get(mUrl);
 			for (WeakReference<ImageView> ivWeakRef : values) {
 				ImageView imageView = ivWeakRef.get();
-				if (imageView != null && result != null) {
+				if (imageView != null) {
 					Log.i("ImageCacheManager", "网络上下载图片，填充图片到imageView");
 					imageView.setImageBitmap(result);
 				}
 			}
 		}
 
-		private void cacheBitmap(Bitmap result) {
+		private void cacheBitmapIfNeed(Bitmap result) {
 			Context context = mContextWeakRef.get();
 			if (context != null && result != null) {
 				if (mMemoryCach) {

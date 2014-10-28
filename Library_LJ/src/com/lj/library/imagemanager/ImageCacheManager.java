@@ -61,6 +61,17 @@ public class ImageCacheManager {
 	}
 
 	/**
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
+	 * {@link OnBitmapFromHttpListener}.
+	 * 
+	 * @param url
+	 * @return
+	 */
+	public Bitmap getBitmap(String url, ImageView imageView) {
+		return getBitmap(url, imageView, 0, 0);
+	}
+
+	/**
 	 * 
 	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象，否则从服务器下载图片.
 	 * <p/>
@@ -69,10 +80,15 @@ public class ImageCacheManager {
 	 * @param url
 	 * @param imageView
 	 *            用来填充图片的控件， 不需要填充可传入null
+	 * @param targetWidth
+	 *            图片将要压缩的目标宽度
+	 * @param targetHeight
+	 *            图片将要压缩的目标高度
 	 * @return 返回本地缓存图片的Bitmap对象，如果图片没有缓存在本地，<br/>
 	 *         则返回null并开始下载图片,下载完毕后根据参数将图片在本地做缓存.<br/>
 	 */
-	public Bitmap getBitmap(String url, ImageView imageView) {
+	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
+			int targetHeight) {
 		if (TextUtils.isEmpty(url)) {
 			throw new NullPointerException("url == null");
 		}
@@ -85,7 +101,12 @@ public class ImageCacheManager {
 			if (result == null) {
 				// 从网络获取
 				mHttpCache.setOnGetFromHttpListener(mListener);
-				result = mHttpCache.downloadBitmap(url, imageView);
+				if (targetWidth == 0 || targetHeight == 0) {
+					result = mHttpCache.downloadBitmap(url, imageView);
+				} else {
+					result = mHttpCache.downloadBitmap(url, imageView,
+							targetWidth, targetHeight);
+				}
 			} else {
 				// 添加到内存缓存
 				if (mCachInMemory) {

@@ -9,6 +9,12 @@ import android.view.LayoutInflater;
 
 import com.lj.library.R;
 
+/**
+ * Fragment基础类.
+ * 
+ * @time 2014年10月28日 上午10:40:13
+ * @author jie.liu
+ */
 public class BaseFragment extends Fragment {
 
 	public void startFragment(BaseFragment targetFragment) {
