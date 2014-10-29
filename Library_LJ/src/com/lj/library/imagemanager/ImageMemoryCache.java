@@ -3,6 +3,7 @@ package com.lj.library.imagemanager;
 import java.lang.ref.SoftReference;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import android.app.ActivityManager;
 import android.content.Context;
@@ -120,7 +121,7 @@ public class ImageMemoryCache {
 
 	/**
 	 * 
-	 * 清空内存缓存.
+	 * 清空内存缓存的引用，但不主动回收图片资源.
 	 */
 	public void clearCache() {
 		sSoftCache.clear();
@@ -132,7 +133,8 @@ public class ImageMemoryCache {
 	 * 回收缓存中的图片资源.
 	 */
 	public void recycleCache() {
-		for (Iterator<String> it = sSoftCache.keySet().iterator(); it.hasNext();) {
+		Set<String> keySet = sSoftCache.keySet();
+		for (Iterator<String> it = keySet.iterator(); it.hasNext();) {
 			String key = it.next();
 			SoftReference<Bitmap> bitmapSoftRef = sSoftCache.get(key);
 			Bitmap bitmap = bitmapSoftRef.get();
