@@ -18,6 +18,11 @@ public class ImageMemoryCache {
 	 */
 	private static final int SOFT_CACHE_SIZE = 15; // 软引用缓存容量
 	private static LruCache<String, Bitmap> sLruCache; // 硬引用缓存
+	/**
+	 * LinkedHashMap实现方式:内部保存一个双向链表， header指针指向一个空元素，每次put时都将元素插入在header指针前面
+	 * 然后再根据removeEldestEntry()的返回值决定是否删除header指针后面的那个元素，即删除最旧的元素.
+	 * get时，将取到的元素插在header指针的前面，再在原来的位置的指针删除
+	 **/
 	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftCache; // 软引用缓存
 
 	public ImageMemoryCache(Context context) {
@@ -25,6 +30,20 @@ public class ImageMemoryCache {
 				.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 		int cacheSize = 1024 * 1024 * memClass / 8; // 硬引用缓存容量，为系统可用内存的1/8
 		sLruCache = new LruCache<String, Bitmap>(cacheSize) {
+
+			/**
+			 * get(key)时，当不存在对应key的value时，会调用此方法产生一个新的value对象,默认返回null.
+			 * 如果在调用此方法期间，有其他线程往缓存中加入一样key的value，则新产生的value将被抛弃，并会调用
+			 * entryRemoved(false, key, createdValue, mapValue);一般不用重载此方法
+			 */
+			@Override
+			protected Bitmap create(String key) {
+				return super.create(key);
+			}
+
+			/**
+			 * 计算每个对象的大小，用于计算所有缓存的大小
+			 */
 			@Override
 			protected int sizeOf(String key, Bitmap value) {
 				if (value != null)
@@ -33,6 +52,18 @@ public class ImageMemoryCache {
 					return 0;
 			}
 
+			/**
+			 * 四种情况下会调用此函数<br/>
+			 * 1、get(key)时，当不存在对应key的value时，会调用create(key)产生一个新的value对象,默认返回null
+			 * 如果在调用create(key)期间，有其他线程往缓存中加入一样key的value，则新产生的value将被抛弃，并会调用
+			 * entryRemoved(false, key, createdValue, mapValue);<br/>
+			 * 2、put(key, value)时，如果先前key有对应的value，则覆盖之，然后调用entryRemoved(false,
+			 * key, previous, value);previous为先前的value.
+			 * 3、remove(key)时，如果存在对应key的value让其删除，则调用entryRemoved(false, key,
+			 * previous, null);
+			 * 4、trimToSize(maxSize)时，没删除一个对象，都会调用entryRemoved(false, key,
+			 * previous, null);
+			 */
 			@Override
 			protected void entryRemoved(boolean evicted, String key,
 					Bitmap oldValue, Bitmap newValue) {
@@ -41,14 +72,18 @@ public class ImageMemoryCache {
 					sSoftCache.put(key, new SoftReference<Bitmap>(oldValue));
 			}
 		};
+		// 第二个参数表示当实际存储容量>=initialCapacity*initialCapacity，重新增加分配容量
+		// accessOrder决定在取数据时是否对数据重新排列，即将取到的元素插在header指针的前面，再把原来位置的指针删除
 		sSoftCache = new LinkedHashMap<String, SoftReference<Bitmap>>(
 				SOFT_CACHE_SIZE, 0.75f, true) {
 			private static final long serialVersionUID = 6040103833179403725L;
 
+			// put的时候，根据这个返回的结果决定是否删除header指针后面的元素
 			@Override
 			protected boolean removeEldestEntry(
 					Entry<String, SoftReference<Bitmap>> eldest) {
 				if (size() > SOFT_CACHE_SIZE) {
+					// TODO 可在此回收图片
 					return true;
 				}
 				return false;

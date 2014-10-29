@@ -27,9 +27,21 @@ public class ScaledImageView extends ImageView {
 		super(context);
 	}
 
+	/**
+	 * 设置宽高比例.
+	 * 
+	 * @param widthWeight
+	 *            宽的比重, 必须大于0
+	 * @param heightWeight
+	 *            高的比重,必须大于0
+	 */
 	public void setFrameWeight(float widthWeight, float heightWeight) {
 		if (mWidthWeight == widthWeight && mHeightWeight == heightWeight) {
 			return;
+		}
+
+		if (widthWeight < 0 || heightWeight < 0) {
+			throw new IllegalArgumentException("widthWeight和heightWeight必须大于0");
 		}
 
 		mWidthWeight = widthWeight;
