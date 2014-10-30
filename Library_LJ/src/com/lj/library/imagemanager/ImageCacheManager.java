@@ -53,6 +53,55 @@ public class ImageCacheManager {
 	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
 	 * {@link OnBitmapFromHttpListener}.
 	 * 
+	 * <p/>
+	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
+	 * 
+	 * @param url
+	 * @return
+	 * 
+	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 */
+	public Bitmap getBitmapRecycleOnFinish(String url) {
+		return getBitmapRecycleOnFinish(url, null);
+	}
+
+	/**
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
+	 * {@link OnBitmapFromHttpListener}.
+	 * 
+	 * <p/>
+	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
+	 * 
+	 * @param url
+	 * @return
+	 * 
+	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 */
+	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView) {
+		return getBitmapRecycleOnFinish(url, imageView, 0, 0);
+	}
+
+	/**
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
+	 * {@link OnBitmapFromHttpListener}.
+	 * 
+	 * <p/>
+	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
+	 * 
+	 * @param url
+	 * @return
+	 * 
+	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 */
+	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView,
+			int targetWidth, int targetHeight) {
+		return getBitmap(url, imageView, targetWidth, targetHeight, true);
+	}
+
+	/**
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
+	 * {@link OnBitmapFromHttpListener}.
+	 * 
 	 * @param url
 	 * @return
 	 * 
