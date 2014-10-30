@@ -1,6 +1,7 @@
 package com.lj.library.imagemanager;
 
 import java.lang.ref.SoftReference;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
@@ -11,6 +12,7 @@ import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 import com.lj.library.util.BitmapUtils;
+import com.lj.library.util.LogUtil;
 
 public class ImageMemoryCache {
 	/**
@@ -25,7 +27,16 @@ public class ImageMemoryCache {
 	 **/
 	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftCache; // 软引用缓存
 
+	/** 保存着将在onFinish()中回收的对象，调用recycleOnFinish()方法来回收资源 **/
+	private static HashMap<String, Bitmap> sRecycleCach;
+
 	public ImageMemoryCache(Context context) {
+		if (sLruCache == null || sSoftCache == null || sRecycleCach == null) {
+			initCachMap(context);
+		}
+	}
+
+	private void initCachMap(Context context) {
 		int memClass = ((ActivityManager) context
 				.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 		int cacheSize = 1024 * 1024 * memClass / 8; // 硬引用缓存容量，为系统可用内存的1/8
@@ -83,12 +94,12 @@ public class ImageMemoryCache {
 			protected boolean removeEldestEntry(
 					Entry<String, SoftReference<Bitmap>> eldest) {
 				if (size() > SOFT_CACHE_SIZE) {
-					// TODO 可在此回收图片
 					return true;
 				}
 				return false;
 			}
 		};
+		sRecycleCach = new HashMap<String, Bitmap>();
 	}
 
 	/**
@@ -102,10 +113,6 @@ public class ImageMemoryCache {
 		synchronized (sLruCache) {
 			bitmap = sLruCache.get(url);
 			if (bitmap != null) {
-				// 如果找到的话，把元素移到LinkedHashMap的最前面，从而保证在LRU算法中是最后被删除
-				// 其实当调用get方法的时候，LruCache在此方法中会把元素移到最前面
-				sLruCache.remove(url);
-				sLruCache.put(url, bitmap);
 				return bitmap;
 			}
 		}
@@ -124,16 +131,47 @@ public class ImageMemoryCache {
 				}
 			}
 		}
+		// 如果软引用缓存中找不到，从特殊队列中查找
+		synchronized (sRecycleCach) {
+			bitmap = sRecycleCach.get(url);
+			if (bitmap != null) {
+				return bitmap;
+			}
+		}
 		return null;
 	}
 
 	/**
 	 * 添加图片到缓存.
+	 * 
+	 * @param url
+	 * @param bitmap
 	 */
 	public void addBitmapToCache(String url, Bitmap bitmap) {
+		addBitmapToCache(url, bitmap, false);
+	}
+
+	/**
+	 * 添加图片到缓存.
+	 * 
+	 * @param url
+	 * @param bitmap
+	 * @param recycleOnFinish
+	 *            为true时，缓存到一个特殊的map中，调用
+	 *            {@link ImageMemoryCache#recycleOnFinish()}将会回收该资源
+	 */
+	public void addBitmapToCache(String url, Bitmap bitmap,
+			boolean recycleOnFinish) {
 		if (bitmap != null) {
-			synchronized (sLruCache) {
-				sLruCache.put(url, bitmap);
+			if (recycleOnFinish) {
+				synchronized (sRecycleCach) {
+					sRecycleCach.put(url, bitmap);
+				}
+
+			} else {
+				synchronized (sLruCache) {
+					sLruCache.put(url, bitmap);
+				}
 			}
 		}
 	}
@@ -164,8 +202,7 @@ public class ImageMemoryCache {
 	}
 
 	/**
-	 * 
-	 * 回收缓存中的图片资源.
+	 * 回收缓存中的不常用图片资源.
 	 */
 	public void recycleCache() {
 		Set<String> keySet = sSoftCache.keySet();
@@ -177,5 +214,22 @@ public class ImageMemoryCache {
 				BitmapUtils.recycleBitmap(bitmap);
 			}
 		}
+	}
+
+	/**
+	 * 回收标记{@link ImageMemoryCache#addBitmapToCache(String, Bitmap, boolean)}
+	 * 第三个参数为true的资源.
+	 */
+	public void recycleOnFinish() {
+		Set<String> keySet = sRecycleCach.keySet();
+		LogUtil.d(this, "recycle  size:" + keySet.size());
+		for (Iterator<String> it = keySet.iterator(); it.hasNext();) {
+			String key = it.next();
+			Bitmap bitmap = sRecycleCach.get(key);
+			if (bitmap != null) {
+				BitmapUtils.recycleBitmap(bitmap);
+			}
+		}
+		sRecycleCach.clear();
 	}
 }

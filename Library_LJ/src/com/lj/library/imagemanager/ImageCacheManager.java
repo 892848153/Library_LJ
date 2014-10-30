@@ -55,6 +55,8 @@ public class ImageCacheManager {
 	 * 
 	 * @param url
 	 * @return
+	 * 
+	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap getBitmap(String url) {
 		return getBitmap(url, null);
@@ -66,9 +68,29 @@ public class ImageCacheManager {
 	 * 
 	 * @param url
 	 * @return
+	 * 
+	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView) {
 		return getBitmap(url, imageView, 0, 0);
+	}
+
+	/**
+	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象，否则从服务器下载图片.
+	 * <p/>
+	 * 要获取服务器端的图片，请设置监听 {@link OnBitmapFromHttpListener}.
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param targetWidth
+	 * @param targetHeight
+	 * @return
+	 * 
+	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 */
+	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
+			int targetHeight) {
+		return getBitmap(url, imageView, targetWidth, targetHeight, false);
 	}
 
 	/**
@@ -84,11 +106,14 @@ public class ImageCacheManager {
 	 *            图片将要压缩的目标宽度
 	 * @param targetHeight
 	 *            图片将要压缩的目标高度
+	 * @param recycleOnFinish
+	 *            是否将其加入内存缓存中的特殊队列中，为true时，调用
+	 *            {@link ImageCacheManager#recycleOnFinish()}将会回收队列中对象的资源
 	 * @return 返回本地缓存图片的Bitmap对象，如果图片没有缓存在本地，<br/>
 	 *         则返回null并开始下载图片,下载完毕后根据参数将图片在本地做缓存.<br/>
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
-			int targetHeight) {
+			int targetHeight, boolean recycleOnFinish) {
 		if (TextUtils.isEmpty(url)) {
 			throw new NullPointerException("url == null");
 		}
@@ -110,7 +135,7 @@ public class ImageCacheManager {
 			} else {
 				// 添加到内存缓存
 				if (mCachInMemory) {
-					mMemoryCache.addBitmapToCache(url, result);
+					mMemoryCache.addBitmapToCache(url, result, recycleOnFinish);
 				}
 			}
 		}
@@ -119,6 +144,16 @@ public class ImageCacheManager {
 			imageView.setImageBitmap(result);
 		}
 		return result;
+	}
+
+	/**
+	 * 清除特定的一张图片的内存缓存和文件缓存.
+	 * 
+	 * @param url
+	 */
+	public void removeBitmap(String url) {
+		removeBitmapFromMem(url);
+		removeBitmapFromDisk(url);
 	}
 
 	/**
@@ -136,26 +171,37 @@ public class ImageCacheManager {
 	}
 
 	/**
-	 * 清除特定的一张图片的缓存.
+	 * 清除特定的一张图片在硬盘上的缓存.
 	 * 
 	 * @param url
 	 */
-	public void removeBitmap(String url) {
+	public void removeBitmapFromDisk(String url) {
 		if (TextUtils.isEmpty(url)) {
 			LogUtil.d(mContext, "图片Url地址为空");
 			return;
 		}
 
-		mMemoryCache.removeBitmpFromCache(url);
 		mFileCache.removeFileFromCache(url);
 	}
 
+	/**
+	 * 回收缓存中的不常用图片资源，慎用， 因为不常用的图片不代表没在用，如果这张图片还在显示，则程序会出问题.
+	 */
 	public void recycleMemCache() {
-		new ImageMemoryCache(mContext).recycleCache();
+		mMemoryCache.recycleCache();
 	}
 
 	/**
-	 * 清空图片缓存.
+	 * 回收标记
+	 * {@link ImageCacheManager#getBitmap(String, ImageView, int, int, boolean)}
+	 * 第五个参数为true的资源.
+	 */
+	public void recycleOnFinish() {
+		mMemoryCache.recycleOnFinish();
+	}
+
+	/**
+	 * 清空图片内存缓存和文件缓存.
 	 */
 	public void clearCache() {
 		clearMemCache();
@@ -169,7 +215,7 @@ public class ImageCacheManager {
 	 * @see ImageCacheManager#clearCache()
 	 */
 	public void clearMemCache() {
-		new ImageMemoryCache(mContext).clearCache();
+		mMemoryCache.clearCache();
 	}
 
 	/**
@@ -179,7 +225,7 @@ public class ImageCacheManager {
 	 * @see ImageFileCache#clearCache()
 	 */
 	public void clearFileCache() {
-		new ImageFileCache().clearCache();
+		mFileCache.clearCache();
 	}
 
 	public interface OnBitmapFromHttpListener {
@@ -225,5 +271,4 @@ public class ImageCacheManager {
 		void onGetBitmapError(String url, Exception e);
 
 	}
-
 }

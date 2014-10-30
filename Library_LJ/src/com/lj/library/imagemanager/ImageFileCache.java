@@ -18,6 +18,12 @@ import com.lj.library.constants.Constants;
 import com.lj.library.util.EncryptionUtils;
 import com.lj.library.util.SDCardUtil;
 
+/**
+ * 文件缓存.
+ * 
+ * @time 2014年10月30日 上午10:06:15
+ * @author jie.liu
+ */
 public class ImageFileCache {
 
 	private static final String CACHDIR = Constants.APP_ROOT_DIR
@@ -167,8 +173,8 @@ public class ImageFileCache {
 	 **/
 	private String convertUrlToFileName(String url) {
 		String[] strs = url.split("/");
-		String original = strs[strs.length - 1] + WHOLESALE_CONV;
-		return EncryptionUtils.getMD5(original);
+		String original = strs[strs.length - 1];
+		return EncryptionUtils.getMD5(original) + WHOLESALE_CONV;
 	}
 
 	/**

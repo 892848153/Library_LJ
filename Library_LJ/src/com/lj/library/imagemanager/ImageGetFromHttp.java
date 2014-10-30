@@ -39,6 +39,8 @@ public class ImageGetFromHttp {
 
 	private int mTargetHeight;
 
+	private boolean mRecycleOnFinish;
+
 	private final WeakReference<Context> mContextWeakRef;
 
 	private final Map<String, List<WeakReference<ImageView>>> mItems;
@@ -65,6 +67,7 @@ public class ImageGetFromHttp {
 	 * @param imageView
 	 *            不想显示可以传入null
 	 * @return
+	 * @see #downloadBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap downloadBitmap(String url, ImageView imageView) {
 		return downloadBitmap(url, imageView, 0, 0);
@@ -76,13 +79,31 @@ public class ImageGetFromHttp {
 	 * @param url
 	 * @param imageView
 	 * @param targetWidth
-	 *            图片将要压缩的目标宽度
 	 * @param targetHeight
-	 *            图片将要压缩的目标高度
 	 * @return
+	 * @see #downloadBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap downloadBitmap(String url, ImageView imageView,
 			int targetWidth, int targetHeight) {
+		return downloadBitmap(url, imageView, targetWidth, targetHeight, false);
+	}
+
+	/**
+	 * 下载图片并进行压缩处理.
+	 * 
+	 * @param url
+	 * @param imageView
+	 * @param targetWidth
+	 *            图片将要压缩的目标宽度
+	 * @param targetHeight
+	 *            图片将要压缩的目标高度
+	 * @param recycleOnFinish
+	 *            是否将其加入内存缓存中的特殊队列中，为true时，调用
+	 *            {@link ImageCacheManager#recycleOnDestroy()}将会回收队列中对象的资源
+	 * @return
+	 */
+	public Bitmap downloadBitmap(String url, ImageView imageView,
+			int targetWidth, int targetHeight, boolean recycleOnFinish) {
 		if (!NetworkChecker.isNetworkAvailable(mContext)) {
 			if (mListener != null) {
 				mListener.onGetBitmapNetworkNotFound(url);
@@ -92,6 +113,7 @@ public class ImageGetFromHttp {
 
 		mTargetWidth = targetWidth;
 		mTargetHeight = targetHeight;
+		mRecycleOnFinish = recycleOnFinish;
 
 		putItem(url, imageView);
 		new NetworkAsynTask(url).execute();
@@ -208,7 +230,13 @@ public class ImageGetFromHttp {
 				if (mMemoryCach) {
 					Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
 					ImageMemoryCache memoryCache = new ImageMemoryCache(context);
-					memoryCache.addBitmapToCache(mUrl, result);
+					if (mRecycleOnFinish) {
+						memoryCache.addBitmapToCache(mUrl, result,
+								mRecycleOnFinish);
+						mRecycleOnFinish = false;
+					} else {
+						memoryCache.addBitmapToCache(mUrl, result);
+					}
 				}
 
 				if (mDiskCach) {

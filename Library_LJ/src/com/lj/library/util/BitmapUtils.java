@@ -35,6 +35,7 @@ public class BitmapUtils {
 
 	public static void recycleBitmap(Bitmap bitmap) {
 		if (bitmap != null && !bitmap.isRecycled()) {
+			LogUtil.d(new Object(), "回收图片资源");
 			bitmap.recycle();
 			bitmap = null;
 		}
