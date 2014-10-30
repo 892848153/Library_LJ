@@ -13,6 +13,8 @@ import java.util.UUID;
 import android.app.Activity;
 import android.os.AsyncTask;
 
+import com.lj.library.util.IOStreamCloser;
+
 /**
  * 从服务器下载文件.
  * 
@@ -21,10 +23,13 @@ import android.os.AsyncTask;
  */
 public class HttpDownloader {
 
+	private final int RESPONSE_DOWNLOAD_SUCCESS = 0x01;
+
+	private final int RESPONSE_DOWNLOAD_FAIL = 0x02;
+
 	private OnDownloadListener mOnDwlodListener;
 
 	/**
-	 * 
 	 * 下载文件.
 	 * 
 	 * @param context
@@ -82,24 +87,30 @@ public class HttpDownloader {
 
 				mTargetFileUrl = mTargetDir + filename;
 				File file = new File(mTargetFileUrl);
-				// 如果目标文件已经存在，则删除。产生覆盖旧文件的效果
 				if (file.exists()) {
-					file.delete();
+					boolean goOn = false;
+					if (mOnDwlodListener != null) {
+						goOn = mOnDwlodListener.onDownloadFileExist(mUrl,
+								filename);
+					}
+					if (goOn == false) {
+						return RESPONSE_DOWNLOAD_FAIL;
+					}
+					if (file.exists()) {
+						file.delete();
+					}
 				}
 
 				// 1K的数据缓冲
 				byte[] bs = new byte[1024];
-				// 读取到的数据长度
-				int len;
-				// 输出的文件流
+				int len = -1;
 				os = new FileOutputStream(mTargetFileUrl);
-				// 开始读取
 				while ((len = is.read(bs)) != -1) {
 					os.write(bs, 0, len);
 				}
 				// 完毕，关闭所有链接
 				os.flush();
-				return 0;
+				return RESPONSE_DOWNLOAD_SUCCESS;
 			} catch (MalformedURLException e) {
 				if (mOnDwlodListener != null) {
 					mOnDwlodListener.onDownloadError(mUrl, e);
@@ -111,23 +122,10 @@ public class HttpDownloader {
 				}
 				e.printStackTrace();
 			} finally {
-				if (os != null) {
-					try {
-						os.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-
-				if (is != null) {
-					try {
-						is.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				IOStreamCloser.closeOutputStream(os);
+				IOStreamCloser.closeInputStream(is);
 			}
-			return -1;
+			return RESPONSE_DOWNLOAD_FAIL;
 		}
 
 		@Override
@@ -142,14 +140,30 @@ public class HttpDownloader {
 		}
 	}
 
-	public void setOnDownloadResponse(OnDownloadListener onDownloadListener) {
+	public void setOnDownloadListener(OnDownloadListener onDownloadListener) {
 		mOnDwlodListener = onDownloadListener;
 	}
 
 	public interface OnDownloadListener {
 
 		/**
+		 * 未检测到网络调用，运行在主线程.
 		 * 
+		 * @time 2014年6月10日 上午10:43:08
+		 * @param url
+		 */
+		void onNetworkNotFound(String url);
+
+		/**
+		 * 需要下载的文件已经存在,运行在子线程.
+		 * 
+		 * @param url
+		 * @param filename
+		 * @return 是否继续下载。 返回true时，会删除存在的文件，继续下载。
+		 */
+		boolean onDownloadFileExist(String url, String filename);
+
+		/**
 		 * 下载异常调用，运行在子线程.
 		 * 
 		 * @time 2014年6月10日 上午10:42:39
@@ -159,16 +173,6 @@ public class HttpDownloader {
 		void onDownloadError(String url, Exception e);
 
 		/**
-		 * 
-		 * 未检测到网络调用，运行在主线程.
-		 * 
-		 * @time 2014年6月10日 上午10:43:08
-		 * @param url
-		 */
-		void onNetworkNotFound(String url);
-
-		/**
-		 * 
 		 * 下载成功调用，运行在主线程.
 		 * 
 		 * @time 2014年6月10日 上午10:43:33
