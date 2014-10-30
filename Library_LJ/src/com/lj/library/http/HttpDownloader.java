@@ -23,9 +23,9 @@ import com.lj.library.util.IOStreamCloser;
  */
 public class HttpDownloader {
 
-	private final int RESPONSE_DOWNLOAD_SUCCESS = 0x01;
+	private static final int RESPONSE_DOWNLOAD_SUCCESS = 0x01;
 
-	private final int RESPONSE_DOWNLOAD_FAIL = 0x02;
+	private static final int RESPONSE_DOWNLOAD_FAIL = 0x02;
 
 	private OnDownloadListener mOnDwlodListener;
 

@@ -32,10 +32,11 @@ public class HttpUploader {
 	private static final String CHARSET = "UTF-8";
 	private static final int DEFAULT_CONNECTION_TIMEOUT = (20 * 1000); // milliseconds
 	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
-	private static final String BOUNDARY = UUID.randomUUID().toString(); // 边界标识
-																			// 随机生成
+	private static final String BOUNDARY = UUID.randomUUID().toString();
 	private static final String PREFIX = "--";
 	private static final String LINE_END = "\r\n";
+	private static final String REAL_BOUNDARY = PREFIX + BOUNDARY + LINE_END;
+	private static final String BODY_END = REAL_BOUNDARY + LINE_END;
 	private static final String CONTENT_TYPE = "multipart/form-data"; // 内容类型
 	private OnUploadListener mOnUploadListener;
 	private long mTimeConsuming = 0L;
@@ -152,7 +153,7 @@ public class HttpUploader {
 						sb = new StringBuffer();
 						String key = it.next();
 						String value = mParams.get(key);
-						sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
+						sb.append(REAL_BOUNDARY);
 						sb.append("Content-Disposition: form-data; name=\"")
 								.append(key).append("\"").append(LINE_END)
 								.append(LINE_END);
@@ -165,11 +166,12 @@ public class HttpUploader {
 				sb = null;
 				param = null;
 				sb = new StringBuffer();
+				// for () // 同时上传多个文件,待测
 				/**
 				 * 这里重点注意： name里面的值为服务器端需要key 只有这个key 才可以得到对应的文件
 				 * filename是文件的名字，包含后缀名的 比如:abc.png
 				 */
-				sb.append(PREFIX).append(BOUNDARY).append(LINE_END);
+				sb.append(REAL_BOUNDARY);
 				sb.append("Content-Disposition:form-data; name=\"" + mFileKey
 						+ "\"; filename=\"" + mFile.getName() + "\"" + LINE_END);
 				sb.append("Content-Type:text/plain" + LINE_END); // 这里配置的Content-type很重要的
@@ -193,8 +195,8 @@ public class HttpUploader {
 				}
 
 				dos.write(LINE_END.getBytes());
-				byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINE_END)
-						.getBytes();
+				// } 同时上传多个文件,待测
+				byte[] end_data = BODY_END.getBytes();
 				dos.write(end_data);
 				dos.flush();
 				// 计算上传耗费时间
