@@ -125,7 +125,6 @@ public class HttpHelper {
 					} else {
 						mCallback.onHttpSuccess(mPath, result);
 					}
-					mCallback.onHttpSuccess(mPath, result);
 				} else {
 					mCallback.onHttpError(mPath, mResponse);
 				}
