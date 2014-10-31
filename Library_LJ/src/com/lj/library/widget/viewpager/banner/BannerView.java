@@ -90,11 +90,14 @@ import com.lj.library.widget.viewpager.PagerAdapter;
  * @author jie.liu
  */
 
-public class BannerView extends RelativeLayout implements OnPageChangeListener {
+public class BannerView<T> extends RelativeLayout implements
+		OnPageChangeListener {
 
 	private Context mContext;
 
-	private MyViewPager mViewPager;
+	private MyViewPager<T> mViewPager;
+
+	private PagerAdapter<T> mPagerAdapter;
 
 	private LinearLayout mIndicatorLlyt;
 
@@ -114,6 +117,8 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 
 	private List<ViewGroup> mParentViews;
 
+	private int mIndicatorResId = R.drawable.page_indicator_bg;
+
 	private final int WHAT_AUTO_CYCLE = 0;
 
 	public BannerView(Context context) {
@@ -131,21 +136,33 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		init(context);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void init(Context context) {
 		mContext = context;
-		mHandler = new InternalHandler(this);
-		mParentViews = new ArrayList<ViewGroup>();
-		LayoutInflater inflater = LayoutInflater.from(mContext);
-		inflater.inflate(R.layout.banner_view, this);
-		mViewPager = (MyViewPager) findViewById(R.id.view_pager);
-		mIndicatorLlyt = (LinearLayout) findViewById(R.id.indicator_llyt);
-		mViewPager.SetOnViewChangeListener(this);
+		if (mHandler == null) {
+			mHandler = new InternalHandler<T>(this);
+		}
+
+		if (mParentViews == null) {
+			mParentViews = new ArrayList<ViewGroup>();
+		}
+		if (getChildAt(0) == null) {
+			LayoutInflater inflater = LayoutInflater.from(mContext);
+			inflater.inflate(R.layout.banner_view, this);
+			mViewPager = (MyViewPager<T>) findViewById(R.id.view_pager);
+			mIndicatorLlyt = (LinearLayout) findViewById(R.id.indicator_llyt);
+			mViewPager.SetOnViewChangeListener(this);
+		}
 	}
 
 	/**
 	 * 传递进来的页面必须四页以上才能无限循环滑动，有效页数是两页.
 	 */
 	public void enableCycleScroll() {
+		if (mPagerAdapter == null) {
+			throw new NullPointerException("Pager Adapter is null");
+		}
+
 		if (mCycleScrollable == true || mPageCount < 4) // 传递进来的页面必须四页以上才能轮播，有效页数是两页
 			return;
 
@@ -157,14 +174,15 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * 禁止无限循环滑动.
 	 */
 	public void disableCycleSroll() {
-		if (mCycleScrollable == false) {
+		if (mCycleScrollable == false || mPageCount < 4
+				|| mPagerAdapter == null) {
 			return;
 		}
 
 		if (mAutoScrollable) {
 			stopAutoCycle();
 		}
-
+		// TODO更改View列表的数量
 		mCycleScrollable = false;
 		invalidateIndicators();
 	}
@@ -175,7 +193,9 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * @param listener
 	 */
 	public void SetOnViewChangeListener(OnPageChangeListener listener) {
-		mOutListener = listener;
+		if (mOutListener != listener) {
+			mOutListener = listener;
+		}
 	}
 
 	/**
@@ -183,7 +203,7 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * 
 	 * @param adapter
 	 */
-	public void setAdapter(PagerAdapter adapter) {
+	public void setAdapter(PagerAdapter<T> adapter) {
 		setAdapter(adapter, true);
 	}
 
@@ -193,15 +213,33 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * @param shouldCleanChildren
 	 *            是否清除当前包含的子控件
 	 */
-	public void setAdapter(PagerAdapter adapter, boolean shouldCleanChildren) {
-		mPageCount = adapter.getCount();
-		mViewPager.setAdapter(adapter, shouldCleanChildren);
+	public void setAdapter(PagerAdapter<T> adapter, boolean shouldCleanChildren) {
+		if (adapter == null) {
+			throw new NullPointerException("PagerAdapter is null");
+		}
+
+		if (mPagerAdapter == adapter) {
+			return;
+		}
+
+		mPagerAdapter = adapter;
+		resetBanner();
+		mViewPager.setAdapter(mPagerAdapter, shouldCleanChildren);
 		invalidateIndicators();
 	}
 
-	public PagerAdapter getPagerAdapter() {
-		return mViewPager.getPagerAdapter();
+	private void resetBanner() {
+		stopAutoCycle();
+		disableCycleSroll();
+		if (mPagerAdapter != null) {
+			mPageCount = mPagerAdapter.getCount();
+		}
+		mViewPager.setCurrentScreen(0);
 	}
+
+//	public PagerAdapter<T> getPagerAdapter() {
+//		return mViewPager.getPagerAdapter();
+//	}
 
 	/**
 	 * 显示提示点，默认是显示的.
@@ -223,7 +261,9 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	private void invalidateIndicators() {
 		mIndicatorLlyt.removeAllViews();
 		int indicatorCount = calcIndicatorCount();
-		performCreateIndicators(indicatorCount);
+		if (indicatorCount > 0) {
+			performCreateIndicators(indicatorCount);
+		}
 	}
 
 	private int calcIndicatorCount() {
@@ -237,6 +277,10 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	}
 
 	private void performCreateIndicators(int indicatorCount) {
+		if (indicatorCount <= 0) {
+			throw new IllegalArgumentException("需要创建的标识点数<=0");
+		}
+
 		imgs = new ImageView[indicatorCount];
 		for (int i = 0; i < indicatorCount; i++) {
 			ImageView img = new ImageView(mContext);
@@ -244,11 +288,32 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 					LinearLayout.LayoutParams.WRAP_CONTENT,
 					LinearLayout.LayoutParams.WRAP_CONTENT);
 			params.setMargins(5, 5, 5, 5);
-			img.setImageResource(R.drawable.page_indicator_bg);
+			img.setImageResource(mIndicatorResId);
 			mIndicatorLlyt.addView(img, params);
 			imgs[i] = img;
 		}
 		imgs[0].setEnabled(false);
+	}
+
+	/**
+	 * 设置标识点的图片ID.
+	 * 
+	 * @param drawableResId
+	 */
+	public void setIndicatorResId(int drawableResId) {
+		if (mIndicatorResId != drawableResId) {
+			mIndicatorResId = drawableResId;
+		}
+		resetIndicatorsDrawable();
+	}
+
+	private void resetIndicatorsDrawable() {
+		if (imgs != null && imgs.length > 0) {
+			int length = imgs.length;
+			for (int i = 0; i < length; i++) {
+				imgs[i].setImageResource(mIndicatorResId);
+			}
+		}
 	}
 
 	@Override
@@ -292,6 +357,10 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * @param parentView
 	 */
 	public void addParentScrollView(ViewGroup parentView) {
+		if (parentView == null) {
+			throw new NullPointerException("parent View is null");
+		}
+
 		if (!mParentViews.contains(parentView)) {
 			mParentViews.add(parentView);
 		}
@@ -317,18 +386,22 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * @param bottom
 	 */
 	public void setIndicatorMargin(int left, int top, int right, int bottom) {
-		int count = imgs.length;
-		for (int i = 0; i < count; i++) {
-			LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) imgs[i]
-					.getLayoutParams();
-			params.setMargins(left, top, right, bottom);
+		if (imgs != null && imgs.length > 0) {
+			int count = imgs.length;
+			for (int i = 0; i < count; i++) {
+				LinearLayout.LayoutParams params = (android.widget.LinearLayout.LayoutParams) imgs[i]
+						.getLayoutParams();
+				params.setMargins(left, top, right, bottom);
+			}
 		}
 	}
 
 	@Override
 	public void OnPageChange(int currentPage) {
 		int realCurrentPage = calcRealCurrPage(currentPage);
-		setcurrentPoint(realCurrentPage);
+		if (realCurrentPage >= 0 && realCurrentPage < mPageCount) {
+			setCurrentPoint(realCurrentPage);
+		}
 
 		if (mAutoScrollable) {
 			sendAutoCycleMsg();
@@ -370,8 +443,8 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 	 * 
 	 * @param position
 	 */
-	private void setcurrentPoint(int position) {
-		if (position < 0 || position > mPageCount - 1) {
+	private void setCurrentPoint(int position) {
+		if (position < 0 || position > mPageCount - 1 || imgs == null) {
 			return;
 		}
 
@@ -476,26 +549,30 @@ public class BannerView extends RelativeLayout implements OnPageChangeListener {
 		}
 	}
 
+	/**
+	 * 是否页面在滑动状态.
+	 * 
+	 * @return 只要页面不是刚好一整页占据着控件就返回true
+	 */
 	public boolean isScolling() {
 		return mViewPager.isScrolling();
 	}
 
-	private static class InternalHandler extends Handler {
+	private static class InternalHandler<T> extends Handler {
 
-		private final WeakReference<BannerView> mViewRef;
+		private final WeakReference<BannerView<T>> mViewRef;
 
-		public InternalHandler(BannerView view) {
-			mViewRef = new WeakReference<BannerView>(view);
+		public InternalHandler(BannerView<T> view) {
+			mViewRef = new WeakReference<BannerView<T>>(view);
 		}
 
 		@Override
 		public void handleMessage(Message msg) {
-			BannerView bannerView = mViewRef.get();
+			BannerView<T> bannerView = mViewRef.get();
 			if (bannerView != null && !bannerView.isScolling()) {
 				bannerView.mViewPager.snapToScreen(bannerView.mViewPager
 						.getCurrentScreen() + 1);
 			}
-
 		}
 	}
 }

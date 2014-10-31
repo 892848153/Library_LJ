@@ -21,7 +21,7 @@ import com.lj.library.util.LogUtil;
  * @time 2014年8月6日 上午9:56:10
  * @author jie.liu
  */
-public class MyViewPager extends ViewGroup {
+public class MyViewPager<T> extends ViewGroup {
 
 	private VelocityTracker mVelocityTracker; // 用于判断甩动手势
 
@@ -35,7 +35,7 @@ public class MyViewPager extends ViewGroup {
 
 	private OnPageChangeListener mOnPageChangeListener;
 
-	private PagerAdapter mPagerAdapter;
+	private PagerAdapter<T> mPagerAdapter;
 
 	/******************** 解决滑动冲突开始 *******************************/
 	private List<ViewGroup> mParentViews;
@@ -66,8 +66,12 @@ public class MyViewPager extends ViewGroup {
 
 	private void init(Context context) {
 		mCurScreen = 0;
-		mScroller = new Scroller(context);
-		mParentViews = new ArrayList<ViewGroup>();
+		if (mScroller == null) {
+			mScroller = new Scroller(context);
+		}
+		if (mParentViews == null) {
+			mParentViews = new ArrayList<ViewGroup>();
+		}
 	}
 
 	@Override
@@ -76,7 +80,6 @@ public class MyViewPager extends ViewGroup {
 		// if (changed) {
 		int childLeft = 0;
 		final int childCount = getChildCount();
-
 		for (int i = 0; i < childCount; i++) {
 			final View childView = getChildAt(i);
 			if (childView.getVisibility() != View.GONE) {
@@ -271,7 +274,7 @@ public class MyViewPager extends ViewGroup {
 	}
 
 	/**
-	 * 由于手指滑动的便宜量可能过大，调用{@link #scrollBy(int, int)}之后会使内容溢出， 所以在这里需要更改下.
+	 * 由于手指滑动的偏移量可能过大，调用{@link #scrollBy(int, int)}之后会使内容溢出， 所以在这里需要更改下.
 	 * 
 	 * @param originalDeltaX
 	 * @return
@@ -310,7 +313,8 @@ public class MyViewPager extends ViewGroup {
 	 */
 	public void snapToDestination() {
 		final int destScreen = calcAttachScreen();
-		snapToScreen(destScreen);
+		if (destScreen > 0 && destScreen < mPagerAdapter.getCount())
+			snapToScreen(destScreen);
 	}
 
 	/**
@@ -388,7 +392,18 @@ public class MyViewPager extends ViewGroup {
 	}
 
 	public void SetOnViewChangeListener(OnPageChangeListener listener) {
-		mOnPageChangeListener = listener;
+		if (mOnPageChangeListener != listener) {
+			mOnPageChangeListener = listener;
+		}
+	}
+
+	/**
+	 * 调用此方法会清除当前的子控件.
+	 * 
+	 * @param adapter
+	 */
+	public void setAdapter(PagerAdapter<T> adapter) {
+		setAdapter(adapter, true);
 	}
 
 	/**
@@ -397,22 +412,22 @@ public class MyViewPager extends ViewGroup {
 	 * @param shouldCleanChildren
 	 *            是否清除当前的子控件
 	 */
-	public void setAdapter(PagerAdapter adapter, boolean shouldCleanChildren) {
+	public void setAdapter(PagerAdapter<T> adapter, boolean shouldCleanChildren) {
+		if (adapter == null) {
+			throw new NullPointerException("PagerAdapter is null");
+		}
+
+		if (mPagerAdapter == adapter) {
+			return;
+		}
+
+		setCurrentScreen(0);
 		mPagerAdapter = adapter;
-		refreshPager(shouldCleanChildren);
+		refreshPager(adapter, shouldCleanChildren);
 	}
 
-	/**
-	 * 调用此方法会清除当前的子控件.
-	 * 
-	 * @param adapter
-	 */
-	public void setAdapter(PagerAdapter adapter) {
-		mPagerAdapter = adapter;
-		refreshPager(true);
-	}
-
-	private void refreshPager(boolean shouldCleanChildren) {
+	private void refreshPager(PagerAdapter<T> pagerAdapter,
+			boolean shouldCleanChildren) {
 		if (shouldCleanChildren) {
 			removeAllViews();
 		}
@@ -426,8 +441,10 @@ public class MyViewPager extends ViewGroup {
 	}
 
 	public void setCurrentScreen(int currentScreen) {
-		mCurScreen = currentScreen;
-		requestLayout();
+		if (mCurScreen != currentScreen) {
+			mCurScreen = currentScreen;
+			requestLayout();
+		}
 	}
 
 	public void setScrollDuration(int mills) {
@@ -442,7 +459,7 @@ public class MyViewPager extends ViewGroup {
 		return mPagerAdapter.getCount();
 	}
 
-	public PagerAdapter getPagerAdapter() {
+	public PagerAdapter<T> getPagerAdapter() {
 		return mPagerAdapter;
 	}
 }
