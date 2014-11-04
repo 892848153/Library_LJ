@@ -21,11 +21,15 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 
+import com.lj.library.asyntask.ExecutorHolder;
 import com.lj.library.http.NetworkChecker;
+import com.lj.library.http.NetworkChecker.NetworkType;
 import com.lj.library.imagemanager.ImageCacheManager.OnBitmapFromHttpListener;
+import com.lj.library.util.LogUtil;
 
 public class ImageGetFromHttp {
 	private static final String LOG_TAG = ImageGetFromHttp.class
@@ -116,7 +120,8 @@ public class ImageGetFromHttp {
 		mRecycleOnFinish = recycleOnFinish;
 
 		putItem(url, imageView);
-		new NetworkAsynTask(url).execute();
+		// new NetworkAsynTask(url).execute();
+		sendRequest(url);
 		return null;
 	}
 
@@ -129,6 +134,32 @@ public class ImageGetFromHttp {
 		}
 		values.add(new WeakReference<ImageView>(imageView));
 		mItems.put(url, values);
+	}
+
+	/**
+	 * android3.0以前，{@link AsyncTask}是最少5个线程并发执行的，<br/>
+	 * 从3.0开始，改成串行执行了 . 不过网络是Wifi或者3G模式的话，并发模式比较好. <br/>
+	 * 此方法会更具网络状况自动决定采用并发还是串行执行.
+	 * 
+	 * @param url
+	 */
+	private void sendRequest(String url) {
+		NetworkAsynTask task = new NetworkAsynTask(url);
+		if (Build.VERSION.SDK_INT < 11) {
+			task.execute();
+		} else {
+			NetworkType type = NetworkChecker.getNetworkType(mContext);
+			switch (type) {
+			case NETWORK_TYPE_3G:
+			case NETWORK_TYPE_WIFI:
+				task.executeOnExecutor(ExecutorHolder.THREAD_POOL_EXECUTOR,
+						new String[] {});
+				break;
+			default:
+				task.execute();
+				break;
+			}
+		}
 	}
 
 	private class NetworkAsynTask extends AsyncTask<String, Void, Bitmap> {
@@ -148,6 +179,7 @@ public class ImageGetFromHttp {
 
 		@Override
 		protected Bitmap doInBackground(String... params) {
+			LogUtil.d(this, "开始下载图片");
 			final HttpClient client = new DefaultHttpClient();
 			final HttpGet getRequest = new HttpGet(mUrl);
 
@@ -189,6 +221,7 @@ public class ImageGetFromHttp {
 				onGetBitmapError(mUrl, e);
 				Log.w(LOG_TAG, "Error while retrieving bitmap from " + mUrl, e);
 			} finally {
+				LogUtil.d(this, "结束下载图片");
 				client.getConnectionManager().shutdown();
 			}
 			return null;
