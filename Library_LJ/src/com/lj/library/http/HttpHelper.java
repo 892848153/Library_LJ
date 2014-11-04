@@ -10,9 +10,13 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.text.TextUtils;
+
+import com.lj.library.asyntask.ExecutorHolder;
+import com.lj.library.http.NetworkChecker.NetworkType;
 
 public class HttpHelper {
 
@@ -21,10 +25,12 @@ public class HttpHelper {
 	private static final String CHARSET = "UTF-8";
 	private static final int DEFAULT_CONNECTION_TIMEOUT = (20 * 1000); // milliseconds
 	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
+	private Context mContext;
 	private OnHttpCallback mCallback;
 
-	public void post(Activity context, final String path,
+	public void post(Context context, final String path,
 			final Map<String, String> params) {
+		mContext = context;
 		if (!NetworkChecker.isNetworkAvailable(context)) {
 			if (mCallback != null) {
 				mCallback.onHttpNetworkNotFound(path);
@@ -32,22 +38,35 @@ public class HttpHelper {
 			return;
 		}
 
-		new NetworkAsynTask(path, params).execute();
+		sendRequest(path, params);
 	}
 
-	private String parseParams(Map<String, String> params)
-			throws UnsupportedEncodingException {
-		StringBuilder builder = new StringBuilder();
-		if (params == null)
-			params = new HashMap<String, String>();
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			builder.append(entry.getKey() + "="
-					+ URLEncoder.encode(entry.getValue(), CHARSET) + "&");
+	/**
+	 * android3.0以前，{@link AsyncTask}是最少5个线程并发执行的，<br/>
+	 * 从3.0开始，改成串行执行了 . 不过网络是Wifi或者3G模式的话，并发模式比较好. <br/>
+	 * 此方法会更具网络状况自动决定采用并发还是串行执行.
+	 * 
+	 * @param path
+	 * @param params
+	 */
+	private void sendRequest(String path, Map<String, String> params) {
+		NetworkAsynTask task = new NetworkAsynTask(path, params);
+		if (Build.VERSION.SDK_INT < 11) {
+			task.execute();
+		} else {
+			NetworkType type = NetworkChecker.getNetworkType(mContext);
+			switch (type) {
+			case NETWORK_TYPE_3G:
+			case NETWORK_TYPE_WIFI:
+				task.executeOnExecutor(
+						ExecutorHolder.THREAD_POOL_EXECUTOR,
+						new Void[] {});
+				break;
+			default:
+				task.execute();
+				break;
+			}
 		}
-		if (builder.length() > 0)
-			builder.deleteCharAt(builder.length() - 1);
-		System.out.println(builder.toString());
-		return builder.toString();
 	}
 
 	private class NetworkAsynTask extends AsyncTask<Void, Void, String> {
@@ -131,6 +150,21 @@ public class HttpHelper {
 			}
 			mCallback = null;
 		}
+	}
+
+	private String parseParams(Map<String, String> params)
+			throws UnsupportedEncodingException {
+		StringBuilder builder = new StringBuilder();
+		if (params == null)
+			params = new HashMap<String, String>();
+		for (Map.Entry<String, String> entry : params.entrySet()) {
+			builder.append(entry.getKey() + "="
+					+ URLEncoder.encode(entry.getValue(), CHARSET) + "&");
+		}
+		if (builder.length() > 0)
+			builder.deleteCharAt(builder.length() - 1);
+		System.out.println(builder.toString());
+		return builder.toString();
 	}
 
 	public void setOnHttpCallback(OnHttpCallback onHttpResponse) {

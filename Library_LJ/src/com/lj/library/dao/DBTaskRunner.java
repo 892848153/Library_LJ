@@ -1,7 +1,11 @@
 package com.lj.library.dao;
 
+import java.util.Map;
+
 import android.content.Context;
 import android.os.AsyncTask;
+
+import com.lj.library.asyntask.ExecutorHolder;
 
 /**
  * 数据库执行类， 里面开启线程操作.
@@ -43,6 +47,27 @@ public class DBTaskRunner {
 		read(task, requestCode);
 	}
 
+	/**
+	 * 实时更新每条线程已经下载的文件长度.
+	 * 
+	 * @param requestCode
+	 * @param path
+	 * @param map
+	 */
+	public void updateDownloadProgress(int requestCode, final String path,
+			final Map<String, String> map) {
+		Task task = new Task() {
+
+			@Override
+			public String execute() {
+				mManager.updateDownloadProgress(path, map);
+				return null;
+			}
+		};
+
+		write(task, requestCode);
+	}
+
 	private void read(Task task, int requestCode) {
 		doIt(task, false, requestCode);
 	}
@@ -52,10 +77,11 @@ public class DBTaskRunner {
 	}
 
 	private void doIt(Task task, boolean writable, int requestCode) {
-		new DBTask(task, writable, requestCode).execute();
+		new DBTask(task, writable, requestCode).executeOnExecutor(
+				ExecutorHolder.THREAD_POOL_EXECUTOR, new Void[] {});
 	}
 
-	private class DBTask extends AsyncTask<String, Void, String> {
+	private class DBTask extends AsyncTask<Void, Void, String> {
 
 		private final Task mTask;
 
@@ -70,12 +96,13 @@ public class DBTaskRunner {
 		}
 
 		@Override
-		protected String doInBackground(String... params) {
+		protected String doInBackground(Void... params) {
+			String result = null;
 			if (mTask != null) {
-				return mTask.execute();
+				result = mTask.execute();
 			}
 
-			return null;
+			return result;
 		}
 
 		@Override
@@ -87,7 +114,6 @@ public class DBTaskRunner {
 					mCallback.onReadReturned(mRequestCode, result);
 				}
 			}
-
 		}
 	}
 

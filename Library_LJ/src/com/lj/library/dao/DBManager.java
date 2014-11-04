@@ -73,7 +73,7 @@ public class DBManager {
 					.getColumnIndex(MultiDownload.DOWN_LENGTH));
 			items.add(pro);
 		}
-		LogUtil.d(this, "结束---------- 读取------数据库");
+		LogUtil.d(this, "结束-------- 读取------数据库");
 		cursor.close();
 		return JsonUtil.to(items);
 	}
@@ -98,7 +98,7 @@ public class DBManager {
 			}
 			db.setTransactionSuccessful();
 		} finally {
-			LogUtil.d(this, "结束---------- 插入------数据库");
+			LogUtil.d(this, "结束-------- 插入------数据库");
 			db.endTransaction();
 		}
 	}
@@ -123,9 +123,10 @@ public class DBManager {
 								+ MultiDownload.THREAD_ID + " = ?",
 						new String[] { path, entry.getKey() });
 			}
+			LogUtil.d(this, "结束-------- 更新------数据库");
 			db.setTransactionSuccessful();
 		} finally {
-			LogUtil.d(this, "结束---------- 更新------数据库");
+			LogUtil.d(this, "结束-------- 更新------数据库");
 			db.endTransaction();
 		}
 	}
@@ -140,7 +141,7 @@ public class DBManager {
 		LogUtil.d(this, "开始-------- 删除------数据库");
 		db.delete(MultiDownload.TABLE_NAME, MultiDownload.DOWN_PATH + " = ?",
 				new String[] { path });
-		LogUtil.d(this, "结束---------- 删除------数据库");
+		LogUtil.d(this, "结束-------- 删除------数据库");
 	}
 
 	/**
