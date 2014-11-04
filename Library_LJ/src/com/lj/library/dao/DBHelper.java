@@ -14,11 +14,26 @@ import com.lj.library.dao.table.MultiDownload;
  */
 public class DBHelper extends SQLiteOpenHelper {
 
-	private static final String DBNAME = "down.db";
+	private static final String DBNAME = "library.db";
 	private static final int VERSION = 1;
+
+	private static DBHelper sInstance;
 
 	public DBHelper(Context context) {
 		super(context, DBNAME, null, VERSION);
+	}
+
+	/**
+	 * 一个实例就是一个跟数据库的链接.
+	 * 
+	 * @param context
+	 * @return
+	 */
+	public synchronized static DBHelper getInstance(Context context) {
+		if (sInstance == null) {
+			sInstance = new DBHelper(context);
+		}
+		return sInstance;
 	}
 
 	@Override

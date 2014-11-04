@@ -1,6 +1,5 @@
 package com.lj.library.http;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -39,12 +38,12 @@ public class NetworkChecker {
 	 * <p/>
 	 * 判断网络类型是2G，3G，WIFI还是无效的网络.
 	 * 
-	 * @param activity
+	 * @param context
 	 * @return
 	 * @see NetworkType
 	 */
-	public static NetworkType getNetworkType(Activity activity) {
-		ConnectivityManager connectMgr = (ConnectivityManager) activity
+	public static NetworkType getNetworkType(Context context) {
+		ConnectivityManager connectMgr = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		if (connectMgr != null) {
 			NetworkInfo info = connectMgr.getActiveNetworkInfo();
