@@ -1,4 +1,4 @@
-package com.lj.library.asyntask;
+package com.lj.library.constants;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
@@ -36,7 +36,7 @@ public class ExecutorHolder {
 			128);
 
 	public static final Executor THREAD_POOL_EXECUTOR = new ThreadPoolExecutor(
-			CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, EKEEP_ALIVE,
-			TimeUnit.SECONDS, sPoolWorkQueue, sThreadFactory);
+			CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, EKEEP_ALIVE, TimeUnit.SECONDS,
+			sPoolWorkQueue, sThreadFactory);
 
 }

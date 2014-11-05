@@ -25,7 +25,7 @@ import android.os.Build;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.lj.library.asyntask.ExecutorHolder;
+import com.lj.library.constants.ExecutorHolder;
 import com.lj.library.http.NetworkChecker;
 import com.lj.library.http.NetworkChecker.NetworkType;
 import com.lj.library.imagemanager.ImageCacheManager.OnBitmapFromHttpListener;

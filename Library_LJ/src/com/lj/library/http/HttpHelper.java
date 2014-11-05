@@ -15,7 +15,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.lj.library.asyntask.ExecutorHolder;
+import com.lj.library.constants.ExecutorHolder;
 import com.lj.library.http.NetworkChecker.NetworkType;
 
 public class HttpHelper {

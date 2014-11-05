@@ -5,7 +5,7 @@ import java.util.Map;
 import android.content.Context;
 import android.os.AsyncTask;
 
-import com.lj.library.asyntask.ExecutorHolder;
+import com.lj.library.constants.ExecutorHolder;
 
 /**
  * 数据库执行类， 里面开启线程操作.
@@ -68,10 +68,22 @@ public class DBTaskRunner {
 		write(task, requestCode);
 	}
 
+	/**
+	 * 对数据库进行读操作.
+	 * 
+	 * @param task
+	 * @param requestCode
+	 */
 	private void read(Task task, int requestCode) {
 		doIt(task, false, requestCode);
 	}
 
+	/**
+	 * 对数据库进行写操作.
+	 * 
+	 * @param task
+	 * @param requestCode
+	 */
 	private void write(Task task, int requestCode) {
 		doIt(task, true, requestCode);
 	}
