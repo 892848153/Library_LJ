@@ -35,6 +35,10 @@ public class ImageCompressor {
 	 * @return 压缩后的图片
 	 */
 	public static Bitmap compressImage(Bitmap srcBmp, View view) {
+		if (view == null) {
+			throw new NullPointerException(
+					"the view for getting the target width and height is null");
+		}
 		view.requestLayout();
 		int width = view.getMeasuredWidth();
 		int height = view.getMeasuredHeight();
@@ -54,11 +58,18 @@ public class ImageCompressor {
 	 * 
 	 * @param srcBmp
 	 * @param targetWidth
+	 *            必须大于0
 	 * @param targetHeight
+	 *            必须大于0
 	 * @return
 	 */
 	public static Bitmap compressImage(Bitmap srcBmp, int targetWidth,
 			int targetHeight) {
+		if (targetWidth <= 0 || targetHeight <= 0) {
+			throw new IllegalArgumentException(
+					"targetWidth or targetHeight is less than or equal to zero");
+		}
+
 		Bitmap dest = ThumbnailUtils.extractThumbnail(srcBmp, targetWidth,
 				targetHeight);
 		return dest;
@@ -72,7 +83,9 @@ public class ImageCompressor {
 	 * 
 	 * @param srcPath
 	 * @param targetWidth
+	 *            必须大于0
 	 * @param targetHeight
+	 *            必须大于0
 	 * @return
 	 */
 	public static Bitmap scaleImage(String srcPath, int targetWidth,
@@ -87,15 +100,25 @@ public class ImageCompressor {
 	 * 图片放大后，不紧占用的内存会变大，保存为文件时文件大小也会比原来的大.<br/>
 	 * 图片缩小后，不紧占用的内存会变小，保存为文件时文件大小也会比原来的小.
 	 * 
-	 * @param sourceBmp
+	 * @param srcBmp
 	 * @param targetWidth
+	 *            必须大于0
 	 * @param targetHeight
+	 *            必须大于0
 	 * @return
 	 */
-	public static Bitmap scaleImage(Bitmap sourceBmp, int targetWidth,
+	public static Bitmap scaleImage(Bitmap srcBmp, int targetWidth,
 			int targetHeight) {
-		int bitmapWidth = sourceBmp.getWidth();
-		int bitmapHeight = sourceBmp.getHeight();
+		if (srcBmp == null) {
+			throw new NullPointerException("the source bitmap is null");
+		}
+		if (targetWidth <= 0 || targetHeight <= 0) {
+			throw new IllegalArgumentException(
+					"targetWidth or targetHeight is less than or equal to zero");
+		}
+
+		int bitmapWidth = srcBmp.getWidth();
+		int bitmapHeight = srcBmp.getHeight();
 
 		// 缩放图片的尺寸
 		float scaleWidth = (float) targetWidth / bitmapWidth;
@@ -104,9 +127,9 @@ public class ImageCompressor {
 		matrix.postScale(scaleWidth, scaleHeight);
 
 		// 产生缩放后的Bitmap对象
-		Bitmap resizeBitmap = Bitmap.createBitmap(sourceBmp, 0, 0, bitmapWidth,
+		Bitmap resizeBitmap = Bitmap.createBitmap(srcBmp, 0, 0, bitmapWidth,
 				bitmapHeight, matrix, false);
-		BitmapUtils.recycleBitmap(sourceBmp);
+		BitmapUtils.recycleBitmap(srcBmp);
 
 		return resizeBitmap;
 	}
@@ -116,7 +139,9 @@ public class ImageCompressor {
 	 * 
 	 * @param srcPath
 	 * @param targetWidth
+	 *            必须大于0
 	 * @param targetHeight
+	 *            必须大于0
 	 * @return
 	 */
 	public static Bitmap compressImageFromFile(String srcPath, int targetWidth,
@@ -133,8 +158,11 @@ public class ImageCompressor {
 	 * @param srcPath
 	 *            目标文件的路径
 	 * @param targetWidth
+	 *            必须大于0
 	 * @param targetHeight
+	 *            必须大于0
 	 * @param preferredConfig
+	 *            不想设置可传入null， 默认{@link Config#ARGB_8888} <br/>
 	 *            图片像素点的格式 取值有<br/>
 	 *            {@link Config#ARGB_8888} 就是由4个8位组成即一个像素32位<br/>
 	 *            {@link Config#ARGB_4444} 就是由4个4位组成即一个像素16位<br/>
@@ -145,6 +173,13 @@ public class ImageCompressor {
 	 */
 	public static Bitmap compressImageFromFile(String srcPath, int targetWidth,
 			int targetHeight, Config preferredConfig) {
+		if (srcPath == null) {
+			throw new NullPointerException("the source file's path is null");
+		}
+		if (targetWidth <= 0 || targetHeight <= 0) {
+			throw new IllegalArgumentException(
+					"targetWidth or targetHeight is less than or equal to zero");
+		}
 		BitmapFactory.Options newOpts = new BitmapFactory.Options();
 		newOpts.inJustDecodeBounds = true;// 只读边,不读内容
 		Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
@@ -162,9 +197,11 @@ public class ImageCompressor {
 		if (scale <= 0)
 			scale = 1;
 		newOpts.inSampleSize = scale;// 设置采样率
-		newOpts.inPreferredConfig = preferredConfig;// 该模式是默认的,可不设
 		newOpts.inPurgeable = true;// 同时设置才会有效
 		newOpts.inInputShareable = true;// 。当系统内存不够时候图片自动被回收
+		if (preferredConfig != null) {
+			newOpts.inPreferredConfig = preferredConfig;
+		}
 
 		bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
 		return bitmap;
@@ -181,7 +218,7 @@ public class ImageCompressor {
 	}
 
 	/**
-	 * 将图片保存到本地时进行压缩, 即将图片从Bitmap形式变为File形式时进行压缩.
+	 * 将图片保存到本地时进行压缩, 即将图片从Bitmap形式变为File形式时进行压缩,只对JPG格式有效.
 	 * <p/>
 	 * 特点是: File形式的图片大小确实被压缩了, 但是当你重新读取压缩后的file为 Bitmap时,<br/>
 	 * 它占用的内存并没有改变,不能改变图片的像素点数.
@@ -195,6 +232,17 @@ public class ImageCompressor {
 	 */
 	public static void compressBmpToFile(Bitmap bmp, File file,
 			int maxFileLength) {
+		if (bmp == null) {
+			throw new NullPointerException("the bitmap is null");
+		}
+		if (file == null) {
+			throw new NullPointerException("the target file is null");
+		}
+		if (maxFileLength < 0) {
+			throw new IllegalArgumentException(
+					"the max file length is less than zero");
+		}
+
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		int options = 100;
 		bmp.compress(Bitmap.CompressFormat.JPEG, options, baos);

@@ -50,12 +50,6 @@ public class ImageCacheManager {
 	}
 
 	/**
-	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
-	 * {@link OnBitmapFromHttpListener}.
-	 * 
-	 * <p/>
-	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
-	 * 
 	 * @param url
 	 * @return
 	 * 
@@ -66,12 +60,6 @@ public class ImageCacheManager {
 	}
 
 	/**
-	 * 根据Url获取对应的图片，本地有缓存图片则返回图像对象.本地没有缓存则从服务器上下载，要获取服务器端的图片对象，请设置监听
-	 * {@link OnBitmapFromHttpListener}.
-	 * 
-	 * <p/>
-	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
-	 * 
 	 * @param url
 	 * @return
 	 * 
@@ -79,6 +67,17 @@ public class ImageCacheManager {
 	 */
 	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView) {
 		return getBitmapRecycleOnFinish(url, imageView, 0, 0);
+	}
+
+	/**
+	 * @param url
+	 * @return
+	 * 
+	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 */
+	public Bitmap getBitmapRecycleOnFinish(String url, int targetWidth,
+			int targetHeight) {
+		return getBitmapRecycleOnFinish(url, null, targetWidth, targetHeight);
 	}
 
 	/**
@@ -165,6 +164,9 @@ public class ImageCacheManager {
 			int targetHeight, boolean recycleOnFinish) {
 		if (TextUtils.isEmpty(url)) {
 			throw new NullPointerException("url == null");
+		}
+		if (imageView != null) {
+			imageView.setTag(url);
 		}
 
 		// 从内存缓存中获取图片

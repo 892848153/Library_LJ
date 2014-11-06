@@ -27,7 +27,7 @@ public class ImageMemoryCache {
 	 **/
 	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftCache; // 软引用缓存
 
-	/** 保存着将在onFinish()中回收的对象，调用recycleOnFinish()方法来回收资源 **/
+	/** 保存着将在onDestroy()中回收的对象，调用recycleOnFinish()方法来回收资源 **/
 	private static HashMap<String, Bitmap> sRecycleCach;
 
 	public ImageMemoryCache(Context context) {

@@ -120,7 +120,6 @@ public class ImageGetFromHttp {
 		mRecycleOnFinish = recycleOnFinish;
 
 		putItem(url, imageView);
-		// new NetworkAsynTask(url).execute();
 		sendRequest(url);
 		return null;
 	}
@@ -237,7 +236,7 @@ public class ImageGetFromHttp {
 		protected void onPostExecute(Bitmap bitmap) {
 			if (bitmap != null) {
 				Bitmap result = bitmap;
-				if (mTargetWidth != 0 && mTargetHeight != 0) {
+				if (mTargetWidth > 0 && mTargetHeight > 0) {
 					result = ImageCompressor.compressImage(bitmap,
 							mTargetWidth, mTargetHeight);
 				}
@@ -250,11 +249,13 @@ public class ImageGetFromHttp {
 			List<WeakReference<ImageView>> values = mItems.get(mUrl);
 			for (WeakReference<ImageView> ivWeakRef : values) {
 				ImageView imageView = ivWeakRef.get();
-				if (imageView != null) {
+				String url = (String) imageView.getTag();
+				if (imageView != null && mUrl != null && mUrl.equals(url)) {
 					Log.i("ImageCacheManager", "网络上下载图片，填充图片到imageView");
 					imageView.setImageBitmap(result);
 				}
 			}
+			mItems.remove(values);
 		}
 
 		private void cacheBitmapIfNeed(Bitmap result) {
