@@ -56,28 +56,35 @@ public class ImageCacheManager {
 	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
 	 */
 	public Bitmap getBitmapRecycleOnFinish(String url) {
-		return getBitmapRecycleOnFinish(url, null);
+		return getBitmapRecycleOnFinish(url, null, 0);
 	}
 
 	/**
 	 * @param url
+	 * @param imageView
+	 * @param defaultDraw
 	 * @return
 	 * 
 	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
 	 */
-	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView) {
-		return getBitmapRecycleOnFinish(url, imageView, 0, 0);
+	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView,
+			int defaultDraw) {
+		return getBitmapRecycleOnFinish(url, imageView, 0, 0, defaultDraw);
 	}
 
 	/**
 	 * @param url
+	 * @param targetWidth
+	 * @param targetHeight
+	 * @param defaultDraw
 	 * @return
 	 * 
 	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
 	 */
 	public Bitmap getBitmapRecycleOnFinish(String url, int targetWidth,
-			int targetHeight) {
-		return getBitmapRecycleOnFinish(url, null, targetWidth, targetHeight);
+			int targetHeight, int defaultDraw) {
+		return getBitmapRecycleOnFinish(url, null, targetWidth, targetHeight,
+				defaultDraw);
 	}
 
 	/**
@@ -88,13 +95,18 @@ public class ImageCacheManager {
 	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
 	 * 
 	 * @param url
+	 * @param imageView
+	 * @param targetWidth
+	 * @param targetHeight
+	 * @param defaultDraw
 	 * @return
 	 * 
 	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView,
-			int targetWidth, int targetHeight) {
-		return getBitmap(url, imageView, targetWidth, targetHeight, true);
+			int targetWidth, int targetHeight, int defaultDraw) {
+		return getBitmap(url, imageView, targetWidth, targetHeight,
+				defaultDraw, true);
 	}
 
 	/**
@@ -107,7 +119,7 @@ public class ImageCacheManager {
 	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap getBitmap(String url) {
-		return getBitmap(url, null);
+		return getBitmap(url, null, 0);
 	}
 
 	/**
@@ -115,12 +127,14 @@ public class ImageCacheManager {
 	 * {@link OnBitmapFromHttpListener}.
 	 * 
 	 * @param url
+	 * @param imageView
+	 * @param defaultDraw
 	 * @return
 	 * 
 	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
-	public Bitmap getBitmap(String url, ImageView imageView) {
-		return getBitmap(url, imageView, 0, 0);
+	public Bitmap getBitmap(String url, ImageView imageView, int defaultDraw) {
+		return getBitmap(url, imageView, 0, 0, defaultDraw);
 	}
 
 	/**
@@ -132,13 +146,15 @@ public class ImageCacheManager {
 	 * @param imageView
 	 * @param targetWidth
 	 * @param targetHeight
+	 * @param defaultDraw
 	 * @return
 	 * 
 	 * @see #getBitmap(String, ImageView, int, int, boolean)
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
-			int targetHeight) {
-		return getBitmap(url, imageView, targetWidth, targetHeight, false);
+			int targetHeight, int defaultDraw) {
+		return getBitmap(url, imageView, targetWidth, targetHeight,
+				defaultDraw, false);
 	}
 
 	/**
@@ -154,6 +170,8 @@ public class ImageCacheManager {
 	 *            图片将要压缩的目标宽度
 	 * @param targetHeight
 	 *            图片将要压缩的目标高度
+	 * @param defaultDraw
+	 *            默认显示图片
 	 * @param recycleOnFinish
 	 *            是否将其加入内存缓存中的特殊队列中，为true时，调用
 	 *            {@link ImageCacheManager#recycleOnFinish()}将会回收队列中对象的资源
@@ -161,12 +179,15 @@ public class ImageCacheManager {
 	 *         则返回null并开始下载图片,下载完毕后根据参数将图片在本地做缓存.<br/>
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
-			int targetHeight, boolean recycleOnFinish) {
+			int targetHeight, int defaultDraw, boolean recycleOnFinish) {
 		if (TextUtils.isEmpty(url)) {
 			throw new NullPointerException("url == null");
 		}
 		if (imageView != null) {
 			imageView.setTag(url);
+			if (defaultDraw > 0) {
+				imageView.setImageResource(defaultDraw);
+			}
 		}
 
 		// 从内存缓存中获取图片
