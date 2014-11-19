@@ -3,6 +3,8 @@ package com.lj.library.util;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 
 /**
  * IO流关闭工具.
@@ -31,4 +33,25 @@ public class IOStreamCloser {
 			e.printStackTrace();
 		}
 	}
+
+	public static void closeWriter(Writer writer) {
+		try {
+			if (writer != null) {
+				writer.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void closeReader(Reader reader) {
+		try {
+			if (reader != null) {
+				reader.close();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

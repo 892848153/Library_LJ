@@ -6,7 +6,7 @@ import com.lj.library.BuildConfig;
 
 public class LogUtil {
 
-	private static final String COMMON_TAG = "ZC";
+	private static final String COMMON_TAG = "Application";
 
 	public static boolean DEBUG_STATE = BuildConfig.DEBUG;
 

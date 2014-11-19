@@ -39,7 +39,7 @@ public class HttpUploader {
 	private static final String BODY_END = REAL_BOUNDARY + LINE_END;
 	private static final String CONTENT_TYPE = "multipart/form-data"; // 内容类型
 	private OnUploadListener mOnUploadListener;
-	private long mTimeConsuming = 0L;
+	private long mTimeConsumed = 0L;
 
 	private final String DEFAULT_FILE_KEY = "file";
 
@@ -202,7 +202,7 @@ public class HttpUploader {
 				// 计算上传耗费时间
 				mResponse = conn.getResponseCode();
 				responseTime = System.currentTimeMillis();
-				mTimeConsuming = responseTime - requestTime;
+				mTimeConsumed = responseTime - requestTime;
 				// 获取服务器返回结果
 				LogUtil.e(this, "response code:" + mResponse);
 				if (mResponse == RESPONSE_SUCCESS) {
@@ -278,7 +278,7 @@ public class HttpUploader {
 	 * @return
 	 */
 	public long getTimeConsuming() {
-		return mTimeConsuming;
+		return mTimeConsumed;
 	}
 
 	public interface OnUploadListener {
