@@ -5,10 +5,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.UUID;
+
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -48,75 +50,46 @@ public class HttpDownloader {
 		new DownloadAsynTask(url, targetDir).execute();
 	}
 
-	private class DownloadAsynTask extends AsyncTask<Void, Void, Integer> {
+	private class DownloadAsynTask extends AsyncTask<Void, Long, Integer> {
 
 		private final String mUrl;
 		private String mTargetDir;
-		private String mTargetFileUrl;
+		private String mTargetFilePath;
+		private final HttpResponseWrapper mResponseWrapper;
 
 		public DownloadAsynTask(String url, String targetDir) {
 			mUrl = url;
 			mTargetDir = targetDir;
+			mResponseWrapper = new HttpResponseWrapper();
 		}
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			URLConnection con = null;
+			File targetDir = new File(mTargetDir);
+			if (!targetDir.exists()) {
+				targetDir.mkdirs();
+			}
+
+			HttpClient client = HttpAssistance.getDefaultHttpClient();
 			InputStream is = null;
 			OutputStream os = null;
 			try {
-				URL url = new URL(mUrl);
-				// 打开连接
-				con = url.openConnection();
-				// 输入流
-				is = con.getInputStream();
-				File targetDir = new File(mTargetDir);
-				if (!targetDir.exists()) {
-					targetDir.mkdirs();
+				HttpPost request = new HttpPost(mUrl);
+				HttpEntity entity = HttpAssistance.executeDownload(client,
+						request, mResponseWrapper);
+				if (entity == null) {
+					return RESPONSE_DOWNLOAD_FAIL;
 				}
 
-				// 通过Content-Disposition获取文件名，这点跟服务器有关，需要灵活变通
-				String filename = con.getHeaderField("Content-Disposition");
-				if (filename == null || filename.length() < 1) {
-					filename = UUID.randomUUID() + "";
+				boolean goOnDownload = checkHasSameNameFile(request);
+				if (!goOnDownload) {
+					return RESPONSE_DOWNLOAD_FAIL;
 				}
 
-				if (!mTargetDir.endsWith(File.separator)) {
-					mTargetDir += File.separator;
-				}
-
-				mTargetFileUrl = mTargetDir + filename;
-				File file = new File(mTargetFileUrl);
-				if (file.exists()) {
-					boolean goOn = false;
-					if (mOnDwlodListener != null) {
-						goOn = mOnDwlodListener.onDownloadFileExist(mUrl,
-								filename);
-					}
-					if (goOn == false) {
-						return RESPONSE_DOWNLOAD_FAIL;
-					}
-					if (file.exists()) {
-						file.delete();
-					}
-				}
-
-				// 1K的数据缓冲
-				byte[] bs = new byte[1024];
-				int len = -1;
-				os = new FileOutputStream(mTargetFileUrl);
-				while ((len = is.read(bs)) != -1) {
-					os.write(bs, 0, len);
-				}
-				// 完毕，关闭所有链接
-				os.flush();
-				return RESPONSE_DOWNLOAD_SUCCESS;
-			} catch (MalformedURLException e) {
-				if (mOnDwlodListener != null) {
-					mOnDwlodListener.onDownloadError(mUrl, e);
-				}
-				e.printStackTrace();
-			} catch (IOException e) {
+				is = entity.getContent();
+				os = new FileOutputStream(mTargetFilePath);
+				performDownload(is, os, entity);
+			} catch (Exception e) {
 				if (mOnDwlodListener != null) {
 					mOnDwlodListener.onDownloadError(mUrl, e);
 				}
@@ -124,17 +97,82 @@ public class HttpDownloader {
 			} finally {
 				IOStreamCloser.closeOutputStream(os);
 				IOStreamCloser.closeInputStream(is);
+				HttpAssistance.shutdown(client);
 			}
-			return RESPONSE_DOWNLOAD_FAIL;
+
+			return RESPONSE_DOWNLOAD_SUCCESS;
+		}
+
+		private boolean checkHasSameNameFile(HttpPost request) {
+			boolean goOnDownload = false;
+			String filename = buildTargetFilename(request);
+			File file = new File(mTargetFilePath);
+			if (file.exists()) {
+				if (mOnDwlodListener != null) {
+					goOnDownload = mOnDwlodListener.onDownloadFileExist(mUrl,
+							filename);
+				}
+
+				if (goOnDownload) {
+					if (file.exists()) {
+						file.delete();
+					}
+				}
+			}
+
+			return goOnDownload;
+		}
+
+		private String buildTargetFilename(HttpPost request) {
+			// 通过Content-Disposition获取文件名，这点跟服务器有关，需要灵活变通
+			String filename = null;
+			Header header = request.getFirstHeader("Content-Disposition");
+			if (header != null) {
+				filename = header.getValue();
+			}
+			if (filename == null || filename.length() < 1) {
+				filename = UUID.randomUUID() + "";
+			}
+
+			if (!mTargetDir.endsWith(File.separator)) {
+				mTargetDir += File.separator;
+			}
+
+			mTargetFilePath = mTargetDir + filename;
+			return filename;
+		}
+
+		private void performDownload(InputStream is, OutputStream os,
+				HttpEntity entity) throws IOException {
+			// 1K的数据缓冲
+			byte[] bs = new byte[1024];
+			int len = -1, downloadedLength = 0;
+			while ((len = is.read(bs)) != -1) {
+				os.write(bs, 0, len);
+				downloadedLength += len;
+				publishProgress((long) downloadedLength,
+						entity.getContentLength());
+			}
+			os.flush();
+		}
+
+		@Override
+		protected void onProgressUpdate(Long... values) {
+			if (mOnDwlodListener != null) {
+				long downloadedLength = values[0];
+				long totalLength = values[1];
+				mOnDwlodListener.onDownloadProgress(mUrl, mTargetFilePath,
+						downloadedLength, totalLength);
+			}
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
 			if (mOnDwlodListener != null) {
-				if (result.intValue() == 0) {
-					mOnDwlodListener.onDownloadSuccess(mUrl, mTargetFileUrl);
+				if (result.intValue() == RESPONSE_DOWNLOAD_SUCCESS) {
+					mOnDwlodListener.onDownloadSuccess(mUrl, mTargetFilePath);
 				} else {
-					mOnDwlodListener.onDownloadFail(mUrl, mTargetFileUrl);
+					mOnDwlodListener.onDownloadFail(mUrl, mTargetFilePath);
 				}
 			}
 		}
@@ -158,10 +196,10 @@ public class HttpDownloader {
 		 * 需要下载的文件已经存在,运行在子线程.
 		 * 
 		 * @param url
-		 * @param filename
+		 * @param filePath
 		 * @return 是否继续下载。 返回true时，会删除存在的文件，继续下载。
 		 */
-		boolean onDownloadFileExist(String url, String filename);
+		boolean onDownloadFileExist(String url, String filePath);
 
 		/**
 		 * 下载异常调用，运行在子线程.
@@ -178,17 +216,30 @@ public class HttpDownloader {
 		 * @time 2014年6月10日 上午10:43:33
 		 * @param url
 		 *            下载文件在服务器上的地址
-		 * @param targetUrl
+		 * @param targetFilePath
 		 *            下载文件保存的地址
 		 */
-		void onDownloadSuccess(String url, String targetUrl);
+		void onDownloadSuccess(String url, String targetFilePath);
 
 		/**
 		 * 下载失败，运行在主线程.
 		 * 
 		 * @param url
-		 * @param targetUrl
+		 * @param targetFilePath
 		 */
-		void onDownloadFail(String url, String targetUrl);
+		void onDownloadFail(String url, String targetFilePath);
+
+		/**
+		 * 下载进度，运行在主线程.
+		 * 
+		 * @param url
+		 * @param targetFilePath
+		 * @param curLength
+		 *            当前已下载的文件大小
+		 * @param totalLength
+		 *            文件全部大小
+		 */
+		void onDownloadProgress(String url, String targetFilePath,
+				long curLength, long totalLength);
 	}
 }

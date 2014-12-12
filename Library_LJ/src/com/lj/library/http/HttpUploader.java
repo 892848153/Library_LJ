@@ -1,24 +1,22 @@
 package com.lj.library.http;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+import java.util.Map.Entry;
+
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.protocol.HTTP;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
-
-import com.lj.library.util.LogUtil;
 
 /**
  * 上传文件到服务器.
@@ -28,18 +26,8 @@ import com.lj.library.util.LogUtil;
  */
 public class HttpUploader {
 
-	public static final int RESPONSE_SUCCESS = 200;
-	private static final String CHARSET = "UTF-8";
-	private static final int DEFAULT_CONNECTION_TIMEOUT = (20 * 1000); // milliseconds
-	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
-	private static final String BOUNDARY = UUID.randomUUID().toString();
-	private static final String PREFIX = "--";
-	private static final String LINE_END = "\r\n";
-	private static final String REAL_BOUNDARY = PREFIX + BOUNDARY + LINE_END;
-	private static final String BODY_END = REAL_BOUNDARY + LINE_END;
-	private static final String CONTENT_TYPE = "multipart/form-data"; // 内容类型
 	private OnUploadListener mOnUploadListener;
-	private long mTimeConsumed = 0L;
+	private final long mTimeConsumed = 0L;
 
 	private final String DEFAULT_FILE_KEY = "file";
 
@@ -55,16 +43,9 @@ public class HttpUploader {
 
 	public void uploadFile(Activity activity, String url, String fileKey,
 			String filePath, Map<String, String> params) {
-		if (TextUtils.isEmpty(filePath)) {
-			throw new NullPointerException();
-		}
-
-		File file = new File(filePath);
-		if (file.exists()) {
-			uploadFile(activity, url, DEFAULT_FILE_KEY, file, params);
-		} else {
-			LogUtil.e(this, "需要上传的文件:" + filePath + " 不存在.");
-		}
+		Map<String, String> files = new HashMap<String, String>();
+		files.put(fileKey, filePath);
+		uploadFiles(activity, url, files, params);
 	}
 
 	public void uploadFile(Activity activity, String url, File file) {
@@ -79,11 +60,21 @@ public class HttpUploader {
 
 	public void uploadFile(Activity activity, String url, String fileKey,
 			File file, Map<String, String> params) {
-		if (!file.exists()) {
-			LogUtil.e(this, "需要上传的文件:" + file.getAbsolutePath() + " 不存在.");
-			return;
-		}
+		Map<String, String> files = new HashMap<String, String>();
+		files.put(fileKey, file.getAbsolutePath());
+		uploadFiles(activity, url, files, params);
+	}
 
+	/**
+	 * 
+	 * @param activity
+	 * @param url
+	 * @param files
+	 *            文件键值对，key是文件的key， value是文件的路径.
+	 * @param params
+	 */
+	public void uploadFiles(Activity activity, String url,
+			Map<String, String> files, Map<String, String> params) {
 		if (!NetworkChecker.isNetworkAvailable(activity)) {
 			if (mOnUploadListener != null) {
 				mOnUploadListener.onNetworkNotFound(url);
@@ -91,160 +82,63 @@ public class HttpUploader {
 			return;
 		}
 
-		new UploadAsynTask(url, fileKey, file, params).execute();
+		new UploadAsynTask(url, files, params).execute();
 	}
 
 	private class UploadAsynTask extends AsyncTask<Void, Long, String> {
 
 		private final String mUrl;
-		private final String mFileKey;
-		private final File mFile;
+		private final Map<String, String> mFiles;
 		private final Map<String, String> mParams;
-		private int mResponse;
+		private final HttpResponseWrapper mResponseWrapper;
 
-		public UploadAsynTask(String url, String fileKey, File file,
+		public UploadAsynTask(String url, Map<String, String> files,
 				Map<String, String> params) {
 			mUrl = url;
-			mFileKey = fileKey;
-			mFile = file;
+			mFiles = files;
 			mParams = params;
+			mResponseWrapper = new HttpResponseWrapper();
 		}
 
 		@Override
 		protected String doInBackground(Void... params) {
-			StringBuffer sb = null;
-			DataOutputStream dos = null;
-			InputStream fileIs = null;
-			InputStream in = null;
-			InputStreamReader reader = null;
-
+			String result = null;
+			HttpClient client = HttpAssistance.getDefaultHttpClient();
 			try {
-				long requestTime = System.currentTimeMillis();
-				long responseTime = 0L;
-				URL url = new URL(mUrl);
-				HttpURLConnection conn = (HttpURLConnection) url
-						.openConnection();
-				conn.setReadTimeout(DEFAULT_SOCKET_TIMEOUT);
-				conn.setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT);
-				conn.setDoInput(true); // 允许输入流
-				conn.setDoOutput(true); // 允许输出流
-				conn.setUseCaches(false); // 不允许使用缓存
-				conn.setRequestMethod("POST"); // 请求方式
-				conn.setRequestProperty("connection", "keep-alive");
-				conn.setRequestProperty("Charset", CHARSET); // 设置编码
-				conn.setRequestProperty("user-agent",
-						"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)");
-				conn.setRequestProperty("Content-Type", CONTENT_TYPE
-						+ ";boundary=" + BOUNDARY);
-				/**
-				 * 当文件不为空，把文件包装并且上传
-				 */
-				dos = new DataOutputStream(conn.getOutputStream());
-
-				String param = "";
-
-				/***
-				 * 以下是用于上传参数
-				 */
-				if (mParams != null && mParams.size() > 0) {
-					Iterator<String> it = mParams.keySet().iterator();
-					while (it.hasNext()) {
-						sb = null;
-						sb = new StringBuffer();
-						String key = it.next();
-						String value = mParams.get(key);
-						sb.append(REAL_BOUNDARY);
-						sb.append("Content-Disposition: form-data; name=\"")
-								.append(key).append("\"").append(LINE_END)
-								.append(LINE_END);
-						sb.append(value).append(LINE_END);
-						param = sb.toString();
-						dos.write(param.getBytes());
+				HttpPost request = new HttpPost(mUrl);
+				MultipartEntityBuilder entityBuilder = MultipartEntityBuilder
+						.create();
+				entityBuilder.setMode(HttpMultipartMode.BROWSER_COMPATIBLE);
+				entityBuilder.setCharset(Charset.forName(HTTP.UTF_8));
+				if (params != null) {
+					for (Entry<String, String> param : mParams.entrySet()) {
+						entityBuilder.addTextBody(param.getKey(),
+								param.getValue());
 					}
 				}
 
-				sb = null;
-				param = null;
-				sb = new StringBuffer();
-				// for () // 同时上传多个文件,待测
-				/**
-				 * 这里重点注意： name里面的值为服务器端需要key 只有这个key 才可以得到对应的文件
-				 * filename是文件的名字，包含后缀名的 比如:abc.png
-				 */
-				sb.append(REAL_BOUNDARY);
-				sb.append("Content-Disposition:form-data; name=\"" + mFileKey
-						+ "\"; filename=\"" + mFile.getName() + "\"" + LINE_END);
-				sb.append("Content-Type:text/plain" + LINE_END); // 这里配置的Content-type很重要的
-																	// ，用于服务器端辨别文件的类型的
-				sb.append(LINE_END);
-				param = sb.toString();
-				sb = null;
-				sb = new StringBuffer();
-
-				LogUtil.i(HttpUploader.this, mFile.getName() + "=" + param);
-				dos.write(param.getBytes());
-				// 上传文件
-				fileIs = new FileInputStream(mFile);
-				byte[] bytes = new byte[1024];
-				int len = 0;
-				int curLen = 0;
-				while ((len = fileIs.read(bytes)) != -1) {
-					curLen += len;
-					dos.write(bytes, 0, len);
-					publishProgress((long) curLen, mFile.length());
-				}
-
-				dos.write(LINE_END.getBytes());
-				// } 同时上传多个文件,待测
-				byte[] end_data = BODY_END.getBytes();
-				dos.write(end_data);
-				dos.flush();
-				// 计算上传耗费时间
-				mResponse = conn.getResponseCode();
-				responseTime = System.currentTimeMillis();
-				mTimeConsumed = responseTime - requestTime;
-				// 获取服务器返回结果
-				LogUtil.e(this, "response code:" + mResponse);
-				if (mResponse == RESPONSE_SUCCESS) {
-					in = conn.getInputStream();
-					reader = new InputStreamReader(in, CHARSET);
-					char[] buff = new char[1024];
-					while ((len = reader.read(buff)) > 0) {
-						sb.append(buff, 0, len);
+				if (mFiles != null) {
+					for (Entry<String, String> fileEntry : mFiles.entrySet()) {
+						File file = new File(fileEntry.getValue());
+						if (file.exists()) {
+							entityBuilder.addBinaryBody(fileEntry.getKey(),
+									file);
+						}
 					}
 				}
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-				if (mOnUploadListener != null) {
-					mOnUploadListener.onUploadError(mUrl, e);
-				}
-			} catch (IOException e) {
+
+				request.setEntity(entityBuilder.build());
+				result = HttpAssistance.executeRequest(client, request,
+						mResponseWrapper);
+			} catch (Exception e) {
 				e.printStackTrace();
 				if (mOnUploadListener != null) {
 					mOnUploadListener.onUploadError(mUrl, e);
 				}
 			} finally {
-				try {
-					if (fileIs != null) {
-						fileIs.close();
-					}
-					if (dos != null) {
-						dos.close();
-					}
-
-					if (in != null) {
-						in.close();
-					}
-
-					if (reader != null) {
-						reader.close();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				HttpAssistance.shutdown(client);
 			}
-
-			return sb.toString();
+			return result;
 		}
 
 		@Override
@@ -259,10 +153,12 @@ public class HttpUploader {
 		@Override
 		protected void onPostExecute(String result) {
 			if (mOnUploadListener != null) {
-				if (mResponse == RESPONSE_SUCCESS && !TextUtils.isEmpty(result)) {
-					mOnUploadListener.onUploadSuccess(mUrl, mFile);
+				if (mResponseWrapper.response == HttpStatus.SC_OK
+						&& !TextUtils.isEmpty(result)) {
+					mOnUploadListener.onUploadSuccess(mUrl, mFiles, result);
 				} else {
-					mOnUploadListener.onUploadFail(mUrl, mFile);
+					mOnUploadListener.onUploadFail(mUrl, mFiles,
+							mResponseWrapper.response);
 				}
 			}
 		}
@@ -312,16 +208,19 @@ public class HttpUploader {
 		 * 上传成功， 运行在主线程.
 		 * 
 		 * @param url
-		 * @param srcFile
+		 * @param files
+		 * @param result
 		 */
-		void onUploadSuccess(String url, File srcFile);
+		void onUploadSuccess(String url, Map<String, String> files,
+				String result);
 
 		/**
 		 * 上传失败，运行在主线程.
 		 * 
 		 * @param url
-		 * @param srcFile
+		 * @param files
+		 * @param response
 		 */
-		void onUploadFail(String url, File srcFile);
+		void onUploadFail(String url, Map<String, String> files, int response);
 	}
 }

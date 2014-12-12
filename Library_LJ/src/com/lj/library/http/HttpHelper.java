@@ -1,14 +1,18 @@
 package com.lj.library.http;
 
-import java.io.DataOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
+
+import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.protocol.HTTP;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -17,19 +21,55 @@ import android.text.TextUtils;
 
 import com.lj.library.constants.ExecutorHolder;
 import com.lj.library.http.NetworkChecker.NetworkType;
+import com.lj.library.util.LogUtil;
 
 public class HttpHelper {
 
 	/** 响应成功 */
-	public static final int RESPONSE_SUCCESS = 200;
-	private static final String CHARSET = "UTF-8";
-	private static final int DEFAULT_CONNECTION_TIMEOUT = (20 * 1000); // milliseconds
-	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
+	private static final String CHARSET = HTTP.UTF_8;
+	public static final int HTTP_GET = 0x00;
+	public static final int HTTP_POST = 0x01;
 	private Context mContext;
 	private OnHttpCallback mCallback;
 
+	/**
+	 * 
+	 * @param context
+	 * @param path
+	 *            请求的URL
+	 * @param params
+	 *            参数
+	 */
+	public void get(Context context, final String path,
+			final List<BasicNameValuePair> params) {
+		doRequest(context, path, params, HTTP_GET);
+	}
+
+	/**
+	 * 
+	 * @param context
+	 * @param path
+	 *            请求的URL
+	 * @param params
+	 *            参数
+	 */
 	public void post(Context context, final String path,
-			final Map<String, String> params) {
+			final List<BasicNameValuePair> params) {
+		doRequest(context, path, params, HTTP_POST);
+	}
+
+	/**
+	 * 发起网络请求.
+	 * 
+	 * @param context
+	 * @param path
+	 * @param params
+	 * @param requestFlag
+	 *            网络请求方式:{@link #HTTP_GET}, {@link #HTTP_POST},默认是
+	 *            {@link #HTTP_GET}
+	 */
+	public void doRequest(Context context, final String path,
+			final List<BasicNameValuePair> params, int requestFlag) {
 		mContext = context;
 		if (!NetworkChecker.isNetworkAvailable(context)) {
 			if (mCallback != null) {
@@ -38,19 +78,21 @@ public class HttpHelper {
 			return;
 		}
 
-		sendRequest(path, params);
+		sendRequest(path, params, requestFlag);
 	}
 
 	/**
 	 * android3.0以前，{@link AsyncTask}是最少5个线程并发执行的，<br/>
 	 * 从3.0开始，改成串行执行了 . 不过网络是Wifi或者3G模式的话，并发模式比较好. <br/>
-	 * 此方法会更具网络状况自动决定采用并发还是串行执行.
+	 * 此方法会根据网络状况自动决定采用并发还是串行执行.
 	 * 
 	 * @param path
 	 * @param params
+	 * @param requestFlag
 	 */
-	private void sendRequest(String path, Map<String, String> params) {
-		NetworkAsynTask task = new NetworkAsynTask(path, params);
+	private void sendRequest(String path, List<BasicNameValuePair> params,
+			int requestFlag) {
+		NetworkAsynTask task = new NetworkAsynTask(path, params, requestFlag);
 		if (Build.VERSION.SDK_INT < 11) {
 			task.execute();
 		} else {
@@ -58,8 +100,7 @@ public class HttpHelper {
 			switch (type) {
 			case NETWORK_TYPE_3G:
 			case NETWORK_TYPE_WIFI:
-				task.executeOnExecutor(
-						ExecutorHolder.THREAD_POOL_EXECUTOR,
+				task.executeOnExecutor(ExecutorHolder.THREAD_POOL_EXECUTOR,
 						new Void[] {});
 				break;
 			default:
@@ -71,100 +112,100 @@ public class HttpHelper {
 
 	private class NetworkAsynTask extends AsyncTask<Void, Void, String> {
 
-		private final String mPath;
+		private String mPath;
 
-		private final Map<String, String> mParams;
+		private final List<BasicNameValuePair> mParams;
 
-		private int mResponse;
+		private final int mRequestFlag;
 
-		public NetworkAsynTask(String path, Map<String, String> params) {
+		private final HttpResponseWrapper mResponseWrapper;
+
+		public NetworkAsynTask(String path, List<BasicNameValuePair> params,
+				int requestFlag) {
 			mPath = path;
 			mParams = params;
+			mRequestFlag = requestFlag;
+			mResponseWrapper = new HttpResponseWrapper();
 		}
 
 		@Override
 		protected String doInBackground(Void... params) {
-			StringBuffer sb = new StringBuffer();
-			HttpURLConnection conn = null;
-			DataOutputStream outStream = null;
+			HttpClient client = HttpAssistance.getDefaultHttpClient();
+			String result = null;
 			try {
-				URL url = new URL(mPath);
-				byte[] data = parseParams(mParams).getBytes(CHARSET);
-				conn = (HttpURLConnection) url.openConnection();
-				conn.setConnectTimeout(DEFAULT_CONNECTION_TIMEOUT);
-				conn.setReadTimeout(DEFAULT_SOCKET_TIMEOUT);
-				conn.setUseCaches(false);
-				conn.setDoOutput(true);
-				conn.setRequestMethod("POST");
-				conn.setRequestProperty("Connection", "Keep-Alive");
-				conn.setRequestProperty("Charset", CHARSET);
-				conn.setRequestProperty("Content-Type",
-						"application/x-www-form-urlencoded");
-				conn.setRequestProperty("Content-Length",
-						String.valueOf(data.length));
-				outStream = new DataOutputStream(conn.getOutputStream());
-				outStream.write(data);
-				outStream.flush();
-				outStream.close();
-
-				mResponse = conn.getResponseCode();
-				if (mResponse == RESPONSE_SUCCESS) {
-					InputStream in = conn.getInputStream();
-					InputStreamReader reader = new InputStreamReader(in,
-							CHARSET);
-					char[] buff = new char[1024];
-					int len;
-					while ((len = reader.read(buff)) > 0) {
-						sb.append(buff, 0, len);
-					}
-					reader.close();
-					in.close();
-				}
+				result = performRequestHttp(client);
 			} catch (Exception e) {
 				if (mCallback != null) {
 					mCallback.onHttpError(mPath, e);
 				}
 				e.printStackTrace();
 			} finally {
-				if (null != conn) {
-					conn.disconnect();
-				}
+				HttpAssistance.shutdown(client);
 			}
 
-			return sb.toString();
+			return result;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
 			if (mCallback != null) {
-				mCallback.onHttpReturn(mPath, mResponse, result);
-				if (mResponse == RESPONSE_SUCCESS) {
+				mCallback
+						.onHttpReturn(mPath, mResponseWrapper.response, result);
+				if (mResponseWrapper.response == HttpStatus.SC_OK) {
 					if (TextUtils.isEmpty(result)) {
 						mCallback.onHttpNothingReturn(mPath);
 					} else {
 						mCallback.onHttpSuccess(mPath, result);
 					}
 				} else {
-					mCallback.onHttpError(mPath, mResponse);
+					mCallback.onHttpError(mPath, mResponseWrapper.response);
 				}
 			}
 			mCallback = null;
 		}
-	}
 
-	private String parseParams(Map<String, String> params)
-			throws UnsupportedEncodingException {
-		StringBuilder builder = new StringBuilder();
-		if (params == null)
-			params = new HashMap<String, String>();
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			builder.append(entry.getKey() + "="
-					+ URLEncoder.encode(entry.getValue(), CHARSET) + "&");
+		private String performRequestHttp(HttpClient client)
+				throws UnsupportedEncodingException, IOException,
+				ClientProtocolException {
+			if (TextUtils.isEmpty(mPath)) {
+				throw new NullPointerException("url is empty");
+			}
+
+			String result = null;
+			if (HTTP_GET == mRequestFlag) {
+				String url = buildGetUrl(mParams);
+				LogUtil.e(this, url);
+				HttpGet request = new HttpGet(url);
+				result = HttpAssistance.executeRequest(client, request,
+						mResponseWrapper);
+			} else {
+				HttpPost request = new HttpPost(mPath);
+				buildPostParams(mParams, request);
+				LogUtil.e(this, mPath + mParams.toString());
+				result = HttpAssistance.executeRequest(client, request,
+						mResponseWrapper);
+			}
+			return result;
 		}
-		if (builder.length() > 0)
-			builder.deleteCharAt(builder.length() - 1);
-		System.out.println(builder.toString());
-		return builder.toString();
+
+		private String buildGetUrl(List<BasicNameValuePair> params) {
+			if (TextUtils.isEmpty(mPath)) {
+				throw new NullPointerException("url is empty");
+			}
+
+			if (params != null && params.size() > 0) {
+				mPath = mPath + "?"
+						+ URLEncodedUtils.format(params, HTTP.UTF_8);
+			}
+			return mPath;
+		}
+
+		private void buildPostParams(List<BasicNameValuePair> params,
+				HttpPost request) throws UnsupportedEncodingException {
+			if (params != null && params.size() > 0) {
+				request.setEntity(new UrlEncodedFormEntity(params, CHARSET));
+			}
+		}
 	}
 
 	public void setOnHttpCallback(OnHttpCallback onHttpResponse) {
