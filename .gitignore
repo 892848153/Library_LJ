@@ -2,3 +2,6 @@ bin
 gen
 .project
 project.properties
+local.properties
+proguard/
+test/
