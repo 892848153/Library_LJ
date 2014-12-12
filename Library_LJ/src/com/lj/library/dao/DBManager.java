@@ -3,10 +3,7 @@ package com.lj.library.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -31,11 +28,8 @@ import com.lj.library.util.LogUtil;
  * @time 2014年10月10日 下午5:32:22
  * @author jie.liu
  */
-@SuppressLint("NewApi")
 public class DBManager {
 
-	private final ReadWriteLock mRwLock = new ReentrantReadWriteLock();
-	private final int i = 0;
 	private final byte[] mLock = new byte[0];
 
 	private final DBHelper mDbHelper;
