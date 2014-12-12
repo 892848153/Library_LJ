@@ -17,8 +17,9 @@ import com.lj.library.util.LogUtil;
 public class ImageCacheManager {
 
 	private final Context mContext;
-	private final boolean mCachInMemory;
-	private final boolean mCachInDisk;
+	private final boolean mCacheInMemory;
+	private final boolean mCacheInRecycledMemory;
+	private final boolean mCacheInDisk;
 
 	private final ImageMemoryCache mMemoryCache;
 	private final ImageFileCache mFileCache;
@@ -26,23 +27,27 @@ public class ImageCacheManager {
 
 	private OnBitmapFromHttpListener mListener;
 
+	private static final String EMPTY_CACHE_FLAG = "";
+
 	/**
-	 * 默认开启内存缓存与硬盘缓存.
+	 * 默认开启内存缓存与硬盘缓存，不开启可回收缓存队列.
 	 * 
 	 * @param context
 	 */
 	public ImageCacheManager(Context context) {
-		this(context, true, true);
+		this(context, true, true, false);
 	}
 
-	public ImageCacheManager(Context context, boolean cachInMemory,
-			boolean cachInDisk) {
+	public ImageCacheManager(Context context, boolean cacheInMemory,
+			boolean cacheInDisk, boolean cacheInRecycleMemory) {
 		mContext = context;
-		mCachInMemory = cachInMemory;
-		mCachInDisk = cachInDisk;
+		mCacheInMemory = cacheInMemory;
+		mCacheInDisk = cacheInDisk;
+		mCacheInRecycledMemory = cacheInRecycleMemory;
 		mMemoryCache = new ImageMemoryCache(context);
 		mFileCache = new ImageFileCache();
-		mHttpCache = new ImageGetFromHttp(context, mCachInMemory, mCachInDisk);
+		mHttpCache = new ImageGetFromHttp(context, mCacheInMemory,
+				mCacheInDisk, mCacheInRecycledMemory);
 	}
 
 	public void setOnGetFromHttpListener(OnBitmapFromHttpListener listener) {
@@ -50,41 +55,48 @@ public class ImageCacheManager {
 	}
 
 	/**
+	 * @param cacheFlag
+	 *            可回收对象集标志
 	 * @param url
 	 * @return
 	 * 
-	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 * @see #getBitmapRecycleOnFinish(String, String, ImageView, int)
 	 */
-	public Bitmap getBitmapRecycleOnFinish(String url) {
-		return getBitmapRecycleOnFinish(url, null, 0);
+	public Bitmap getBitmapRecycleOnFinish(String cacheFlag, String url) {
+		return getBitmapRecycleOnFinish(cacheFlag, url, null, 0);
 	}
 
 	/**
+	 * @param cacheFlag
+	 *            可回收对象集标志
 	 * @param url
 	 * @param imageView
 	 * @param defaultDraw
 	 * @return
 	 * 
-	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 * @see #getBitmapRecycleOnFinish(String, String, ImageView, int, int, int)
 	 */
-	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView,
-			int defaultDraw) {
-		return getBitmapRecycleOnFinish(url, imageView, 0, 0, defaultDraw);
+	public Bitmap getBitmapRecycleOnFinish(String cacheFlag, String url,
+			ImageView imageView, int defaultDraw) {
+		return getBitmapRecycleOnFinish(cacheFlag, url, imageView, 0, 0,
+				defaultDraw);
 	}
 
 	/**
+	 * @param cacheFlag
+	 *            可回收对象集标志
 	 * @param url
 	 * @param targetWidth
 	 * @param targetHeight
 	 * @param defaultDraw
 	 * @return
 	 * 
-	 * @see #getBitmapRecycleOnFinish(String, ImageView, int, int)
+	 * @see #getBitmapRecycleOnFinish(String, String, ImageView, int, int, int)
 	 */
-	public Bitmap getBitmapRecycleOnFinish(String url, int targetWidth,
-			int targetHeight, int defaultDraw) {
-		return getBitmapRecycleOnFinish(url, null, targetWidth, targetHeight,
-				defaultDraw);
+	public Bitmap getBitmapRecycleOnFinish(String cacheFlag, String url,
+			int targetWidth, int targetHeight, int defaultDraw) {
+		return getBitmapRecycleOnFinish(cacheFlag, url, null, targetWidth,
+				targetHeight, defaultDraw);
 	}
 
 	/**
@@ -94,6 +106,8 @@ public class ImageCacheManager {
 	 * <p/>
 	 * 如果内存缓存开启，将缓存在特殊队列中，可以调用{@link #recycleOnFinish()}回收资源
 	 * 
+	 * @param cacheFlag
+	 *            可回收对象集标志
 	 * @param url
 	 * @param imageView
 	 * @param targetWidth
@@ -101,12 +115,13 @@ public class ImageCacheManager {
 	 * @param defaultDraw
 	 * @return
 	 * 
-	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 * @see #getBitmap(String, String, ImageView, int, int, int)
 	 */
-	public Bitmap getBitmapRecycleOnFinish(String url, ImageView imageView,
-			int targetWidth, int targetHeight, int defaultDraw) {
-		return getBitmap(url, imageView, targetWidth, targetHeight,
-				defaultDraw, true);
+	public Bitmap getBitmapRecycleOnFinish(String cacheFlag, String url,
+			ImageView imageView, int targetWidth, int targetHeight,
+			int defaultDraw) {
+		return getBitmap(cacheFlag, url, imageView, targetWidth, targetHeight,
+				defaultDraw);
 	}
 
 	/**
@@ -116,7 +131,7 @@ public class ImageCacheManager {
 	 * @param url
 	 * @return
 	 * 
-	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 * @see #getBitmap(String, ImageView, int)
 	 */
 	public Bitmap getBitmap(String url) {
 		return getBitmap(url, null, 0);
@@ -131,7 +146,7 @@ public class ImageCacheManager {
 	 * @param defaultDraw
 	 * @return
 	 * 
-	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 * @see #getBitmap(String, ImageView, int, int, int)
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView, int defaultDraw) {
 		return getBitmap(url, imageView, 0, 0, defaultDraw);
@@ -149,12 +164,12 @@ public class ImageCacheManager {
 	 * @param defaultDraw
 	 * @return
 	 * 
-	 * @see #getBitmap(String, ImageView, int, int, boolean)
+	 * @see #getBitmap(String, String, ImageView, int, int, int)
 	 */
 	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
 			int targetHeight, int defaultDraw) {
-		return getBitmap(url, imageView, targetWidth, targetHeight,
-				defaultDraw, false);
+		return getBitmap(EMPTY_CACHE_FLAG, url, imageView, targetWidth,
+				targetHeight, defaultDraw);
 	}
 
 	/**
@@ -163,6 +178,7 @@ public class ImageCacheManager {
 	 * <p/>
 	 * 要获取服务器端的图片，请设置监听 {@link OnBitmapFromHttpListener}.
 	 * 
+	 * @param 可回收资源队列标志
 	 * @param url
 	 * @param imageView
 	 *            用来填充图片的控件， 不需要填充可传入null
@@ -172,14 +188,11 @@ public class ImageCacheManager {
 	 *            图片将要压缩的目标高度
 	 * @param defaultDraw
 	 *            默认显示图片
-	 * @param recycleOnFinish
-	 *            是否将其加入内存缓存中的特殊队列中，为true时，调用
-	 *            {@link ImageCacheManager#recycleOnFinish()}将会回收队列中对象的资源
 	 * @return 返回本地缓存图片的Bitmap对象，如果图片没有缓存在本地，<br/>
 	 *         则返回null并开始下载图片,下载完毕后根据参数将图片在本地做缓存.<br/>
 	 */
-	public Bitmap getBitmap(String url, ImageView imageView, int targetWidth,
-			int targetHeight, int defaultDraw, boolean recycleOnFinish) {
+	public Bitmap getBitmap(String cacheFlag, String url, ImageView imageView,
+			int targetWidth, int targetHeight, int defaultDraw) {
 		if (TextUtils.isEmpty(url)) {
 			throw new NullPointerException("url == null");
 		}
@@ -190,7 +203,7 @@ public class ImageCacheManager {
 			}
 		}
 
-		// 从内存缓存中获取图片
+		// 从内存缓存或者可回内存收缓存中获取图片
 		Bitmap result = mMemoryCache.getBitmapFromCache(url);
 		if (result == null) {
 			// 文件缓存中获取
@@ -199,15 +212,22 @@ public class ImageCacheManager {
 				// 从网络获取
 				mHttpCache.setOnGetFromHttpListener(mListener);
 				if (targetWidth == 0 || targetHeight == 0) {
-					result = mHttpCache.downloadBitmap(url, imageView);
+					result = mHttpCache.downloadBitmap(cacheFlag, url,
+							imageView);
 				} else {
-					result = mHttpCache.downloadBitmap(url, imageView,
-							targetWidth, targetHeight);
+					result = mHttpCache.downloadBitmap(cacheFlag, url,
+							imageView, targetWidth, targetHeight);
 				}
 			} else {
 				// 添加到内存缓存
-				if (mCachInMemory) {
-					mMemoryCache.addBitmapToCache(url, result, recycleOnFinish);
+				if (mCacheInMemory) {
+					mMemoryCache.addBitmapToCache(url, result);
+				}
+
+				// 添加到可回收内存缓存
+				if (mCacheInRecycledMemory) {
+					mMemoryCache
+							.addBitmapToRecycleCache(cacheFlag, url, result);
 				}
 			}
 		}
@@ -259,8 +279,8 @@ public class ImageCacheManager {
 	/**
 	 * 回收缓存中的不常用图片资源，慎用， 因为不常用的图片不代表没在用，如果这张图片还在显示，则程序会出问题.
 	 */
-	public void recycleMemCache() {
-		mMemoryCache.recycleCache();
+	public void recycleLessCommonMemCache() {
+		mMemoryCache.recycleLessCommonCache();
 	}
 
 	/**
@@ -270,6 +290,10 @@ public class ImageCacheManager {
 	 */
 	public void recycleOnFinish() {
 		mMemoryCache.recycleOnFinish();
+	}
+
+	public void recycleOnFinishByFlag(String cacheFlag) {
+		mMemoryCache.recycleCacheByFlag(cacheFlag);
 	}
 
 	/**

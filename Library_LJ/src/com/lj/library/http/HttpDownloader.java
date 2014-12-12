@@ -88,7 +88,7 @@ public class HttpDownloader {
 
 				is = entity.getContent();
 				os = new FileOutputStream(mTargetFilePath);
-				performDownload(is, os, entity);
+				downloadFile(is, os, entity);
 			} catch (Exception e) {
 				if (mOnDwlodListener != null) {
 					mOnDwlodListener.onDownloadError(mUrl, e);
@@ -142,7 +142,7 @@ public class HttpDownloader {
 			return filename;
 		}
 
-		private void performDownload(InputStream is, OutputStream os,
+		private void downloadFile(InputStream is, OutputStream os,
 				HttpEntity entity) throws IOException {
 			// 1K的数据缓冲
 			byte[] bs = new byte[1024];

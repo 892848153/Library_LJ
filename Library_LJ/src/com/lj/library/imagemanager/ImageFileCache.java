@@ -31,7 +31,7 @@ public class ImageFileCache {
 	private static final String WHOLESALE_CONV = ".cach";
 
 	private static final int MB = 1024 * 1024;
-	private static final int CACHE_SIZE = 100;
+	private static final int CACHE_SIZE = 1000;
 	private static final int FREE_SD_SPACE_NEEDED_TO_CACHE = 10;
 
 	public ImageFileCache() {
@@ -162,8 +162,8 @@ public class ImageFileCache {
 	private int freeSpaceOnSd() {
 		StatFs stat = new StatFs(Environment.getExternalStorageDirectory()
 				.getPath());
-		double sdFreeMB = ((double) stat.getAvailableBlocksLong() * stat
-				.getBlockSizeLong()) / MB;
+		double sdFreeMB = ((double) stat.getAvailableBlocks() * stat
+				.getBlockSize()) / MB;
 		return (int) sdFreeMB;
 	}
 

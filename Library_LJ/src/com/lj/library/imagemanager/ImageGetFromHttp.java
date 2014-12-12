@@ -37,13 +37,13 @@ public class ImageGetFromHttp {
 
 	private final Context mContext;
 
-	private final boolean mMemoryCach, mDiskCach;
+	private final boolean mMemoryCache, mDiskCache, mRecycleMemoryCache;
+
+	private String mCacheFlag;
 
 	private int mTargetWidth;
 
 	private int mTargetHeight;
-
-	private boolean mRecycleOnFinish;
 
 	private final WeakReference<Context> mContextWeakRef;
 
@@ -52,10 +52,11 @@ public class ImageGetFromHttp {
 	private OnBitmapFromHttpListener mListener;
 
 	public ImageGetFromHttp(Context context, boolean memoryCach,
-			boolean diskCach) {
+			boolean diskCach, boolean recycleMemoryCache) {
 		mContext = context;
-		mMemoryCach = memoryCach;
-		mDiskCach = diskCach;
+		mMemoryCache = memoryCach;
+		mDiskCache = diskCach;
+		mRecycleMemoryCache = recycleMemoryCache;
 		mContextWeakRef = new WeakReference<Context>(context);
 		mItems = new HashMap<String, List<WeakReference<ImageView>>>();
 	}
@@ -73,23 +74,9 @@ public class ImageGetFromHttp {
 	 * @return
 	 * @see #downloadBitmap(String, ImageView, int, int, boolean)
 	 */
-	public Bitmap downloadBitmap(String url, ImageView imageView) {
-		return downloadBitmap(url, imageView, 0, 0);
-	}
-
-	/**
-	 * 下载图片并进行压缩处理.
-	 * 
-	 * @param url
-	 * @param imageView
-	 * @param targetWidth
-	 * @param targetHeight
-	 * @return
-	 * @see #downloadBitmap(String, ImageView, int, int, boolean)
-	 */
-	public Bitmap downloadBitmap(String url, ImageView imageView,
-			int targetWidth, int targetHeight) {
-		return downloadBitmap(url, imageView, targetWidth, targetHeight, false);
+	public Bitmap downloadBitmap(String cacheFlag, String url,
+			ImageView imageView) {
+		return downloadBitmap(cacheFlag, url, imageView, 0, 0);
 	}
 
 	/**
@@ -103,11 +90,12 @@ public class ImageGetFromHttp {
 	 *            图片将要压缩的目标高度
 	 * @param recycleOnFinish
 	 *            是否将其加入内存缓存中的特殊队列中，为true时，调用
-	 *            {@link ImageCacheManager#recycleOnDestroy()}将会回收队列中对象的资源
+	 *            {@link ImageCacheManager#recycleOnFinishByFlag(String)} 或者
+	 *            {@link ImageCacheManager#recycleOnFinish()} 将会回收队列中对象的资源
 	 * @return
 	 */
-	public Bitmap downloadBitmap(String url, ImageView imageView,
-			int targetWidth, int targetHeight, boolean recycleOnFinish) {
+	public Bitmap downloadBitmap(String cacheFlag, String url,
+			ImageView imageView, int targetWidth, int targetHeight) {
 		if (!NetworkChecker.isNetworkAvailable(mContext)) {
 			if (mListener != null) {
 				mListener.onGetBitmapNetworkNotFound(url);
@@ -115,9 +103,9 @@ public class ImageGetFromHttp {
 			return null;
 		}
 
+		mCacheFlag = cacheFlag;
 		mTargetWidth = targetWidth;
 		mTargetHeight = targetHeight;
-		mRecycleOnFinish = recycleOnFinish;
 
 		putItem(url, imageView);
 		sendRequest(url);
@@ -261,19 +249,33 @@ public class ImageGetFromHttp {
 		private void cacheBitmapIfNeed(Bitmap result) {
 			Context context = mContextWeakRef.get();
 			if (context != null && result != null) {
-				if (mMemoryCach) {
-					Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
+				if (mMemoryCache || mRecycleMemoryCache) {
 					ImageMemoryCache memoryCache = new ImageMemoryCache(context);
-					if (mRecycleOnFinish) {
-						memoryCache.addBitmapToCache(mUrl, result,
-								mRecycleOnFinish);
-						mRecycleOnFinish = false;
-					} else {
+					if (mMemoryCache) {
+						Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
 						memoryCache.addBitmapToCache(mUrl, result);
+					}
+
+					if (mRecycleMemoryCache) {
+						Log.i("ImageCacheManager", "缓存网络上下载的图片到可回收内存队列");
+						memoryCache.addBitmapToRecycleCache(mCacheFlag, mUrl,
+								result);
 					}
 				}
 
-				if (mDiskCach) {
+				// if (mMemoryCache) {
+				// Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
+				// ImageMemoryCache memoryCache = new ImageMemoryCache(context);
+				// if (mRecycleOnFinish) {
+				// memoryCache.addBitmapToRecycleCache(mCacheFlag, mUrl,
+				// result);
+				// mRecycleOnFinish = false;
+				// } else {
+				// memoryCache.addBitmapToCache(mUrl, result);
+				// }
+				// }
+
+				if (mDiskCache) {
 					Log.i("ImageCacheManager", "缓存网络上下载的图片到本地文件");
 					ImageFileCache fileCache = new ImageFileCache();
 					fileCache.saveBitmap(result, mUrl);

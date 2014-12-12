@@ -174,14 +174,14 @@ public class HttpHelper {
 			String result = null;
 			if (HTTP_GET == mRequestFlag) {
 				String url = buildGetUrl(mParams);
-				LogUtil.e(this, url);
+				LogUtil.e(this, "HTTP URL------->" + url);
 				HttpGet request = new HttpGet(url);
 				result = HttpAssistance.executeRequest(client, request,
 						mResponseWrapper);
 			} else {
 				HttpPost request = new HttpPost(mPath);
 				buildPostParams(mParams, request);
-				LogUtil.e(this, mPath + mParams.toString());
+				LogUtil.e(this, "HTTP URL------->" + mPath + mParams.toString());
 				result = HttpAssistance.executeRequest(client, request,
 						mResponseWrapper);
 			}

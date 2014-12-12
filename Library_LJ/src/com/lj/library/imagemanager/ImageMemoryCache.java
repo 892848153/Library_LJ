@@ -4,6 +4,8 @@ import java.lang.ref.SoftReference;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import android.app.ActivityManager;
@@ -27,11 +29,15 @@ public class ImageMemoryCache {
 	 **/
 	private static LinkedHashMap<String, SoftReference<Bitmap>> sSoftCache; // 软引用缓存
 
-	/** 保存着将在onDestroy()中回收的对象，调用recycleOnFinish()方法来回收资源 **/
-	private static HashMap<String, Bitmap> sRecycleCach;
+	/**
+	 * 保存着将在onDestroy()中回收的对象，调用{@link #recycleCacheByFlag(String)} 或者
+	 * {@link #recycleOnFinish()}方法来回收资源
+	 **/
+	private static Map<String, Map<String, Bitmap>> sCachWillRecycled;
 
 	public ImageMemoryCache(Context context) {
-		if (sLruCache == null || sSoftCache == null || sRecycleCach == null) {
+		if (sLruCache == null || sSoftCache == null
+				|| sCachWillRecycled == null) {
 			initCachMap(context);
 		}
 	}
@@ -99,7 +105,7 @@ public class ImageMemoryCache {
 				return false;
 			}
 		};
-		sRecycleCach = new HashMap<String, Bitmap>();
+		sCachWillRecycled = new HashMap<String, Map<String, Bitmap>>();
 	}
 
 	/**
@@ -131,11 +137,18 @@ public class ImageMemoryCache {
 				}
 			}
 		}
-		// 如果软引用缓存中找不到，从特殊队列中查找
-		synchronized (sRecycleCach) {
-			bitmap = sRecycleCach.get(url);
-			if (bitmap != null) {
-				return bitmap;
+
+		// 如果软引用缓存中找不到，从可回收队列中查找
+		synchronized (sCachWillRecycled) {
+			for (Entry<String, Map<String, Bitmap>> entry : sCachWillRecycled
+					.entrySet()) {
+				Map<String, Bitmap> cache = entry.getValue();
+				if (cache != null) {
+					bitmap = cache.get(url);
+					if (bitmap != null) {
+						return bitmap;
+					}
+				}
 			}
 		}
 		return null;
@@ -148,29 +161,36 @@ public class ImageMemoryCache {
 	 * @param bitmap
 	 */
 	public void addBitmapToCache(String url, Bitmap bitmap) {
-		addBitmapToCache(url, bitmap, false);
+		if (bitmap != null) {
+			synchronized (sLruCache) {
+				sLruCache.put(url, bitmap);
+			}
+		}
 	}
 
 	/**
-	 * 添加图片到缓存.
+	 * 缓存图片到可回收缓存队列.
 	 * 
+	 * @param cacheFlag
+	 *            可回收缓存队列标志
 	 * @param url
 	 * @param bitmap
-	 * @param recycleOnFinish
-	 *            为true时，缓存到一个特殊的map中，调用
-	 *            {@link ImageMemoryCache#recycleOnFinish()}将会回收该资源
 	 */
-	public void addBitmapToCache(String url, Bitmap bitmap,
-			boolean recycleOnFinish) {
+	public void addBitmapToRecycleCache(String cacheFlag, String url,
+			Bitmap bitmap) {
 		if (bitmap != null) {
-			if (recycleOnFinish) {
-				synchronized (sRecycleCach) {
-					sRecycleCach.put(url, bitmap);
-				}
-
-			} else {
-				synchronized (sLruCache) {
-					sLruCache.put(url, bitmap);
+			synchronized (sCachWillRecycled) {
+				boolean keyExists = sCachWillRecycled.containsKey(cacheFlag);
+				if (keyExists) {
+					Map<String, Bitmap> cache = sCachWillRecycled
+							.get(cacheFlag);
+					if (cache != null) {
+						cache.put(url, bitmap);
+					}
+				} else {
+					Map<String, Bitmap> cache = new HashMap<String, Bitmap>();
+					cache.put(url, bitmap);
+					sCachWillRecycled.put(cacheFlag, cache);
 				}
 			}
 		}
@@ -193,7 +213,6 @@ public class ImageMemoryCache {
 	}
 
 	/**
-	 * 
 	 * 清空内存缓存的引用，但不主动回收图片资源.
 	 */
 	public void clearCache() {
@@ -204,7 +223,7 @@ public class ImageMemoryCache {
 	/**
 	 * 回收缓存中的不常用图片资源.
 	 */
-	public void recycleCache() {
+	public void recycleLessCommonCache() {
 		Set<String> keySet = sSoftCache.keySet();
 		for (Iterator<String> it = keySet.iterator(); it.hasNext();) {
 			String key = it.next();
@@ -217,19 +236,39 @@ public class ImageMemoryCache {
 	}
 
 	/**
-	 * 回收标记{@link ImageMemoryCache#addBitmapToCache(String, Bitmap, boolean)}
-	 * 第三个参数为true的资源.
+	 * 回收用
+	 * {@link ImageMemoryCache#addBitmapToRecycleCache(String, String, Bitmap)}
+	 * 方法加入缓存的资源.
+	 * 
 	 */
 	public void recycleOnFinish() {
-		Set<String> keySet = sRecycleCach.keySet();
-		LogUtil.d(this, "recycle  size:" + keySet.size());
+		Set<String> keySet = sCachWillRecycled.keySet();
+		LogUtil.d(this, "回收所有可回收资源队列，队列大小:" + keySet.size());
 		for (Iterator<String> it = keySet.iterator(); it.hasNext();) {
 			String key = it.next();
-			Bitmap bitmap = sRecycleCach.get(key);
-			if (bitmap != null) {
-				BitmapUtils.recycleBitmap(bitmap);
-			}
+			recycleCacheByFlag(key);
 		}
-		sRecycleCach.clear();
+		sCachWillRecycled.clear();
+	}
+
+	/**
+	 * 回收特定缓存队列.
+	 * 
+	 * @param cacheFlag
+	 *            可回收缓存队列标志
+	 */
+	public void recycleCacheByFlag(String cacheFlag) {
+		Map<String, Bitmap> cache = sCachWillRecycled.get(cacheFlag);
+		if (cache != null) {
+			for (Entry<String, Bitmap> item : cache.entrySet()) {
+				Bitmap bitmap = item.getValue();
+				if (bitmap != null) {
+					BitmapUtils.recycleBitmap(bitmap);
+				}
+			}
+		} else {
+			LogUtil.w(this, this.getClass().getSimpleName() + "-----找不到可回收缓存队列");
+		}
+		sCachWillRecycled.remove(cacheFlag);
 	}
 }
