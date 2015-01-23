@@ -25,7 +25,6 @@ import com.lj.library.util.SDCardUtil;
  * @author jie.liu
  */
 public class ImageFileCache {
-
 	private static final String CACHDIR = Constants.APP_ROOT_DIR
 			+ "/ImageCache";
 	private static final String WHOLESALE_CONV = ".cach";

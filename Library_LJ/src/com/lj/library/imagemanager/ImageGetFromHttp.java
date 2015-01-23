@@ -263,18 +263,6 @@ public class ImageGetFromHttp {
 					}
 				}
 
-				// if (mMemoryCache) {
-				// Log.i("ImageCacheManager", "缓存网络上下载的图片到内存");
-				// ImageMemoryCache memoryCache = new ImageMemoryCache(context);
-				// if (mRecycleOnFinish) {
-				// memoryCache.addBitmapToRecycleCache(mCacheFlag, mUrl,
-				// result);
-				// mRecycleOnFinish = false;
-				// } else {
-				// memoryCache.addBitmapToCache(mUrl, result);
-				// }
-				// }
-
 				if (mDiskCache) {
 					Log.i("ImageCacheManager", "缓存网络上下载的图片到本地文件");
 					ImageFileCache fileCache = new ImageFileCache();

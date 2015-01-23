@@ -1,5 +1,6 @@
 package com.lj.library.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,15 @@ import com.lj.library.R;
  * @author jie.liu
  */
 public class BaseFragment extends Fragment {
+
+	/** 解决 {@link #getActivity()} 为null的bug **/
+	protected Activity mActivity;
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mActivity = activity;
+	}
 
 	public void startFragment(BaseFragment targetFragment) {
 		FragmentManager manager = getActivity().getSupportFragmentManager();
