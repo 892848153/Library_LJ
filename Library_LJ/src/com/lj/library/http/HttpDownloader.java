@@ -5,6 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.http.Header;
@@ -14,6 +17,7 @@ import org.apache.http.client.methods.HttpPost;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import com.lj.library.util.IOStreamCloser;
 
@@ -30,6 +34,12 @@ public class HttpDownloader {
 	private static final int RESPONSE_DOWNLOAD_FAIL = 0x02;
 
 	private OnDownloadListener mOnDwlodListener;
+
+	private final Map<String, Boolean> mGoOnDownload = new HashMap<String, Boolean>();
+
+	public void getFileLength(Activity context, String url) {
+		downloadFile(context, url, null);
+	}
 
 	/**
 	 * 下载文件.
@@ -65,9 +75,11 @@ public class HttpDownloader {
 
 		@Override
 		protected Integer doInBackground(Void... params) {
-			File targetDir = new File(mTargetDir);
-			if (!targetDir.exists()) {
-				targetDir.mkdirs();
+			if (!TextUtils.isEmpty(mTargetDir)) {
+				File targetDir = new File(mTargetDir);
+				if (!targetDir.exists()) {
+					targetDir.mkdirs();
+				}
 			}
 
 			HttpClient client = HttpAssistance.getDefaultHttpClient();
@@ -81,13 +93,21 @@ public class HttpDownloader {
 					return RESPONSE_DOWNLOAD_FAIL;
 				}
 
+				long contentLenth = entity.getContentLength();
+				if (mOnDwlodListener != null) {
+					mOnDwlodListener.onDownloadFileLength(mUrl, contentLenth);
+				}
+
 				boolean goOnDownload = checkHasSameNameFile(request);
+				mGoOnDownload.put(mUrl, goOnDownload);
 				if (!goOnDownload) {
 					return RESPONSE_DOWNLOAD_FAIL;
 				}
 
 				is = entity.getContent();
-				os = new FileOutputStream(mTargetFilePath);
+				if (!TextUtils.isEmpty(mTargetFilePath)) {
+					os = new FileOutputStream(mTargetFilePath);
+				}
 				downloadFile(is, os, entity);
 			} catch (Exception e) {
 				if (mOnDwlodListener != null) {
@@ -106,17 +126,28 @@ public class HttpDownloader {
 		private boolean checkHasSameNameFile(HttpPost request) {
 			boolean goOnDownload = false;
 			String filename = buildTargetFilename(request);
-			File file = new File(mTargetFilePath);
-			if (file.exists()) {
-				if (mOnDwlodListener != null) {
-					goOnDownload = mOnDwlodListener.onDownloadFileExist(mUrl,
-							filename);
+			if (!TextUtils.isEmpty(mTargetDir)) {
+				if (mTargetDir.endsWith(File.separator)) {
+					mTargetDir += File.separator;
 				}
+				mTargetFilePath = mTargetDir + filename;
+			}
 
-				if (goOnDownload) {
-					if (file.exists()) {
-						file.delete();
+			if (!TextUtils.isEmpty(mTargetFilePath)) {
+				File file = new File(mTargetFilePath);
+				if (file.exists()) {
+					if (mOnDwlodListener != null) {
+						goOnDownload = mOnDwlodListener.onDownloadFileExist(
+								mUrl, filename);
 					}
+
+					if (goOnDownload) {
+						if (file.exists()) {
+							file.delete();
+						}
+					}
+				} else {
+					goOnDownload = true;
 				}
 			}
 
@@ -125,6 +156,14 @@ public class HttpDownloader {
 
 		private String buildTargetFilename(HttpPost request) {
 			// 通过Content-Disposition获取文件名，这点跟服务器有关，需要灵活变通
+			if (TextUtils.isEmpty(mTargetDir)) {
+				return null;
+			}
+
+			// url中带有文件名
+			// FilenameGenerator generator = new MD5FilenameGenerator();
+			// String filename = generator.generateFilename(mUrl);
+
 			String filename = null;
 			Header header = request.getFirstHeader("Content-Disposition");
 			if (header != null) {
@@ -134,24 +173,35 @@ public class HttpDownloader {
 				filename = UUID.randomUUID() + "";
 			}
 
-			if (!mTargetDir.endsWith(File.separator)) {
-				mTargetDir += File.separator;
-			}
-
-			mTargetFilePath = mTargetDir + filename;
 			return filename;
 		}
 
 		private void downloadFile(InputStream is, OutputStream os,
 				HttpEntity entity) throws IOException {
+			if (is == null || os == null || entity == null) {
+				if (mOnDwlodListener != null) {
+					mOnDwlodListener.onDownloadFail(mUrl, mTargetFilePath);
+				}
+				return;
+			}
+
 			// 1K的数据缓冲
+			long contentLength = entity.getContentLength();
 			byte[] bs = new byte[1024];
 			int len = -1, downloadedLength = 0;
 			while ((len = is.read(bs)) != -1) {
-				os.write(bs, 0, len);
-				downloadedLength += len;
-				publishProgress((long) downloadedLength,
-						entity.getContentLength());
+				boolean goOnDownload = mGoOnDownload.get(mUrl);
+				if (goOnDownload) {
+					os.write(bs, 0, len);
+					downloadedLength += len;
+					publishProgress((long) downloadedLength, contentLength);
+				} else {
+					if (mOnDwlodListener != null) {
+						mOnDwlodListener.onDownloadingStoped(mUrl,
+								mTargetFilePath);
+					}
+					break;
+				}
 			}
 			os.flush();
 		}
@@ -168,7 +218,8 @@ public class HttpDownloader {
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (mOnDwlodListener != null) {
+			if (mOnDwlodListener != null && !TextUtils.isEmpty(mTargetFilePath)
+					&& !TextUtils.isEmpty(mUrl) && mGoOnDownload.get(mUrl)) {
 				if (result.intValue() == RESPONSE_DOWNLOAD_SUCCESS) {
 					mOnDwlodListener.onDownloadSuccess(mUrl, mTargetFilePath);
 				} else {
@@ -180,6 +231,15 @@ public class HttpDownloader {
 
 	public void setOnDownloadListener(OnDownloadListener onDownloadListener) {
 		mOnDwlodListener = onDownloadListener;
+	}
+
+	/**
+	 * 停止下载.
+	 * 
+	 * @param url
+	 */
+	public void stopDownload(String url) {
+		mGoOnDownload.put(url, false);
 	}
 
 	public interface OnDownloadListener {
@@ -241,5 +301,83 @@ public class HttpDownloader {
 		 */
 		void onDownloadProgress(String url, String targetFilePath,
 				long curLength, long totalLength);
+
+		/**
+		 * 需要下载的文件的大小, 运行在子线程.
+		 * 
+		 * @param url
+		 * @param totalLength
+		 *            文件大小，单位byte
+		 */
+		void onDownloadFileLength(String url, long totalLength);
+
+		/**
+		 * 停止下载文件， 运行在子线程.
+		 * 
+		 * @param url
+		 * @param targetFilePath
+		 */
+		void onDownloadingStoped(String url, String targetFilePath);
+	}
+
+	public interface FilenameGenerator {
+
+		/**
+		 * 文件名生成器，url当中带着文件名.
+		 * 
+		 * @param url
+		 * @return url或者目标文件夹为空，则返回null
+		 */
+		String generateFilename(String url);
+	}
+
+	public static class MD5FilenameGenerator implements FilenameGenerator {
+
+		@Override
+		public String generateFilename(String url) {
+			if (TextUtils.isEmpty(url)) {
+				return null;
+			}
+
+			String filename = null;
+			if (!TextUtils.isEmpty(url)) {
+				int index = url.lastIndexOf("/");
+				if (index != -1 && url.length() > index + 1) {
+					filename = md5(url.substring(index + 1));
+				}
+			}
+
+			return filename;
+		}
+
+		public final String md5(String content) {
+			char hexDigits[] = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
+					'9', 'A', 'B', 'C', 'D', 'E', 'F' };
+			try {
+				byte[] btInput = content.getBytes();
+				// 获取信息摘要对象
+				MessageDigest mdInst = MessageDigest.getInstance("MD5");
+				// 使用指定的字节串更新摘要
+				mdInst.update(btInput);
+				// 将指定的"字节串"进行信息摘要,获取到固定长度的字节数组
+				byte[] md = mdInst.digest();
+				// 把密文转换成十六进制的字符串形式
+				int j = md.length;
+				char str[] = new char[j * 2];
+				int k = 0;
+				for (int i = 0; i < j; i++) {
+					byte byte0 = md[i];
+					// 前四个bit转成一个16进制的字符
+					str[k++] = hexDigits[byte0 >>> 4 & 0xf];
+					// 后四个bit转成一个16进制的字符
+					str[k++] = hexDigits[byte0 & 0xf];
+				}
+				// 返回16进制的字符串
+				return new String(str);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 }

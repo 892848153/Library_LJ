@@ -146,4 +146,12 @@ public class MainActivity extends Activity implements OnHttpCallback,
 				+ "  totalLength " + totalLength);
 	}
 
+	@Override
+	public void onDownloadFileLength(String url, long totalLength) {
+	}
+
+	@Override
+	public void onDownloadingStoped(String url, String targetFilePath) {
+	}
+
 }
