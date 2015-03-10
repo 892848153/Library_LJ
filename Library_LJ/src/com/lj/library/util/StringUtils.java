@@ -5,8 +5,12 @@ import android.widget.TextView;
 
 public class StringUtils {
 
-	public static String getText(TextView view) {
-		return view.getText().toString().trim();
+	public static String getText(TextView textView) {
+		if (textView != null) {
+			return textView.getText().toString().trim();
+		} else {
+			return "";
+		}
 	}
 
 	public static String optimizePhone(String phone) {

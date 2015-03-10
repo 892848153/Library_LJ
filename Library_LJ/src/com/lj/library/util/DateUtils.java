@@ -3,6 +3,7 @@ package com.lj.library.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.text.Editable;
 import android.text.Selection;
@@ -24,7 +25,8 @@ public class DateUtils {
 			String dateFormat) {
 		String strDate = "";
 		if (date != null) {
-			SimpleDateFormat format = new SimpleDateFormat(dateFormat);
+			SimpleDateFormat format = new SimpleDateFormat(dateFormat,
+					Locale.CHINESE);
 			strDate = format.format(new Date());
 		}
 		return strDate;
@@ -41,7 +43,8 @@ public class DateUtils {
 	public static java.util.Date resolveToDate(String dateStr, String pattern) {
 		java.util.Date date = null;
 		if (dateStr != null) {
-			SimpleDateFormat format = new SimpleDateFormat(pattern);
+			SimpleDateFormat format = new SimpleDateFormat(pattern,
+					Locale.CHINESE);
 			try {
 				date = format.parse(dateStr);
 			} catch (ParseException e) {

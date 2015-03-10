@@ -127,7 +127,7 @@ public class HttpDownloader {
 			boolean goOnDownload = false;
 			String filename = buildTargetFilename(request);
 			if (!TextUtils.isEmpty(mTargetDir)) {
-				if (mTargetDir.endsWith(File.separator)) {
+				if (!mTargetDir.endsWith(File.separator)) {
 					mTargetDir += File.separator;
 				}
 				mTargetFilePath = mTargetDir + filename;
