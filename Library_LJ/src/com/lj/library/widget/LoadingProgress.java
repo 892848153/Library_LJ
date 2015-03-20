@@ -11,6 +11,13 @@ public class LoadingProgress {
 
 	private int mShownCount;
 
+	/**
+	 * Singleton类被装载了，instance不一定被初始化。因为SingletonHolder类没有被主动使用，
+	 * 只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。
+	 * 又由于只有一行返回的代码，所以保证了线程安全.
+	 * 
+	 * @return
+	 */
 	public static LoadingProgress getInstance() {
 		return SingletonHolder.sInstance;
 	}

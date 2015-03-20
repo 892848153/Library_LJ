@@ -21,7 +21,7 @@ public class MyDialog extends Dialog {
 
 	private int mDialogWidth;
 	private boolean mIsAnimation = false;
-	private int mAnimationStyle = R.style.DialogAnimation;
+	private int mAnimationStyle;
 	/** 对话框的宽度占屏幕的百分比 **/
 	private float mWidthPercent;
 
@@ -38,7 +38,7 @@ public class MyDialog extends Dialog {
 	 *            对话框的宽度占屏幕的百分比
 	 */
 	public MyDialog(Context context, float widthPercent) {
-		this(context, 0, 0);
+		this(context, R.style.BaseDialogTheme, 0); // 主题传入0,调用系统主题
 		mDialogWidth = calcDialogWidth(context, widthPercent);
 	}
 
@@ -73,6 +73,16 @@ public class MyDialog extends Dialog {
 		this.mAnimationStyle = animationStyle;
 	}
 
+	public void showDialog(View view) {
+		createDialog(view);
+		show();
+	}
+
+	public void showDialog(int layoutResID) {
+		createDialog(layoutResID);
+		show();
+	}
+
 	public void createDialog(View view) {
 		setContentView(view);
 		initDialog();
@@ -81,18 +91,6 @@ public class MyDialog extends Dialog {
 	public void createDialog(int layoutResID) {
 		setContentView(layoutResID);
 		initDialog();
-	}
-
-	public void showDialog(View view) {
-		setContentView(view);
-		initDialog();
-		show();
-	}
-
-	public void showDialog(int layoutResID) {
-		setContentView(layoutResID);
-		initDialog();
-		show();
 	}
 
 	private void initDialog() {
@@ -104,7 +102,7 @@ public class MyDialog extends Dialog {
 			params.width = mDialogWidth;
 			// 不要设置高度，默认是wrap_content
 			// params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-			params.dimAmount = 0.5f; // 该变量指示后面的窗口变暗的程度, 1.0表示完全不透明，0.0表示透明。
+			params.dimAmount = 0.7f; // 该变量指示后面的窗口变暗的程度, 1.0表示完全不透明，0.0表示透明。
 			window.setAttributes(params);
 			window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		}

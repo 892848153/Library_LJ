@@ -55,9 +55,8 @@ public class BaseFragment extends Fragment {
 	 * <pre>
 	 * public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	 * 		Bundle savedInstanceState) {
-	 * 	LayoutInflater localInflater = setTheme(inflater);
-	 * 	View view = localInflater.inflate(R.layout.item_flagment_info, container,
-	 * 			false);
+	 * 	inflater = setTheme(inflater);
+	 * 	View view = inflater.inflate(R.layout.item_flagment_info, container, false);
 	 * 	return view;
 	 * }
 	 * </pre>
