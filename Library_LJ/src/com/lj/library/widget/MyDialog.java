@@ -32,7 +32,6 @@ public class MyDialog extends Dialog {
 	}
 
 	/**
-	 * 
 	 * @param context
 	 * @param widthPercent
 	 *            对话框的宽度占屏幕的百分比
@@ -43,6 +42,9 @@ public class MyDialog extends Dialog {
 	}
 
 	private int calcDialogWidth(Context context, float widthPercent) {
+		if (widthPercent < 0) {
+			throw new IllegalArgumentException("widthPercent必须大于等于0");
+		}
 		if (widthPercent == 0) {
 			mWidthPercent = WIDTH_PERCENT_DEFAULT;
 		} else {
@@ -54,13 +56,29 @@ public class MyDialog extends Dialog {
 		return (int) (displayMetrics.widthPixels * mWidthPercent);
 	}
 
-	public MyDialog(Context context, int windowDialogWidth) {
-		this(context, R.style.BaseDialogTheme, windowDialogWidth);
+	/**
+	 * @param context
+	 * @param dialogWidthDP
+	 *            对话框宽度，单位dp
+	 */
+	public MyDialog(Context context, int dialogWidthDP) {
+		this(context, R.style.BaseDialogTheme, dialogWidthDP);
 	}
 
-	public MyDialog(Context context, int theme, int windowDialogWidth) {
+	/**
+	 * @param context
+	 * @param theme
+	 * @param dialogWidthDP
+	 *            对话框宽度，单位dp
+	 */
+	public MyDialog(Context context, int theme, int dialogWidthDP) {
 		super(context, theme);
-		this.mDialogWidth = windowDialogWidth;
+		if (dialogWidthDP <= 0) {
+			throw new IllegalArgumentException("widthPercent必须大于0");
+		}
+		DisplayMetrics displayMetrics = context.getResources()
+				.getDisplayMetrics();
+		this.mDialogWidth = (int) (dialogWidthDP * displayMetrics.density);
 	}
 
 	public MyDialog setAnimation(boolean isAnimation) {

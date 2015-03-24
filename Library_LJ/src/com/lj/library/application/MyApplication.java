@@ -1,5 +1,6 @@
 package com.lj.library.application;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,6 +30,21 @@ public class MyApplication extends Application {
 
 	public void addActivity(Activity activity) {
 		mActivityList.add(activity);
+	}
+
+	/**
+	 * 删除实例.
+	 * 
+	 * @param activity
+	 */
+	public void removeActivity(Activity activity) {
+		Iterator<Activity> iterator = mActivityList.iterator();
+		while (iterator.hasNext()) {
+			Activity targetActivity = iterator.next();
+			if (targetActivity == activity) {
+				iterator.remove();
+			}
+		}
 	}
 
 	/**
