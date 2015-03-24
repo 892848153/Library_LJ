@@ -1,19 +1,18 @@
 package com.lj.library.activity.base;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.lj.library.application.MyApplication;
 
 /**
- * 基础类.
+ * 基础类，使用Fragment的类要继承这个.
  * 
- * @time 2015年3月6日 上午10:55:47
+ * @time 2015年3月24日 下午2:13:48
  * @author jie.liu
  */
-@SuppressLint("Registered")
-public class BaseActivity extends Activity {
+public class BaseFragmentActivity extends FragmentActivity {
 
 	protected Activity mContext;
 
