@@ -3,21 +3,17 @@ package com.lj.library.widget;
 import android.app.Activity;
 import android.app.ProgressDialog;
 
+import com.lj.library.R;
 import com.lj.library.util.LogUtil;
 
 public class LoadingProgress {
 
 	private ProgressDialog mDialog;
 
+	private MyDialog mIOSDialog;
+
 	private int mShownCount;
 
-	/**
-	 * Singleton类被装载了，instance不一定被初始化。因为SingletonHolder类没有被主动使用，
-	 * 只有显示通过调用getInstance方法时，才会显示装载SingletonHolder类，从而实例化instance。
-	 * 又由于只有一行返回的代码，所以保证了线程安全.
-	 * 
-	 * @return
-	 */
 	public static LoadingProgress getInstance() {
 		return SingletonHolder.sInstance;
 	}
@@ -27,6 +23,29 @@ public class LoadingProgress {
 	}
 
 	private LoadingProgress() {
+	}
+
+	public void showIOSDialog(Activity context) {
+		if (haveShown()) {
+			mShownCount++;
+			return;
+		}
+
+		createIOSLoadingDialog(context);
+
+		if (!mIOSDialog.isShowing()) {
+			LogUtil.i(context, "显示ProgressDialog");
+			mShownCount++;
+			mIOSDialog.show();
+		}
+	}
+
+	private void createIOSLoadingDialog(Activity context) {
+		mIOSDialog = new MyDialog(context);
+		mIOSDialog.setDimAccount(0);
+		mIOSDialog.setCancelable(false);
+		mIOSDialog.setCanceledOnTouchOutside(false);
+		mIOSDialog.showDialog(R.layout.dlg_loading_progress);
 	}
 
 	public void show(Activity context) {
@@ -67,6 +86,13 @@ public class LoadingProgress {
 			mShownCount = 0;
 			mDialog.cancel();
 			mDialog = null;
+		}
+
+		if (mIOSDialog != null && mIOSDialog.isShowing()) {
+			LogUtil.i(this, "关闭ProgressDialog");
+			mShownCount = 0;
+			mIOSDialog.cancel();
+			mIOSDialog = null;
 		}
 	}
 

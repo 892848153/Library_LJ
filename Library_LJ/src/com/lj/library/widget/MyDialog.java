@@ -19,11 +19,13 @@ import com.lj.library.R;
  */
 public class MyDialog extends Dialog {
 
-	private int mDialogWidth;
+	private final int mDialogWidth;
 	private boolean mIsAnimation = false;
 	private int mAnimationStyle;
 	/** 对话框的宽度占屏幕的百分比 **/
 	private float mWidthPercent;
+
+	private float mDimAmount = 0.7f;
 
 	private final static float WIDTH_PERCENT_DEFAULT = 0.8f;
 
@@ -37,7 +39,7 @@ public class MyDialog extends Dialog {
 	 *            对话框的宽度占屏幕的百分比
 	 */
 	public MyDialog(Context context, float widthPercent) {
-		this(context, R.style.BaseDialogTheme, 0); // 主题传入0,调用系统主题
+		super(context, R.style.BaseDialogTheme); // 主题传入0,调用系统主题
 		mDialogWidth = calcDialogWidth(context, widthPercent);
 	}
 
@@ -74,7 +76,7 @@ public class MyDialog extends Dialog {
 	public MyDialog(Context context, int theme, int dialogWidthDP) {
 		super(context, theme);
 		if (dialogWidthDP <= 0) {
-			throw new IllegalArgumentException("widthPercent必须大于0");
+			throw new IllegalArgumentException("dialogWidthDP必须大于0");
 		}
 		DisplayMetrics displayMetrics = context.getResources()
 				.getDisplayMetrics();
@@ -89,6 +91,20 @@ public class MyDialog extends Dialog {
 	public void setAnimationStyle(int animationStyle) {
 		this.mIsAnimation = true;
 		this.mAnimationStyle = animationStyle;
+	}
+
+	/**
+	 * 设置半透明背景的透明度.
+	 * <p/>
+	 * 取值在0~1(包含0,1)
+	 * 
+	 * @param dimAccount
+	 */
+	public void setDimAccount(float dimAccount) {
+		if (dimAccount < 0 || dimAccount > 1) {
+			throw new IllegalArgumentException("dimAccount取值在0到1");
+		}
+		mDimAmount = dimAccount;
 	}
 
 	public void showDialog(View view) {
@@ -120,7 +136,8 @@ public class MyDialog extends Dialog {
 			params.width = mDialogWidth;
 			// 不要设置高度，默认是wrap_content
 			// params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-			params.dimAmount = 0.7f; // 该变量指示后面的窗口变暗的程度, 1.0表示完全不透明，0.0表示透明。
+			params.dimAmount = mDimAmount; // 该变量指示后面的窗口变暗的程度,
+											// 1.0表示完全不透明，0.0表示透明。
 			window.setAttributes(params);
 			window.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		}

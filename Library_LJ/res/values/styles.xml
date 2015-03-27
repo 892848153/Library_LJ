@@ -1,10 +1,7 @@
 <resources>
 	<!-- Application theme. -->
 	<style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar"></style>
-	<style name="AppTheme" parent="AppBaseTheme">
-		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
-		<item name="android:windowBackground">@null</item>
-		<item name="android:colorBackground">@null</item>
+	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>
 	<!-- 自定义dialog -->
 	<style name="BaseDialogTheme" parent="android:Theme.Dialog">
