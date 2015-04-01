@@ -13,19 +13,18 @@ import com.google.gson.reflect.TypeToken;
  */
 public class JsonUtil {
 
-	public static <T> T from(String str, Class<T> t) {
-		Gson gson = new Gson();
-		return gson.fromJson(str, t);
+	private static Gson sGson = new Gson();
+
+	public static <T> T fromJson(String str, Class<T> t) {
+		return sGson.fromJson(str, t);
 	}
 
-	public static <T> List<T> from(String str) {
-		Gson gson = new Gson();
-		return gson.fromJson(str, new TypeToken<List<T>>() {
+	public static <T> List<T> fromJson(String str) {
+		return sGson.fromJson(str, new TypeToken<List<T>>() {
 		}.getType());
 	}
 
-	public static String to(Object src) {
-		Gson gson = new Gson();
-		return gson.toJson(src);
+	public static String toJson(Object src) {
+		return sGson.toJson(src);
 	}
 }

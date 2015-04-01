@@ -69,7 +69,7 @@ public class DBManager {
 		}
 		LogUtil.d(this, "结束-------- 读取------数据库");
 		cursor.close();
-		return JsonUtil.to(items);
+		return JsonUtil.toJson(items);
 	}
 
 	/**
@@ -142,6 +142,6 @@ public class DBManager {
 	 * 关闭数据库 ，在程序退出的时候记得关闭.
 	 */
 	public void close() {
-		mDbHelper.getWritableDatabase().close();
+		mDbHelper.close();
 	}
 }

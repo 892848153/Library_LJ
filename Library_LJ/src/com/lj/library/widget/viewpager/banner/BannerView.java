@@ -237,9 +237,21 @@ public class BannerView<T> extends RelativeLayout implements
 		mViewPager.setCurrentScreen(0);
 	}
 
-//	public PagerAdapter<T> getPagerAdapter() {
-//		return mViewPager.getPagerAdapter();
-//	}
+	// public PagerAdapter<T> getPagerAdapter() {
+	// return mViewPager.getPagerAdapter();
+	// }
+
+	/**
+	 * 设置宽高比例.
+	 * 
+	 * @param widthWeight
+	 *            宽的比重, 必须大于0
+	 * @param heightWeight
+	 *            高的比重,必须大于0
+	 */
+	public void setFrameWeight(float widthWeight, float heightWeight) {
+		mViewPager.setFrameWeight(widthWeight, heightWeight);
+	}
 
 	/**
 	 * 显示提示点，默认是显示的.

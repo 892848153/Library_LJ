@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.lj.library.widget.frameweight.FrameWeightConfig;
+
 /**
  * 可以根据宽度变化，按比例改变高度的ImageView.
  * 
@@ -12,8 +14,7 @@ import android.widget.ImageView;
  */
 public class ScaledImageView extends ImageView {
 
-	private float mWidthWeight = 0f;
-	private float mHeightWeight = 0f;
+	private final FrameWeightConfig mConfig = new FrameWeightConfig();
 
 	public ScaledImageView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -36,16 +37,7 @@ public class ScaledImageView extends ImageView {
 	 *            高的比重,必须大于0
 	 */
 	public void setFrameWeight(float widthWeight, float heightWeight) {
-		if (mWidthWeight == widthWeight && mHeightWeight == heightWeight) {
-			return;
-		}
-
-		if (widthWeight < 0 || heightWeight < 0) {
-			throw new IllegalArgumentException("widthWeight和heightWeight必须大于0");
-		}
-
-		mWidthWeight = widthWeight;
-		mHeightWeight = heightWeight;
+		mConfig.setFrameWeight(widthWeight, heightWeight);
 	}
 
 	@Override
@@ -53,9 +45,11 @@ public class ScaledImageView extends ImageView {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
 		// 如果有设置宽高比例，就按比例决定高的大小
-		if (measuredWidth >= 0 && mWidthWeight > 0 && mHeightWeight > 0) {
-			setMeasuredDimension(measuredWidth, (int) (mHeightWeight
-					/ mWidthWeight * measuredWidth));
+		float widthWeight = mConfig.getWidthWeight();
+		float heightWeight = mConfig.getHeightWeight();
+		if (measuredWidth >= 0 && widthWeight > 0 && heightWeight > 0) {
+			setMeasuredDimension(measuredWidth, (int) (heightWeight
+					* measuredWidth / widthWeight));
 		}
 	}
 }

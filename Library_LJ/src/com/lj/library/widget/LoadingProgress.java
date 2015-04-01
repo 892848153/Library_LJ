@@ -1,6 +1,7 @@
 package com.lj.library.widget;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 
 import com.lj.library.R;
@@ -81,19 +82,18 @@ public class LoadingProgress {
 	}
 
 	public void dismiss() {
-		if (mDialog != null && mDialog.isShowing()) {
-			LogUtil.i(this, "关闭ProgressDialog");
-			mShownCount = 0;
-			mDialog.cancel();
-			mDialog = null;
-		}
+		cancelDialog(mDialog);
+		mDialog = null;
 
-		if (mIOSDialog != null && mIOSDialog.isShowing()) {
-			LogUtil.i(this, "关闭ProgressDialog");
-			mShownCount = 0;
-			mIOSDialog.cancel();
-			mIOSDialog = null;
-		}
+		cancelDialog(mIOSDialog);
+		mIOSDialog = null;
 	}
 
+	private void cancelDialog(Dialog dialog) {
+		if (dialog != null && dialog.isShowing()) {
+			LogUtil.i(this, "关闭ProgressDialog");
+			mShownCount = 0;
+			dialog.cancel();
+		}
+	}
 }

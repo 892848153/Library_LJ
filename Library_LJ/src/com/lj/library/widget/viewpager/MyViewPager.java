@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 import com.lj.library.util.LogUtil;
+import com.lj.library.widget.frameweight.FrameWeightConfig;
 
 /**
  * 自定义ViewPager.
@@ -47,6 +48,8 @@ public class MyViewPager<T> extends ViewGroup {
 	private boolean mMaybeClickEvent = false;
 	/******************** 解决滑动冲突 *******************************/
 
+	private final FrameWeightConfig mConfig = new FrameWeightConfig();
+
 	private static final int SNAP_VELOCITY = 300;
 
 	public MyViewPager(Context context) {
@@ -74,6 +77,18 @@ public class MyViewPager<T> extends ViewGroup {
 		}
 	}
 
+	/**
+	 * 设置宽高比例.
+	 * 
+	 * @param widthWeight
+	 *            宽的比重, 必须大于0
+	 * @param heightWeight
+	 *            高的比重,必须大于0
+	 */
+	public void setFrameWeight(float widthWeight, float heightWeight) {
+		mConfig.setFrameWeight(widthWeight, heightWeight);
+	}
+
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		// 注释掉changed是因为，多次调用setAdapter方法，changed为false，第二次调用增加的View不会显示出来.
@@ -94,19 +109,28 @@ public class MyViewPager<T> extends ViewGroup {
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		// 获取孩子中最高的
-		int maxChildHeight = getMaxChildHeight(widthMeasureSpec);
-		int finalHeight = maxChildHeight;
-		Drawable background = getBackground();
-		if (background != null) {
-			int backHeight = background.getMinimumHeight();
-			// 孩子中最高的跟背景图片取最高的值为控件的高度
-			finalHeight = Math.max(maxChildHeight, backHeight);
-		}
+		int measuredWidth = MeasureSpec.getSize(widthMeasureSpec);
+		float widthWeight = mConfig.getWidthWeight();
+		float heightWeight = mConfig.getHeightWeight();
+		// 如果有设置宽高比例，就按比例决定高的大小
+		if (measuredWidth >= 0 && widthWeight > 0 && heightWeight > 0) {
+			setMeasuredDimension(measuredWidth, (int) (heightWeight
+					* measuredWidth / widthWeight));
+		} else {
+			// 获取孩子中最高的
+			int maxChildHeight = getMaxChildHeight(widthMeasureSpec);
+			int finalHeight = maxChildHeight;
+			Drawable background = getBackground();
+			if (background != null) {
+				int backHeight = background.getMinimumHeight();
+				// 孩子中最高的跟背景图片取最高的值为控件的高度
+				finalHeight = Math.max(maxChildHeight, backHeight);
+			}
 
-		heightMeasureSpec = MeasureSpec.makeMeasureSpec(finalHeight,
-				MeasureSpec.EXACTLY);
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+			heightMeasureSpec = MeasureSpec.makeMeasureSpec(finalHeight,
+					MeasureSpec.EXACTLY);
+			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		}
 
 		// 重新测量孩子的高度
 		final int width = MeasureSpec.getSize(widthMeasureSpec);
