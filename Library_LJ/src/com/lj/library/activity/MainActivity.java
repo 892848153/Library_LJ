@@ -27,10 +27,16 @@ public class MainActivity extends Activity implements OnHttpCallback,
 		params.add(new BasicNameValuePair("date", "2011-11-11 11:11:11"));
 		HttpHelper httpHelper = new HttpHelper();
 		httpHelper.setOnHttpCallback(this);
-		httpHelper
-				.post(this,
-						"http://61.144.248.2:8090/carManager/helpInfo!IconInstroduce.action",
-						params);
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		for (int i = 0; i < 100; i++)
+			httpHelper
+					.post(this,
+							"http://61.144.248.2:8090/carManager/helpInfo!IconInstroduce.action",
+							params);
 
 		// String uploadUrl =
 		// "http://61.144.248.2:8090/carManager/cemployee!updateHeadPic.action";
@@ -87,7 +93,7 @@ public class MainActivity extends Activity implements OnHttpCallback,
 
 	@Override
 	public void onHttpSuccess(String path, String result) {
-		LogUtil.i(this, "onHttpSuccess   " + path + "  result" + result);
+		// LogUtil.i(this, "onHttpSuccess   " + path + "  result" + result);
 	}
 
 	@Override

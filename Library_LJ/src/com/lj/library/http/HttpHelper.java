@@ -25,12 +25,13 @@ import com.lj.library.util.LogUtil;
 
 public class HttpHelper {
 
+	private Context mContext;
+	private OnHttpCallback mCallback;
+
 	/** 响应成功 */
 	private static final String CHARSET = HTTP.UTF_8;
 	public static final int HTTP_GET = 0x00;
 	public static final int HTTP_POST = 0x01;
-	private Context mContext;
-	private OnHttpCallback mCallback;
 
 	/**
 	 * 
@@ -161,7 +162,6 @@ public class HttpHelper {
 					mCallback.onHttpError(mPath, mResponseWrapper.response);
 				}
 			}
-			mCallback = null;
 		}
 
 		private String performRequestHttp(HttpClient client)

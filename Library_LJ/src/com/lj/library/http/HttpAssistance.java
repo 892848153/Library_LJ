@@ -24,7 +24,9 @@ public class HttpAssistance {
 	private static final int DEFAULT_CONNECTION_TIMEOUT = (5 * 1000); // milliseconds
 	private static final int DEFAULT_SOCKET_TIMEOUT = (20 * 1000); // milliseconds
 
-	public static HttpClient getDefaultHttpClient() {
+	// private static HttpClient sClient = null;
+
+	public synchronized static HttpClient getDefaultHttpClient() {
 		BasicHttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams,
 				DEFAULT_CONNECTION_TIMEOUT);
@@ -33,6 +35,40 @@ public class HttpAssistance {
 		return client;
 	}
 
+	/**
+	 * 多线程共享一个HttpClient,在请求时所占用的资源少一点， 释放后和独立一个对象都一样.
+	 * 使用该方法，不可关闭连接，只能在程序退出时关闭连接.
+	 * 
+	 * @return
+	 */
+	// public synchronized static HttpClient getDefaultHttpClient() {
+	// if (client == null) {
+	// BasicHttpParams httpParams = new BasicHttpParams();
+	// HttpConnectionParams.setConnectionTimeout(httpParams,
+	// DEFAULT_CONNECTION_TIMEOUT);
+	// HttpConnectionParams.setSoTimeout(httpParams,
+	// DEFAULT_SOCKET_TIMEOUT);
+	// SchemeRegistry schReg = new SchemeRegistry();
+	// schReg.register(new Scheme("http", PlainSocketFactory
+	// .getSocketFactory(), 80));
+	// schReg.register(new Scheme("https", PlainSocketFactory
+	// .getSocketFactory(), 443));
+	// ClientConnectionManager conMgr = new ThreadSafeClientConnManager(
+	// httpParams, schReg);
+	// sClient = new DefaultHttpClient(conMgr, httpParams);
+	// }
+	// return sClient;
+	// }
+
+	/**
+	 * 
+	 * @param client
+	 * @param request
+	 * @param responseWrapper
+	 * @return
+	 * @throws IOException
+	 * @throws ClientProtocolException
+	 */
 	public static String executeRequest(HttpClient client,
 			HttpRequestBase request, HttpResponseWrapper responseWrapper)
 			throws IOException, ClientProtocolException {
