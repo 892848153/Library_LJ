@@ -17,6 +17,12 @@ import com.lj.library.bean.UserInfo;
 
 public class ContextUtil {
 
+	private static Intent sTargetIntent;
+
+	private static Class<?> sTargetClass;
+
+	private static Bundle sBundle;
+
 	public static void pushToActivity(Context from, Class<?> to) {
 		Intent intent = new Intent(from, to);
 		from.startActivity(intent);
@@ -42,6 +48,7 @@ public class ContextUtil {
 		Intent intent = null;
 		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
 		if (userInfo == null) {
+			sTargetClass = to;
 			// intent = new Intent(from, LoginActivity.class);
 		} else {
 			intent = new Intent(from, to);
@@ -55,22 +62,64 @@ public class ContextUtil {
 		Intent intent = null;
 		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
 		if (userInfo == null) {
+			sTargetClass = to;
+			sBundle = bundle;
 			// intent = new Intent(from, LoginActivity.class);
 		} else {
 			intent = new Intent(from, to);
+			intent.putExtras(bundle);
 		}
 
-		intent.putExtras(bundle);
 		from.startActivity(intent);
 	}
 
 	public static void pushToActivityWithLogin(Context context, Intent intent) {
 		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
 		if (userInfo == null) {
+			sTargetIntent = intent;
 			// intent = new Intent(context, LoginActivity.class);
 		}
 
 		context.startActivity(intent);
+	}
+
+	/**
+	 * 跳到先前需要跳转的页面.
+	 * <p/>
+	 * 调用 {@link #pushToActivityWithLogin(Context, Class)} ,
+	 * {@link #pushToActivityWithLogin(Context, Intent)},
+	 * {@link #pushToActivityWithLogin(Context, Class, Bundle)}
+	 * 方法跳转界面，结果没有跳转到想要的界面，而是跳转到登陆页面。登陆成功后，可以调用此方法 继续跳转到先前想要跳转到的页面(跳转所带的参数依然存在)。
+	 * 
+	 * @param from
+	 */
+	public static void pushToRecentlyActivity(Context from) {
+		if (sTargetClass == null && sTargetIntent == null) {
+			return;
+		}
+
+		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+		if (userInfo != null) {
+			performPushToRecentlyActivity(from);
+
+			sTargetIntent = null;
+			sTargetClass = null;
+			sBundle = null;
+		}
+	}
+
+	private static void performPushToRecentlyActivity(Context from) {
+		if (sTargetClass != null) {
+			if (sBundle != null) {
+				pushToActivity(from, sTargetClass, sBundle);
+			} else {
+				pushToActivity(from, sTargetClass);
+			}
+		}
+
+		if (sTargetIntent != null) {
+			pushToActivity(from, sTargetIntent);
+		}
 	}
 
 	public static String getIMEI(Context context) {

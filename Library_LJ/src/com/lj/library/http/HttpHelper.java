@@ -14,12 +14,12 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
-import com.lj.library.constants.ExecutorHolder;
 import com.lj.library.http.NetworkChecker.NetworkType;
 import com.lj.library.util.LogUtil;
 
@@ -91,6 +91,7 @@ public class HttpHelper {
 	 * @param params
 	 * @param requestFlag
 	 */
+	@SuppressLint("InlinedApi")
 	private void sendRequest(String path, List<BasicNameValuePair> params,
 			int requestFlag) {
 		NetworkAsynTask task = new NetworkAsynTask(path, params, requestFlag);
@@ -101,7 +102,7 @@ public class HttpHelper {
 			switch (type) {
 			case NETWORK_TYPE_3G:
 			case NETWORK_TYPE_WIFI:
-				task.executeOnExecutor(ExecutorHolder.THREAD_POOL_EXECUTOR,
+				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
 						new Void[] {});
 				break;
 			default:
@@ -113,7 +114,7 @@ public class HttpHelper {
 
 	private class NetworkAsynTask extends AsyncTask<Void, Void, String> {
 
-		private String mPath;
+		private final String mPath;
 
 		private final List<BasicNameValuePair> mParams;
 
@@ -173,37 +174,40 @@ public class HttpHelper {
 
 			String result = null;
 			if (HTTP_GET == mRequestFlag) {
-				String url = buildGetUrl(mParams);
+				String url = buildGetUrl();
 				LogUtil.e(this, "HTTP URL------->" + url);
 				HttpGet request = new HttpGet(url);
 				result = HttpAssistance.executeRequest(client, request,
 						mResponseWrapper);
 			} else {
 				HttpPost request = new HttpPost(mPath);
-				buildPostParams(mParams, request);
-				LogUtil.e(this, "HTTP URL------->" + mPath + mParams.toString());
+				buildPostParams(request);
+				LogUtil.e(this,
+						"HTTP URL------->" + mPath + mParams == null ? ""
+								: mParams.toString());
 				result = HttpAssistance.executeRequest(client, request,
 						mResponseWrapper);
 			}
 			return result;
 		}
 
-		private String buildGetUrl(List<BasicNameValuePair> params) {
+		private String buildGetUrl() {
 			if (TextUtils.isEmpty(mPath)) {
 				throw new NullPointerException("url is empty");
 			}
 
-			if (params != null && params.size() > 0) {
-				mPath = mPath + "?"
-						+ URLEncodedUtils.format(params, HTTP.UTF_8);
+			String pathWithParams = mPath;
+			if (mParams != null && mParams.size() > 0) {
+				pathWithParams = mPath + "?"
+						+ URLEncodedUtils.format(mParams, HTTP.UTF_8);
 			}
-			return mPath;
+			return pathWithParams;
 		}
 
-		private void buildPostParams(List<BasicNameValuePair> params,
-				HttpPost request) throws UnsupportedEncodingException {
-			if (params != null && params.size() > 0) {
-				request.setEntity(new UrlEncodedFormEntity(params, CHARSET));
+		private void buildPostParams(HttpPost request)
+				throws UnsupportedEncodingException {
+			if (mParams != null && mParams.size() > 0) {
+				request.setEntity(new UrlEncodedFormEntity(mParams, CHARSET));
 			}
 		}
 	}

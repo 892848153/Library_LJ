@@ -3,6 +3,7 @@ package com.lj.library.activity.base;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
 import com.lj.library.application.MyApplication;
 
@@ -13,7 +14,7 @@ import com.lj.library.application.MyApplication;
  * @author jie.liu
  */
 @SuppressLint("Registered")
-public class BaseActivity extends Activity {
+public class BaseActivity extends FragmentActivity {
 
 	protected Activity mContext;
 

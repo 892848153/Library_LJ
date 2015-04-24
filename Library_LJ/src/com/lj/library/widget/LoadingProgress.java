@@ -3,11 +3,13 @@ package com.lj.library.widget;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnCancelListener;
 
 import com.lj.library.R;
 import com.lj.library.util.LogUtil;
 
-public class LoadingProgress {
+public class LoadingProgress implements OnCancelListener {
 
 	private ProgressDialog mDialog;
 
@@ -46,6 +48,7 @@ public class LoadingProgress {
 		mIOSDialog.setDimAccount(0);
 		mIOSDialog.setCancelable(false);
 		mIOSDialog.setCanceledOnTouchOutside(false);
+		mIOSDialog.setOnCancelListener(this);
 		mIOSDialog.showDialog(R.layout.dlg_loading_progress);
 	}
 
@@ -79,6 +82,7 @@ public class LoadingProgress {
 		mDialog.setIndeterminate(false);
 		mDialog.setInverseBackgroundForced(false);
 		mDialog.setMessage(message);
+		mDialog.setOnCancelListener(this);
 	}
 
 	public void dismiss() {
@@ -95,5 +99,10 @@ public class LoadingProgress {
 			mShownCount = 0;
 			dialog.cancel();
 		}
+	}
+
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		mShownCount = 0;
 	}
 }
