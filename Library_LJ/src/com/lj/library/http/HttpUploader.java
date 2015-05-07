@@ -1,6 +1,7 @@
 package com.lj.library.http;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
@@ -26,7 +27,8 @@ import android.text.TextUtils;
  */
 public class HttpUploader {
 
-	private OnUploadListener mOnUploadListener;
+	private WeakReference<OnUploadListener> mOnUploadListenerWRef;
+
 	private final long mTimeConsumed = 0L;
 
 	private final String DEFAULT_FILE_KEY = "file";
@@ -76,8 +78,9 @@ public class HttpUploader {
 	public void uploadFiles(Activity activity, String url,
 			Map<String, String> files, Map<String, String> params) {
 		if (!NetworkChecker.isNetworkAvailable(activity)) {
-			if (mOnUploadListener != null) {
-				mOnUploadListener.onNetworkNotFound(url);
+			if (mOnUploadListenerWRef != null
+					&& mOnUploadListenerWRef.get() != null) {
+				mOnUploadListenerWRef.get().onNetworkNotFound(url);
 			}
 			return;
 		}
@@ -132,8 +135,9 @@ public class HttpUploader {
 						mResponseWrapper);
 			} catch (Exception e) {
 				e.printStackTrace();
-				if (mOnUploadListener != null) {
-					mOnUploadListener.onUploadError(mUrl, e);
+				if (mOnUploadListenerWRef != null
+						&& mOnUploadListenerWRef.get() != null) {
+					mOnUploadListenerWRef.get().onUploadError(mUrl, e);
 				}
 			} finally {
 				HttpAssistance.shutdown(client);
@@ -145,19 +149,22 @@ public class HttpUploader {
 		protected void onProgressUpdate(Long... values) {
 			long curlen = values[0];
 			long totalLen = values[1];
-			if (mOnUploadListener != null) {
-				mOnUploadListener.onUploadProgress(curlen, totalLen);
+			if (mOnUploadListenerWRef != null
+					&& mOnUploadListenerWRef.get() != null) {
+				mOnUploadListenerWRef.get().onUploadProgress(curlen, totalLen);
 			}
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (mOnUploadListener != null) {
+			if (mOnUploadListenerWRef != null
+					&& mOnUploadListenerWRef.get() != null) {
+				OnUploadListener uploadListener = mOnUploadListenerWRef.get();
 				if (mResponseWrapper.response == HttpStatus.SC_OK
 						&& !TextUtils.isEmpty(result)) {
-					mOnUploadListener.onUploadSuccess(mUrl, mFiles, result);
+					uploadListener.onUploadSuccess(mUrl, mFiles, result);
 				} else {
-					mOnUploadListener.onUploadFail(mUrl, mFiles,
+					uploadListener.onUploadFail(mUrl, mFiles,
 							mResponseWrapper.response);
 				}
 			}
@@ -165,7 +172,10 @@ public class HttpUploader {
 	}
 
 	public void setOnUploadListener(OnUploadListener onUploadListener) {
-		mOnUploadListener = onUploadListener;
+		if (mOnUploadListenerWRef.get() != onUploadListener) {
+			mOnUploadListenerWRef = new WeakReference<OnUploadListener>(
+					onUploadListener);
+		}
 	}
 
 	/**

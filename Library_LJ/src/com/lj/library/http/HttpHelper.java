@@ -2,6 +2,7 @@ package com.lj.library.http;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 import org.apache.http.HttpStatus;
@@ -20,18 +21,25 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.text.TextUtils;
 
+import com.lj.library.constants.ExecutorHolder;
 import com.lj.library.http.NetworkChecker.NetworkType;
 import com.lj.library.util.LogUtil;
 
 public class HttpHelper {
 
-	private Context mContext;
-	private OnHttpCallback mCallback;
+	private WeakReference<OnHttpCallback> mCallbackWRef;
 
 	/** 响应成功 */
 	private static final String CHARSET = HTTP.UTF_8;
 	public static final int HTTP_GET = 0x00;
 	public static final int HTTP_POST = 0x01;
+
+	public HttpHelper() {
+	}
+
+	public HttpHelper(OnHttpCallback callback) {
+		mCallbackWRef = new WeakReference<OnHttpCallback>(callback);
+	}
 
 	/**
 	 * 
@@ -71,15 +79,14 @@ public class HttpHelper {
 	 */
 	public void doRequest(Context context, final String path,
 			final List<BasicNameValuePair> params, int requestFlag) {
-		mContext = context;
 		if (!NetworkChecker.isNetworkAvailable(context)) {
-			if (mCallback != null) {
-				mCallback.onHttpNetworkNotFound(path);
+			if (mCallbackWRef != null && mCallbackWRef.get() != null) {
+				mCallbackWRef.get().onHttpNetworkNotFound(path);
 			}
 			return;
 		}
 
-		sendRequest(path, params, requestFlag);
+		sendRequest(context, path, params, requestFlag);
 	}
 
 	/**
@@ -92,17 +99,17 @@ public class HttpHelper {
 	 * @param requestFlag
 	 */
 	@SuppressLint("InlinedApi")
-	private void sendRequest(String path, List<BasicNameValuePair> params,
-			int requestFlag) {
+	private void sendRequest(Context context, String path,
+			List<BasicNameValuePair> params, int requestFlag) {
 		NetworkAsynTask task = new NetworkAsynTask(path, params, requestFlag);
 		if (Build.VERSION.SDK_INT < 11) {
 			task.execute();
 		} else {
-			NetworkType type = NetworkChecker.getNetworkType(mContext);
+			NetworkType type = NetworkChecker.getNetworkType(context);
 			switch (type) {
 			case NETWORK_TYPE_3G:
 			case NETWORK_TYPE_WIFI:
-				task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+				task.executeOnExecutor(ExecutorHolder.THREAD_POOL_EXECUTOR,
 						new Void[] {});
 				break;
 			default:
@@ -137,8 +144,8 @@ public class HttpHelper {
 			try {
 				result = performRequestHttp(client);
 			} catch (Exception e) {
-				if (mCallback != null) {
-					mCallback.onHttpError(mPath, e);
+				if (mCallbackWRef != null && mCallbackWRef.get() != null) {
+					mCallbackWRef.get().onHttpError(mPath, e);
 				}
 				e.printStackTrace();
 			} finally {
@@ -150,17 +157,17 @@ public class HttpHelper {
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (mCallback != null) {
-				mCallback
-						.onHttpReturn(mPath, mResponseWrapper.response, result);
+			if (mCallbackWRef != null && mCallbackWRef.get() != null) {
+				OnHttpCallback callback = mCallbackWRef.get();
+				callback.onHttpReturn(mPath, mResponseWrapper.response, result);
 				if (mResponseWrapper.response == HttpStatus.SC_OK) {
 					if (TextUtils.isEmpty(result)) {
-						mCallback.onHttpNothingReturn(mPath);
+						callback.onHttpNothingReturn(mPath);
 					} else {
-						mCallback.onHttpSuccess(mPath, result);
+						callback.onHttpSuccess(mPath, result);
 					}
 				} else {
-					mCallback.onHttpError(mPath, mResponseWrapper.response);
+					callback.onHttpError(mPath, mResponseWrapper.response);
 				}
 			}
 		}
@@ -213,8 +220,8 @@ public class HttpHelper {
 	}
 
 	public void setOnHttpCallback(OnHttpCallback onHttpResponse) {
-		if (onHttpResponse != mCallback) {
-			mCallback = onHttpResponse;
+		if (mCallbackWRef == null || onHttpResponse != mCallbackWRef.get()) {
+			mCallbackWRef = new WeakReference<OnHttpCallback>(onHttpResponse);
 		}
 	}
 

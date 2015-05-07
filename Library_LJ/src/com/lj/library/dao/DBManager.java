@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -28,18 +29,20 @@ import com.lj.library.util.LogUtil;
  * @time 2014年10月10日 下午5:32:22
  * @author jie.liu
  */
+@SuppressLint("NewApi")
 public class DBManager {
-
-	private final byte[] mLock = new byte[0];
 
 	private final DBHelper mDbHelper;
 
 	public DBManager(Context context) {
-		synchronized (mLock) {
-			mDbHelper = DBHelper.getInstance(context);
-			if (Build.VERSION.SDK_INT >= 11) {
-				mDbHelper.getWritableDatabase().enableWriteAheadLogging();
-			}
+		mDbHelper = DBHelper.getInstance(context);
+		if (Build.VERSION.SDK_INT >= 11) {
+			// 参考api文档，这个属性关闭时，不允许读，写同时进行，通过 锁 来保证。
+			// 当打开时，它允许一个写线程与多个读线程同时在一个SQLiteDatabase上起作用。
+			// 实现原理是写操作其实是在一个单独的文件，不是原数据库文件。
+			// 所以写在执行时，不会影响读操作，读操作读的是原数据文件，是写操作开始之前的内容。
+			// 在写操作执行成功后，会把修改合并会原数据库文件。此时读操作才能读到修改后的内容。但是这样将花费更多的内存。
+			mDbHelper.getWritableDatabase().enableWriteAheadLogging();
 		}
 	}
 
@@ -52,7 +55,8 @@ public class DBManager {
 	public String queryDownloadProgress(String path) {
 		List<DownloadProgress> items = new ArrayList<DownloadProgress>();
 		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-		LogUtil.d(this, "开始-------- 读取------数据库");
+		LogUtil.d(this, "开始-------- 读取------数据库   thread id"
+				+ Thread.currentThread().getId());
 		StringBuilder sb = new StringBuilder();
 		sb.append("SELECT ").append(MultiDownload.THREAD_ID).append(", ")
 				.append(MultiDownload.DOWN_LENGTH).append(" FROM ")
@@ -67,7 +71,8 @@ public class DBManager {
 					.getColumnIndex(MultiDownload.DOWN_LENGTH));
 			items.add(pro);
 		}
-		LogUtil.d(this, "结束-------- 读取------数据库");
+		LogUtil.d(this, "结束-------- 读取------数据库  thread id"
+				+ +Thread.currentThread().getId());
 		cursor.close();
 		return JsonUtil.toJson(items);
 	}
@@ -106,7 +111,8 @@ public class DBManager {
 	 */
 	public void updateDownloadProgress(String path, Map<String, String> map) {
 		SQLiteDatabase db = mDbHelper.getWritableDatabase();
-		LogUtil.d(this, "开始-------- 更新------数据库");
+		LogUtil.d(this, "开始-------- 更新------数据库   thread id"
+				+ Thread.currentThread().getId());
 		db.beginTransaction();
 		try {
 			for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -117,10 +123,10 @@ public class DBManager {
 								+ MultiDownload.THREAD_ID + " = ?",
 						new String[] { path, entry.getKey() });
 			}
-			LogUtil.d(this, "结束-------- 更新------数据库");
 			db.setTransactionSuccessful();
 		} finally {
-			LogUtil.d(this, "结束-------- 更新------数据库");
+			LogUtil.d(this, "结束-------- 更新------数据库  thread id"
+					+ +Thread.currentThread().getId());
 			db.endTransaction();
 		}
 	}

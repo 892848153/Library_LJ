@@ -1,17 +1,14 @@
 package com.lj.library.activity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
-
-import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.os.Bundle;
 
 import com.lj.library.R;
+import com.lj.library.dao.DBTaskRunner;
 import com.lj.library.http.HttpDownloader.OnDownloadListener;
-import com.lj.library.http.HttpHelper;
 import com.lj.library.http.HttpHelper.OnHttpCallback;
 import com.lj.library.http.HttpUploader.OnUploadListener;
 import com.lj.library.util.LogUtil;
@@ -23,20 +20,44 @@ public class MainActivity extends Activity implements OnHttpCallback,
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair("date", "2011-11-11 11:11:11"));
-		HttpHelper httpHelper = new HttpHelper();
-		httpHelper.setOnHttpCallback(this);
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < 100; i++)
-			httpHelper
-					.post(this,
-							"http://61.144.248.2:8090/carManager/helpInfo!IconInstroduce.action",
-							params);
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("thread1", "10");
+		map.put("thread2", "20");
+		map.put("thread3", "30");
+		map.put("thread4", "40");
+		map.put("thread5", "50");
+
+		String path = "http://0";
+
+		DBTaskRunner dbRunner = new DBTaskRunner(getApplicationContext());
+		// dbRunner.insertDownloadProgress(0, "http://0", map);
+		dbRunner.queryDownloadProgress(0, "http://0");
+		dbRunner.queryDownloadProgress(1, "http://0");
+		dbRunner.queryDownloadProgress(2, "http://0");
+		dbRunner.queryDownloadProgress(3, "http://0");
+		dbRunner.queryDownloadProgress(4, "http://0");
+
+		dbRunner.updateDownloadProgress(0, path, map);
+		dbRunner.updateDownloadProgress(1, path, map);
+		dbRunner.updateDownloadProgress(2, path, map);
+		dbRunner.updateDownloadProgress(3, path, map);
+		dbRunner.updateDownloadProgress(4, path, map);
+
+		// List<BasicNameValuePair> params = new
+		// ArrayList<BasicNameValuePair>();
+		// params.add(new BasicNameValuePair("date", "2011-11-11 11:11:11"));
+		// HttpHelper httpHelper = new HttpHelper(this);
+		// try {
+		// Thread.sleep(2000);
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+		// for (int i = 0; i < 100; i++)
+		// httpHelper
+		// .post(this,
+		// "http://61.144.248.2:8090/carManager/helpInfo!IconInstroduce.action",
+		// params);
 
 		// String uploadUrl =
 		// "http://61.144.248.2:8090/carManager/cemployee!updateHeadPic.action";

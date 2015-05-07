@@ -49,11 +49,20 @@ public class ImageGetFromHttp {
 
 	private final Map<String, List<WeakReference<ImageView>>> mItems;
 
-	private OnBitmapFromHttpListener mListener;
+	private WeakReference<OnBitmapFromHttpListener> mListenerWRef;
 
+	/**
+	 * @param context
+	 * @param memoryCach
+	 *            下载完图片是否缓存在内存中
+	 * @param diskCach
+	 *            下载完图片是否缓存在sdcard上
+	 * @param recycleMemoryCache
+	 *            下载完图片是否缓存在可以回收的内存中，该片缓存可更加cacheFlag回收
+	 */
 	public ImageGetFromHttp(Context context, boolean memoryCach,
 			boolean diskCach, boolean recycleMemoryCache) {
-		mContext = context;
+		mContext = context.getApplicationContext();
 		mMemoryCache = memoryCach;
 		mDiskCache = diskCach;
 		mRecycleMemoryCache = recycleMemoryCache;
@@ -62,13 +71,17 @@ public class ImageGetFromHttp {
 	}
 
 	public void setOnGetFromHttpListener(OnBitmapFromHttpListener listener) {
-		mListener = listener;
+		if (mListenerWRef == null || mListenerWRef.get() != listener)
+			mListenerWRef = new WeakReference<ImageCacheManager.OnBitmapFromHttpListener>(
+					listener);
 	}
 
 	/**
 	 * 下载网络图片，并填充到控件上.
 	 * 
 	 * @param url
+	 * @param cacheFlag
+	 *            recycleMemoryCache为true时，可回收内存区域中，可根据cacheFlag回收相应的内存
 	 * @param imageView
 	 *            不想显示可以传入null
 	 * @return
@@ -82,6 +95,8 @@ public class ImageGetFromHttp {
 	/**
 	 * 下载图片并进行压缩处理.
 	 * 
+	 * @param cacheFlag
+	 *            recycleMemoryCache为true时，可回收内存区域中，可根据cacheFlag回收相应的内存
 	 * @param url
 	 * @param imageView
 	 * @param targetWidth
@@ -97,8 +112,8 @@ public class ImageGetFromHttp {
 	public Bitmap downloadBitmap(String cacheFlag, String url,
 			ImageView imageView, int targetWidth, int targetHeight) {
 		if (!NetworkChecker.isNetworkAvailable(mContext)) {
-			if (mListener != null) {
-				mListener.onGetBitmapNetworkNotFound(url);
+			if (mListenerWRef != null && mListenerWRef.get() != null) {
+				mListenerWRef.get().onGetBitmapNetworkNotFound(url);
 			}
 			return null;
 		}
@@ -159,8 +174,8 @@ public class ImageGetFromHttp {
 
 		@Override
 		protected void onPreExecute() {
-			if (mListener != null) {
-				mListener.onGetBitmapBegin(mUrl);
+			if (mListenerWRef != null && mListenerWRef.get() != null) {
+				mListenerWRef.get().onGetBitmapBegin(mUrl);
 			}
 		}
 
@@ -215,8 +230,8 @@ public class ImageGetFromHttp {
 		}
 
 		private void onGetBitmapError(String url, Exception e) {
-			if (mListener != null) {
-				mListener.onGetBitmapError(url, e);
+			if (mListenerWRef != null && mListenerWRef.get() != null) {
+				mListenerWRef.get().onGetBitmapError(url, e);
 			}
 		}
 
@@ -270,8 +285,8 @@ public class ImageGetFromHttp {
 				}
 			}
 
-			if (mListener != null) {
-				mListener.onGetBitmapOver(mUrl, result);
+			if (mListenerWRef != null && mListenerWRef.get() != null) {
+				mListenerWRef.get().onGetBitmapOver(mUrl, result);
 			}
 		}
 	}

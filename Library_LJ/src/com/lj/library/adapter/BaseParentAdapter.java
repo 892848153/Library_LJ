@@ -3,7 +3,9 @@ package com.lj.library.adapter;
 import java.util.List;
 
 import android.app.Activity;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.BaseAdapter;
 
 /**
@@ -55,5 +57,38 @@ public abstract class BaseParentAdapter extends BaseAdapter {
 			return position;
 		}
 		return 0;
+	}
+
+	/**
+	 * 用法.
+	 * <p/>
+	 * 
+	 * <pre>
+	 * if (convertView == null) {
+	 * 	convertView = LayoutInflater.from(getActivity()).inflate(
+	 * 			R.layout.fragment_feed_item, parent, false);
+	 * }
+	 * 
+	 * ImageView thumnailView = getAdapterView(convertView, R.id.video_thumbnail);
+	 * </pre>
+	 * 
+	 * @param convertView
+	 * @param id
+	 *            控件id
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends View> T getAdapterView(View convertView, int id) {
+		SparseArray<View> viewHolder = (SparseArray<View>) convertView.getTag();
+		if (viewHolder == null) {
+			viewHolder = new SparseArray<View>();
+			convertView.setTag(viewHolder);
+		}
+		View childView = viewHolder.get(id);
+		if (childView == null) {
+			childView = convertView.findViewById(id);
+			viewHolder.put(id, childView);
+		}
+		return (T) childView;
 	}
 }

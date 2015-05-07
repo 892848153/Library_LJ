@@ -20,7 +20,7 @@ import android.os.AsyncTask;
 public class ExecutorHolder {
 
 	private static final int CORE_POOL_SIZE = 5;
-	private static final int MAXIMUM_POOL_SIZE = 128;
+	private static final int MAXIMUM_POOL_SIZE = Integer.MAX_VALUE;
 	private static final int EKEEP_ALIVE = 10;
 
 	private static final ThreadFactory sThreadFactory = new ThreadFactory() {

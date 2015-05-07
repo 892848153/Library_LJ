@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.security.MessageDigest;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +34,17 @@ public class HttpDownloader {
 
 	private static final int RESPONSE_DOWNLOAD_FAIL = 0x02;
 
-	private OnDownloadListener mOnDwlodListener;
+	private WeakReference<OnDownloadListener> mOnDwldListenerWRef;
 
 	private final Map<String, Boolean> mGoOnDownload = new HashMap<String, Boolean>();
+
+	public HttpDownloader() {
+	}
+
+	public HttpDownloader(OnDownloadListener onDownloadListener) {
+		mOnDwldListenerWRef = new WeakReference<OnDownloadListener>(
+				onDownloadListener);
+	}
 
 	public void getFileLength(Activity context, String url) {
 		downloadFile(context, url, null);
@@ -51,8 +60,9 @@ public class HttpDownloader {
 	 */
 	public void downloadFile(Activity context, String url, String targetDir) {
 		if (!NetworkChecker.isNetworkAvailable(context)) {
-			if (mOnDwlodListener != null) {
-				mOnDwlodListener.onNetworkNotFound(url);
+			if (mOnDwldListenerWRef != null
+					&& mOnDwldListenerWRef.get() != null) {
+				mOnDwldListenerWRef.get().onNetworkNotFound(url);
 			}
 			return;
 		}
@@ -94,8 +104,10 @@ public class HttpDownloader {
 				}
 
 				long contentLenth = entity.getContentLength();
-				if (mOnDwlodListener != null) {
-					mOnDwlodListener.onDownloadFileLength(mUrl, contentLenth);
+				if (mOnDwldListenerWRef != null
+						&& mOnDwldListenerWRef.get() != null) {
+					mOnDwldListenerWRef.get().onDownloadFileLength(mUrl,
+							contentLenth);
 				}
 
 				boolean goOnDownload = checkHasSameNameFile(request);
@@ -110,8 +122,9 @@ public class HttpDownloader {
 				}
 				downloadFile(is, os, entity);
 			} catch (Exception e) {
-				if (mOnDwlodListener != null) {
-					mOnDwlodListener.onDownloadError(mUrl, e);
+				if (mOnDwldListenerWRef != null
+						&& mOnDwldListenerWRef.get() != null) {
+					mOnDwldListenerWRef.get().onDownloadError(mUrl, e);
 				}
 				e.printStackTrace();
 			} finally {
@@ -136,9 +149,10 @@ public class HttpDownloader {
 			if (!TextUtils.isEmpty(mTargetFilePath)) {
 				File file = new File(mTargetFilePath);
 				if (file.exists()) {
-					if (mOnDwlodListener != null) {
-						goOnDownload = mOnDwlodListener.onDownloadFileExist(
-								mUrl, filename);
+					if (mOnDwldListenerWRef != null
+							&& mOnDwldListenerWRef.get() != null) {
+						goOnDownload = mOnDwldListenerWRef.get()
+								.onDownloadFileExist(mUrl, filename);
 					}
 
 					if (goOnDownload) {
@@ -179,8 +193,10 @@ public class HttpDownloader {
 		private void downloadFile(InputStream is, OutputStream os,
 				HttpEntity entity) throws IOException {
 			if (is == null || os == null || entity == null) {
-				if (mOnDwlodListener != null) {
-					mOnDwlodListener.onDownloadFail(mUrl, mTargetFilePath);
+				if (mOnDwldListenerWRef != null
+						&& mOnDwldListenerWRef.get() != null) {
+					mOnDwldListenerWRef.get().onDownloadFail(mUrl,
+							mTargetFilePath);
 				}
 				return;
 			}
@@ -196,8 +212,9 @@ public class HttpDownloader {
 					downloadedLength += len;
 					publishProgress((long) downloadedLength, contentLength);
 				} else {
-					if (mOnDwlodListener != null) {
-						mOnDwlodListener.onDownloadingStoped(mUrl,
+					if (mOnDwldListenerWRef != null
+							&& mOnDwldListenerWRef.get() != null) {
+						mOnDwldListenerWRef.get().onDownloadingStoped(mUrl,
 								mTargetFilePath);
 					}
 					break;
@@ -208,29 +225,37 @@ public class HttpDownloader {
 
 		@Override
 		protected void onProgressUpdate(Long... values) {
-			if (mOnDwlodListener != null) {
+			if (mOnDwldListenerWRef != null
+					&& mOnDwldListenerWRef.get() != null) {
 				long downloadedLength = values[0];
 				long totalLength = values[1];
-				mOnDwlodListener.onDownloadProgress(mUrl, mTargetFilePath,
-						downloadedLength, totalLength);
+				mOnDwldListenerWRef.get().onDownloadProgress(mUrl,
+						mTargetFilePath, downloadedLength, totalLength);
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (mOnDwlodListener != null && !TextUtils.isEmpty(mTargetFilePath)
+			if (mOnDwldListenerWRef != null
+					&& mOnDwldListenerWRef.get() != null
+					&& !TextUtils.isEmpty(mTargetFilePath)
 					&& !TextUtils.isEmpty(mUrl) && mGoOnDownload.get(mUrl)) {
 				if (result.intValue() == RESPONSE_DOWNLOAD_SUCCESS) {
-					mOnDwlodListener.onDownloadSuccess(mUrl, mTargetFilePath);
+					mOnDwldListenerWRef.get().onDownloadSuccess(mUrl,
+							mTargetFilePath);
 				} else {
-					mOnDwlodListener.onDownloadFail(mUrl, mTargetFilePath);
+					mOnDwldListenerWRef.get().onDownloadFail(mUrl,
+							mTargetFilePath);
 				}
 			}
 		}
 	}
 
 	public void setOnDownloadListener(OnDownloadListener onDownloadListener) {
-		mOnDwlodListener = onDownloadListener;
+		if (onDownloadListener != mOnDwldListenerWRef.get()) {
+			mOnDwldListenerWRef = new WeakReference<OnDownloadListener>(
+					onDownloadListener);
+		}
 	}
 
 	/**

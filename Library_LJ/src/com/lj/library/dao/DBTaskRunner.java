@@ -54,6 +54,27 @@ public class DBTaskRunner {
 	 * @param path
 	 * @param map
 	 */
+	public void insertDownloadProgress(int requestCode, final String path,
+			final Map<String, String> map) {
+		Task task = new Task() {
+
+			@Override
+			public String execute() {
+				mManager.insertDownloadProgress(path, map);
+				return null;
+			}
+		};
+
+		write(task, requestCode);
+	}
+
+	/**
+	 * 实时更新每条线程已经下载的文件长度.
+	 * 
+	 * @param requestCode
+	 * @param path
+	 * @param map
+	 */
 	public void updateDownloadProgress(int requestCode, final String path,
 			final Map<String, String> map) {
 		Task task = new Task() {

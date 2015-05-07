@@ -16,7 +16,6 @@ import com.lj.library.util.LogUtil;
 
 public class ImageCacheManager {
 
-	private final Context mContext;
 	private final boolean mCacheInMemory;
 	private final boolean mCacheInRecycledMemory;
 	private final boolean mCacheInDisk;
@@ -40,7 +39,6 @@ public class ImageCacheManager {
 
 	public ImageCacheManager(Context context, boolean cacheInMemory,
 			boolean cacheInDisk, boolean cacheInRecycleMemory) {
-		mContext = context;
 		mCacheInMemory = cacheInMemory;
 		mCacheInDisk = cacheInDisk;
 		mCacheInRecycledMemory = cacheInRecycleMemory;
@@ -255,7 +253,7 @@ public class ImageCacheManager {
 	 */
 	public void removeBitmapFromMem(String url) {
 		if (TextUtils.isEmpty(url)) {
-			LogUtil.d(mContext, "图片Url地址为空");
+			LogUtil.d(this, "图片Url地址为空");
 			return;
 		}
 
@@ -269,7 +267,7 @@ public class ImageCacheManager {
 	 */
 	public void removeBitmapFromDisk(String url) {
 		if (TextUtils.isEmpty(url)) {
-			LogUtil.d(mContext, "图片Url地址为空");
+			LogUtil.d(this, "图片Url地址为空");
 			return;
 		}
 
