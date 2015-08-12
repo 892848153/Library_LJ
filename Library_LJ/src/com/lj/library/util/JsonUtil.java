@@ -1,9 +1,9 @@
 package com.lj.library.util;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 /**
  * Json解析，生成Json字符串类.
@@ -19,9 +19,14 @@ public class JsonUtil {
 		return sGson.fromJson(str, t);
 	}
 
-	public static <T> List<T> fromJson(String str) {
-		return sGson.fromJson(str, new TypeToken<List<T>>() {
-		}.getType());
+	/**
+	 * @param str
+	 * @param type
+	 *            sample: new TypeToken<List<T>>() { }.getType()
+	 * @return
+	 */
+	public static <T> List<T> fromJson(String str, Type type) {
+		return sGson.fromJson(str, type);
 	}
 
 	public static String toJson(Object src) {
