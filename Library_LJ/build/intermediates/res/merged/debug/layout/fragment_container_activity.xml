@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/fragment_container"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent" >
+</FrameLayout><!-- From: file:/Users/liujie_gyh/Documents/工作/程序/github/Library_LJ/Library_LJ/res/layout/fragment_container_activity.xml -->

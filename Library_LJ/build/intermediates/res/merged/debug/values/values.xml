@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/Users/liujie_gyh/Documents/工作/程序/github/Library_LJ/Library_LJ/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="app_name">Library_LJ</string>
+    <string name="hello_world">Hello world!</string>
+    <!-- From: file:/Users/liujie_gyh/Documents/工作/程序/github/Library_LJ/Library_LJ/res/values/styles.xml -->
+    <eat-comment/>
+    <style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar"/>
+    <style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
+	</style>
+    <style name="BaseDialogTheme" parent="android:Theme.Dialog">
+		<item name="android:windowIsTranslucent">true</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:backgroundDimAmount">0.0</item>
+	</style>
+</resources>

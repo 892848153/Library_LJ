@@ -14,25 +14,25 @@ import android.widget.BaseAdapter;
  * @time 2014年7月30日 下午4:17:32
  * @author jie.liu
  */
-public abstract class BaseParentAdapter extends BaseAdapter {
+public abstract class BaseParentAdapter<V> extends BaseAdapter {
 
-	public List<?> mItems;
-	public LayoutInflater mInflater;
-	public Activity mActivity;
-	public int mLayoutRes;
+	protected List<V> mItems;
+	protected LayoutInflater mInflater;
+	protected Activity mActivity;
+	protected int mLayoutId;
 
-	public BaseParentAdapter(List<?> items, Activity activity) {
+	public BaseParentAdapter(List<V> items, Activity activity) {
 		super();
 		this.mItems = items;
 		this.mActivity = activity;
 		this.mInflater = LayoutInflater.from(activity);
 	}
 
-	public BaseParentAdapter(List<?> items, Activity activity, int layoutRes) {
+	public BaseParentAdapter(List<V> items, Activity activity, int layoutRes) {
 		this.mItems = items;
 		this.mActivity = activity;
 		this.mInflater = LayoutInflater.from(activity);
-		this.mLayoutRes = layoutRes;
+		this.mLayoutId = layoutRes;
 	}
 
 	@Override
