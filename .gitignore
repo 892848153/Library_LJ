@@ -28,8 +28,6 @@ lint-results.*ml
 
 lint-results_files
 
-local.properties
-
 monkey.txt
 
 *~
@@ -42,15 +40,9 @@ target
 
 build
 
-.gradle
-
 out
 
-build.xml
-
 .idea/
-
-*.iml
 
 .project
 
