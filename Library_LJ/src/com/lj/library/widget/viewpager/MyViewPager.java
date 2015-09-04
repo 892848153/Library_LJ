@@ -471,6 +471,11 @@ public class MyViewPager<T> extends ViewGroup {
 		}
 	}
 
+	/**
+	 * 设置页面切换动画的时间, 默认是500毫秒.
+	 *
+	 * @param mills
+	 */
 	public void setScrollDuration(int mills) {
 		mScrollDuration = mills;
 	}

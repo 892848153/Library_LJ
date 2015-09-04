@@ -26,26 +26,30 @@ public final class R {
     }
     public static final class drawable {
         public static final int ar_loading_progress=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int loading_progress=0x7f020002;
-        public static final int page_indicator_bg=0x7f020003;
-        public static final int page_indicator_focused=0x7f020004;
-        public static final int page_indicator_unfocused=0x7f020005;
-        public static final int sp_round_black=0x7f020006;
+        public static final int banner_test=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int loading_progress=0x7f020003;
+        public static final int page_indicator_bg=0x7f020004;
+        public static final int page_indicator_focused=0x7f020005;
+        public static final int page_indicator_unfocused=0x7f020006;
+        public static final int sp_round_black=0x7f020007;
     }
     public static final class id {
+        public static final int banner=0x7f070001;
         public static final int fragment_container=0x7f070000;
-        public static final int indicator_llyt=0x7f070002;
-        public static final int list_view=0x7f070003;
-        public static final int view_pager=0x7f070001;
+        public static final int indicator_llyt=0x7f070004;
+        public static final int iv=0x7f070002;
+        public static final int list_view=0x7f070005;
+        public static final int view_pager=0x7f070003;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
         public static final int banner_fragment=0x7f030001;
-        public static final int banner_view=0x7f030002;
-        public static final int dlg_loading_progress=0x7f030003;
-        public static final int fragment_container_activity=0x7f030004;
-        public static final int main_fragment=0x7f030005;
+        public static final int banner_item=0x7f030002;
+        public static final int banner_view=0x7f030003;
+        public static final int dlg_loading_progress=0x7f030004;
+        public static final int fragment_container_activity=0x7f030005;
+        public static final int main_fragment=0x7f030006;
     }
     public static final class string {
         public static final int app_name=0x7f060000;

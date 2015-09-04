@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 主页菜单目录.
  * Created by liujie_gyh on 15/9/3.
  */
 public class MainFragment extends BaseFragment implements AdapterView.OnItemClickListener {
@@ -29,15 +30,15 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     private void initViews(View rootView) {
         ListView listView = (ListView) rootView.findViewById(R.id.list_view);
-        List<Menu> list = buildMenu();
+        List<Menu> list = buildMenus();
         mAdapter = new MenuAdapter(list, mActivity);
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(this);
     }
 
-    private List<Menu> buildMenu() {
+    private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<Menu>();
-        menuList.add(new Menu(new BannerFragment(), "Banner Test"));
+        menuList.add(new Menu(new BannerFragment(), "Banner Demo"));
         return menuList;
     }
 

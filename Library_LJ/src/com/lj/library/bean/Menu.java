@@ -11,6 +11,9 @@ public class Menu {
 
     public String describe;
 
+    public Menu() {
+    }
+
     public Menu(BaseFragment targetFragment, String describe) {
         this.targetFragment = targetFragment;
         this.describe = describe;
