@@ -44,6 +44,8 @@ out
 
 .idea/
 
+.gradle/
+
 .project
 
 project.properties
