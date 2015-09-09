@@ -1,4 +1,4 @@
-package com.lj.library.fragment;
+package com.lj.library.fragment.animation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.ListView;
 import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
-import com.lj.library.fragment.animation.AnimationFragment;
+import com.lj.library.fragment.BaseFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.util.LogUtil;
 
@@ -16,10 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 主页菜单目录.
- * Created by liujie_gyh on 15/9/3.
+ * Created by liujie_gyh on 15/9/9.
  */
-public class MainFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class AnimationFragment extends BaseFragment implements AdapterView.OnItemClickListener {
 
     private MenuAdapter mAdapter;
 
@@ -40,8 +39,9 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<Menu>();
-        menuList.add(new Menu(new BannerFragment(), "Banner Demo"));
-        menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
+        menuList.add(new Menu(new FrameAnimFragment(), "Frame Anim Demo"));
+        menuList.add(new Menu(new BannerFragment(), "Tween Anim Demo"));
+        menuList.add(new Menu(new BannerFragment(), "Object Anim Demo"));
         return menuList;
     }
 

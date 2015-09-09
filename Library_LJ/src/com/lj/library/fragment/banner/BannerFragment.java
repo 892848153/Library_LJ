@@ -1,10 +1,11 @@
-package com.lj.library.fragment;
+package com.lj.library.fragment.banner;
 
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.lj.library.R;
 import com.lj.library.bean.Menu;
+import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 import com.lj.library.widget.ScaledImageView;
 import com.lj.library.widget.viewpager.PagerAdapter;

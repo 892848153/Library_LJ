@@ -1,22 +1,18 @@
 package com.lj.library.activity;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.lj.library.R;
 import com.lj.library.activity.base.BaseHttpActivity;
-import com.lj.library.dao.DBTaskRunner;
-import com.lj.library.fragment.BannerFragment;
 import com.lj.library.fragment.MainFragment;
 import com.lj.library.http.HttpDownloader.OnDownloadListener;
 import com.lj.library.http.HttpHelper.OnHttpCallback;
 import com.lj.library.http.HttpUploader.OnUploadListener;
 import com.lj.library.util.LogUtil;
+
+import java.util.Map;
 
 public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
         OnUploadListener, OnDownloadListener {
