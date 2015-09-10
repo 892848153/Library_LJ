@@ -12,6 +12,7 @@ import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 
 /**
+ * 帧动画.
  * Created by liujie_gyh on 15/9/9.
  */
 public class FrameAnimFragment extends BaseFragment implements View.OnClickListener {
