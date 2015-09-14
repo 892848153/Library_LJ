@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:src="@mipmap/img0003"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <Button
+                android:id="@+id/alpha_anim_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:onClick="alphaImpl"
+                android:text="alpha动画" />
+
+            <Button
+                android:id="@+id/rotate_anim_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:onClick="rotateImpl"
+                android:text="rotate动画" />
+
+            <Button
+                android:id="@+id/scale_anim_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:onClick="scaleImpl"
+                android:text="scale动画" />
+
+            <Button
+                android:id="@+id/translate_anim_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:onClick="translateImpl"
+                android:text="translateImpl动画" />
+
+            <Button
+                android:id="@+id/anim_set_btn"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="8dp"
+                android:onClick="setAll"
+                android:text="所有动画一起播放" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

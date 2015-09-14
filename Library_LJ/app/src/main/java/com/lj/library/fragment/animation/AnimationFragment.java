@@ -40,7 +40,7 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
     private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<Menu>();
         menuList.add(new Menu(new FrameAnimFragment(), "Frame Anim Demo"));
-        menuList.add(new Menu(new BannerFragment(), "Tween Anim Demo"));
+        menuList.add(new Menu(new TweenAnimFragment(), "Tween Anim Demo"));
         menuList.add(new Menu(new BannerFragment(), "Object Anim Demo"));
         return menuList;
     }

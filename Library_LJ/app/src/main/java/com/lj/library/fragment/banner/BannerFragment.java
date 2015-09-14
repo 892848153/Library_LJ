@@ -39,7 +39,7 @@ public class BannerFragment extends BaseFragment {
         banner.setPageAdapter(pagerAdapter);
         if (pagerAdapter.getCount() >= 4) {
             banner.setCycleInterval(4000);
-            banner.setScrollDuration(1500);
+            banner.setScrollDuration(1000);
             banner.enableCycleScroll();
             banner.startAutoCycle();
             banner.setCurrentPage(1);
