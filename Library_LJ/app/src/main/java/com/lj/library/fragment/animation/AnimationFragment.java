@@ -9,7 +9,6 @@ import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
-import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.util.LogUtil;
 
 import java.util.ArrayList;
@@ -41,7 +40,7 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
         List<Menu> menuList = new ArrayList<Menu>();
         menuList.add(new Menu(new FrameAnimFragment(), "Frame Anim Demo"));
         menuList.add(new Menu(new TweenAnimFragment(), "Tween Anim Demo"));
-        menuList.add(new Menu(new BannerFragment(), "Object Anim Demo"));
+        menuList.add(new Menu(new ObjectAnimFragment(), "Object Anim Demo"));
         return menuList;
     }
 
