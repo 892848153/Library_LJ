@@ -9,7 +9,14 @@ import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
-import com.lj.library.fragment.banner.BannerFragment;
+import com.lj.library.fragment.animation.objanim.AnimatorInflaterFragment;
+import com.lj.library.fragment.animation.objanim.AnimatorSetFragment;
+import com.lj.library.fragment.animation.objanim.LayoutTransitionFragment;
+import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
+import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
+import com.lj.library.fragment.animation.objanim.TypeEvaluateFragment;
+import com.lj.library.fragment.animation.objanim.ValueAnimatorFragment;
+import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +45,14 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
 
     private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<Menu>();
-        menuList.add(new Menu(new FrameAnimFragment(), "ObjectAnimator Demo"));
-        menuList.add(new Menu(new TweenAnimFragment(), "ValueAnimator Demo"));
-        menuList.add(new Menu(new BannerFragment(), "AnimatorSet Demo"));
+        menuList.add(new Menu(new ObjectAnimatorFragment(), "ObjectAnimator Demo"));
+        menuList.add(new Menu(new ValueAnimatorFragment(), "ValueAnimator Demo"));
+        menuList.add(new Menu(new AnimatorSetFragment(), "AnimatorSet Demo"));
+        menuList.add(new Menu(new AnimatorInflaterFragment(), "AnimatorInflater Demo"));
+        menuList.add(new Menu(new LayoutTransitionFragment(), "LayoutTransition Demo"));
+        menuList.add(new Menu(new PropertyValueHolderFragment(), "PropertyValueHolder Demo"));
+        menuList.add(new Menu(new TypeEvaluateFragment(), "TypeEvaluate Demo"));
+        menuList.add(new Menu(new ViewAnimFragment(), "ViewAnim Demo"));
         return menuList;
     }
 
