@@ -1,0 +1,102 @@
+package com.lj.library.fragment.tabhost;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.widget.TextView;
+
+import com.lj.library.R;
+import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.LogUtil;
+
+/**
+ * FragmentTabHost的内容页.
+ * Created by jie.liu on 15/11/4.
+ */
+public class FragmentC extends BaseFragment {
+
+    private static final String TAG = FragmentC.class.getSimpleName();
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        LogUtil.i(this, "onAttach");
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        LogUtil.i(this, "onCreate");
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogUtil.i(this, "onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)");
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    protected View onCreateView(LayoutInflater inflater) {
+        LogUtil.i(this, "onCreateView(LayoutInflater inflater)");
+        View view = inflater.inflate(R.layout.tab_fragment, null);
+        TextView tv = (TextView) view.findViewById(R.id.tv);
+        tv.setText(TAG);
+        return view;
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        return super.onCreateAnimation(transit, enter, nextAnim);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        LogUtil.i(this, "onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtil.i(this, "onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.i(this, "onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtil.i(this, "onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        LogUtil.i(this, "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        LogUtil.i(this, "onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        LogUtil.i(this, "onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        LogUtil.i(this, "onDetach");
+    }
+}

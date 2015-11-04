@@ -6,11 +6,14 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lj.library.R;
+import com.lj.library.activity.TabHostActivity;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.animation.AnimationFragment;
 import com.lj.library.fragment.banner.BannerFragment;
+import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
+import com.lj.library.util.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,13 +45,20 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         List<Menu> menuList = new ArrayList<Menu>();
         menuList.add(new Menu(new BannerFragment(), "Banner Demo"));
         menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
+        menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
         return menuList;
     }
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Menu menu = (Menu) mAdapter.getItem(i);
-        startFragment(menu.targetFragment);
+        if (menu.targetFragment != null) {
+            startFragment(menu.targetFragment);
+        } else if (menu.targetActivity != null) {
+            ContextUtil.pushToActivity(mActivity, menu.targetActivity);
+        } else {
+            Toaster.showShort(mActivity, "未知的启动项");
+        }
     }
 
     @Override

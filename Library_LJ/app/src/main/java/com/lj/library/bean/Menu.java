@@ -1,5 +1,7 @@
 package com.lj.library.bean;
 
+import android.app.Activity;
+
 import com.lj.library.fragment.BaseFragment;
 
 /**
@@ -9,9 +11,16 @@ public class Menu {
 
     public BaseFragment targetFragment;
 
+    public Class<? extends Activity> targetActivity;
+
     public String describe;
 
     public Menu() {
+    }
+
+    public Menu(Class<? extends Activity> targetActivity, String describe) {
+        this.targetActivity = targetActivity;
+        this.describe = describe;
     }
 
     public Menu(BaseFragment targetFragment, String describe) {
