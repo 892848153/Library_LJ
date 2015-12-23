@@ -1,26 +1,25 @@
 package com.lj.library.http;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.ref.WeakReference;
-import java.security.MessageDigest;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.text.TextUtils;
+
+import com.lj.library.util.IOStreamCloser;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.text.TextUtils;
-
-import com.lj.library.util.IOStreamCloser;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * 从服务器下载文件.
@@ -34,7 +33,9 @@ public class HttpDownloader {
 
 	private static final int RESPONSE_DOWNLOAD_FAIL = 0x02;
 
-	private WeakReference<OnDownloadListener> mOnDwldListenerWRef;
+//	private WeakReference<OnDownloadListener> mOnDwldListenerWRef;
+
+	private OnDownloadListener mOnDownloadListener;
 
 	private final Map<String, Boolean> mGoOnDownload = new HashMap<String, Boolean>();
 
@@ -42,8 +43,7 @@ public class HttpDownloader {
 	}
 
 	public HttpDownloader(OnDownloadListener onDownloadListener) {
-		mOnDwldListenerWRef = new WeakReference<OnDownloadListener>(
-				onDownloadListener);
+		mOnDownloadListener = onDownloadListener;
 	}
 
 	public void getFileLength(Activity context, String url) {
@@ -60,9 +60,8 @@ public class HttpDownloader {
 	 */
 	public void downloadFile(Activity context, String url, String targetDir) {
 		if (!NetworkChecker.isNetworkAvailable(context)) {
-			if (mOnDwldListenerWRef != null
-					&& mOnDwldListenerWRef.get() != null) {
-				mOnDwldListenerWRef.get().onNetworkNotFound(url);
+			if (mOnDownloadListener != null) {
+				mOnDownloadListener.onNetworkNotFound(url);
 			}
 			return;
 		}
@@ -104,10 +103,8 @@ public class HttpDownloader {
 				}
 
 				long contentLenth = entity.getContentLength();
-				if (mOnDwldListenerWRef != null
-						&& mOnDwldListenerWRef.get() != null) {
-					mOnDwldListenerWRef.get().onDownloadFileLength(mUrl,
-							contentLenth);
+				if (mOnDownloadListener != null) {
+					mOnDownloadListener.onDownloadFileLength(mUrl, contentLenth);
 				}
 
 				boolean goOnDownload = checkHasSameNameFile(request);
@@ -122,9 +119,8 @@ public class HttpDownloader {
 				}
 				downloadFile(is, os, entity);
 			} catch (Exception e) {
-				if (mOnDwldListenerWRef != null
-						&& mOnDwldListenerWRef.get() != null) {
-					mOnDwldListenerWRef.get().onDownloadError(mUrl, e);
+				if (mOnDownloadListener != null) {
+					mOnDownloadListener.onDownloadError(mUrl, e);
 				}
 				e.printStackTrace();
 			} finally {
@@ -149,10 +145,8 @@ public class HttpDownloader {
 			if (!TextUtils.isEmpty(mTargetFilePath)) {
 				File file = new File(mTargetFilePath);
 				if (file.exists()) {
-					if (mOnDwldListenerWRef != null
-							&& mOnDwldListenerWRef.get() != null) {
-						goOnDownload = mOnDwldListenerWRef.get()
-								.onDownloadFileExist(mUrl, filename);
+					if (mOnDownloadListener != null) {
+						mOnDownloadListener.onDownloadFileExist(mUrl, filename);
 					}
 
 					if (goOnDownload) {
@@ -193,10 +187,8 @@ public class HttpDownloader {
 		private void downloadFile(InputStream is, OutputStream os,
 				HttpEntity entity) throws IOException {
 			if (is == null || os == null || entity == null) {
-				if (mOnDwldListenerWRef != null
-						&& mOnDwldListenerWRef.get() != null) {
-					mOnDwldListenerWRef.get().onDownloadFail(mUrl,
-							mTargetFilePath);
+				if (mOnDownloadListener != null) {
+					mOnDownloadListener.onDownloadFail(mUrl, mTargetFilePath);
 				}
 				return;
 			}
@@ -212,10 +204,8 @@ public class HttpDownloader {
 					downloadedLength += len;
 					publishProgress((long) downloadedLength, contentLength);
 				} else {
-					if (mOnDwldListenerWRef != null
-							&& mOnDwldListenerWRef.get() != null) {
-						mOnDwldListenerWRef.get().onDownloadingStoped(mUrl,
-								mTargetFilePath);
+					if (mOnDownloadListener != null) {
+						mOnDownloadListener.onDownloadingStoped(mUrl, mTargetFilePath);
 					}
 					break;
 				}
@@ -225,36 +215,31 @@ public class HttpDownloader {
 
 		@Override
 		protected void onProgressUpdate(Long... values) {
-			if (mOnDwldListenerWRef != null
-					&& mOnDwldListenerWRef.get() != null) {
+			if (mOnDownloadListener != null) {
 				long downloadedLength = values[0];
 				long totalLength = values[1];
-				mOnDwldListenerWRef.get().onDownloadProgress(mUrl,
-						mTargetFilePath, downloadedLength, totalLength);
+				mOnDownloadListener.onDownloadProgress(mUrl, mTargetFilePath, downloadedLength, totalLength);
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Integer result) {
-			if (mOnDwldListenerWRef != null
-					&& mOnDwldListenerWRef.get() != null
+			if (mOnDownloadListener != null
 					&& !TextUtils.isEmpty(mTargetFilePath)
-					&& !TextUtils.isEmpty(mUrl) && mGoOnDownload.get(mUrl)) {
+					&& !TextUtils.isEmpty(mUrl)
+					&& mGoOnDownload.get(mUrl)) {
 				if (result.intValue() == RESPONSE_DOWNLOAD_SUCCESS) {
-					mOnDwldListenerWRef.get().onDownloadSuccess(mUrl,
-							mTargetFilePath);
+					mOnDownloadListener.onDownloadSuccess(mUrl, mTargetFilePath);
 				} else {
-					mOnDwldListenerWRef.get().onDownloadFail(mUrl,
-							mTargetFilePath);
+					mOnDownloadListener.onDownloadFail(mUrl, mTargetFilePath);
 				}
 			}
 		}
 	}
 
 	public void setOnDownloadListener(OnDownloadListener onDownloadListener) {
-		if (onDownloadListener != mOnDwldListenerWRef.get()) {
-			mOnDwldListenerWRef = new WeakReference<OnDownloadListener>(
-					onDownloadListener);
+		if (onDownloadListener != mOnDownloadListener) {
+			mOnDownloadListener = onDownloadListener;
 		}
 	}
 

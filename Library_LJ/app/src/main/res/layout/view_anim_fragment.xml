@@ -6,7 +6,7 @@
         android:id="@+id/image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/bol_blue"/>
+        android:src="@drawable/bol_blue"/>
 
     <LinearLayout
         android:layout_width="fill_parent"

@@ -1,12 +1,8 @@
 package com.lj.library.http;
 
-import java.io.File;
-import java.lang.ref.WeakReference;
-import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import android.app.Activity;
+import android.os.AsyncTask;
+import android.text.TextUtils;
 
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -15,9 +11,12 @@ import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.apache.http.protocol.HTTP;
 
-import android.app.Activity;
-import android.os.AsyncTask;
-import android.text.TextUtils;
+import java.io.File;
+import java.nio.charset.Charset;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 上传文件到服务器.
@@ -27,7 +26,9 @@ import android.text.TextUtils;
  */
 public class HttpUploader {
 
-	private WeakReference<OnUploadListener> mOnUploadListenerWRef;
+//	private WeakReference<OnUploadListener> mOnUploadListenerWRef;
+
+	private OnUploadListener mOnUploadListener;
 
 	private final long mTimeConsumed = 0L;
 
@@ -78,9 +79,8 @@ public class HttpUploader {
 	public void uploadFiles(Activity activity, String url,
 			Map<String, String> files, Map<String, String> params) {
 		if (!NetworkChecker.isNetworkAvailable(activity)) {
-			if (mOnUploadListenerWRef != null
-					&& mOnUploadListenerWRef.get() != null) {
-				mOnUploadListenerWRef.get().onNetworkNotFound(url);
+			if (mOnUploadListener != null) {
+				mOnUploadListener.onNetworkNotFound(url);
 			}
 			return;
 		}
@@ -135,9 +135,8 @@ public class HttpUploader {
 						mResponseWrapper);
 			} catch (Exception e) {
 				e.printStackTrace();
-				if (mOnUploadListenerWRef != null
-						&& mOnUploadListenerWRef.get() != null) {
-					mOnUploadListenerWRef.get().onUploadError(mUrl, e);
+				if (mOnUploadListener != null) {
+					mOnUploadListener.onUploadError(mUrl, e);
 				}
 			} finally {
 				HttpAssistance.shutdown(client);
@@ -149,32 +148,27 @@ public class HttpUploader {
 		protected void onProgressUpdate(Long... values) {
 			long curlen = values[0];
 			long totalLen = values[1];
-			if (mOnUploadListenerWRef != null
-					&& mOnUploadListenerWRef.get() != null) {
-				mOnUploadListenerWRef.get().onUploadProgress(curlen, totalLen);
+			if (mOnUploadListener != null) {
+				mOnUploadListener.onUploadProgress(curlen, totalLen);
 			}
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			if (mOnUploadListenerWRef != null
-					&& mOnUploadListenerWRef.get() != null) {
-				OnUploadListener uploadListener = mOnUploadListenerWRef.get();
+			if (mOnUploadListener != null) {
 				if (mResponseWrapper.response == HttpStatus.SC_OK
 						&& !TextUtils.isEmpty(result)) {
-					uploadListener.onUploadSuccess(mUrl, mFiles, result);
+					mOnUploadListener.onUploadSuccess(mUrl, mFiles, result);
 				} else {
-					uploadListener.onUploadFail(mUrl, mFiles,
-							mResponseWrapper.response);
+					mOnUploadListener.onUploadFail(mUrl, mFiles, mResponseWrapper.response);
 				}
 			}
 		}
 	}
 
 	public void setOnUploadListener(OnUploadListener onUploadListener) {
-		if (mOnUploadListenerWRef.get() != onUploadListener) {
-			mOnUploadListenerWRef = new WeakReference<OnUploadListener>(
-					onUploadListener);
+		if (mOnUploadListener != onUploadListener) {
+			mOnUploadListener = onUploadListener;
 		}
 	}
 

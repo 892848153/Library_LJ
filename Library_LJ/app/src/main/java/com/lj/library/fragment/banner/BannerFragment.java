@@ -54,7 +54,7 @@ public class BannerFragment extends BaseFragment {
                     R.layout.banner_item, null);
             ScaledImageView iv = (ScaledImageView) view.findViewById(R.id.iv);
             iv.setFrameWeight(660, 300);
-            iv.setImageResource(R.mipmap.banner_test);
+            iv.setImageResource(R.drawable.banner_test);
             return view;
         }
     }
