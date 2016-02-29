@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lj.library.widget.renderperform.CustomLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="match_parent">
+
+    <com.lj.library.widget.renderperform.CustomLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="horizontal">
+
+        <com.lj.library.widget.renderperform.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:text="text1"/>
+
+        <com.lj.library.widget.renderperform.CustomButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:text="text1"/>
+
+        <com.lj.library.widget.renderperform.CustomFrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.lj.library.widget.renderperform.CustomTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="111"/>
+        </com.lj.library.widget.renderperform.CustomFrameLayout>
+    </com.lj.library.widget.renderperform.CustomLinearLayout>
+
+</com.lj.library.widget.renderperform.CustomLinearLayout>
+
+
+    <!--02-26 14:00:13.382 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.382 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.382 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+    02-26 14:00:13.384 20866-20866/com.mangocity.uirender E/CustomButton: onMeasure
+    02-26 14:00:13.384 20866-20866/com.mangocity.uirender E/CustomFrameLayout: onMeasure
+    02-26 14:00:13.384 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomButton: onMeasure
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomFrameLayout: onMeasure
+    02-26 14:00:13.412 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+
+    02-26 14:00:13.413 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onLayout
+    02-26 14:00:13.413 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onLayout
+    02-26 14:00:13.414 20866-20866/com.mangocity.uirender E/CustomTextView: onLayout
+    02-26 14:00:13.415 20866-20866/com.mangocity.uirender E/CustomButton: onLayout
+    02-26 14:00:13.416 20866-20866/com.mangocity.uirender E/CustomFrameLayout: onLayout
+    02-26 14:00:13.416 20866-20866/com.mangocity.uirender E/CustomTextView: onLayout
+    02-26 14:00:13.430 20866-20866/com.mangocity.uirender E/CustomTextView: onDraw
+    02-26 14:00:13.431 20866-20866/com.mangocity.uirender E/CustomButton: onDraw
+    02-26 14:00:13.432 20866-20866/com.mangocity.uirender E/CustomTextView: onDraw
+    02-26 14:00:13.432 20866-20866/com.mangocity.uirender E/CustomButton: onDraw
+    上面一堆的两次measure，一次layout,一次draw是固定会有的。
+    02-26 14:00:13.449 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.449 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onMeasure
+    02-26 14:00:13.449 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomButton: onMeasure
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomFrameLayout: onMeasure
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomTextView: onMeasure
+
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomLinearLayout: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomTextView: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomButton: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomFrameLayout: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomTextView: onLayout
+    02-26 14:00:13.450 20866-20866/com.mangocity.uirender E/CustomTextView: onDraw
+    02-26 14:00:13.451 20866-20866/com.mangocity.uirender E/CustomButton: onDraw
+    02-26 14:00:13.451 20866-20866/com.mangocity.uirender E/CustomTextView: onDraw-->
