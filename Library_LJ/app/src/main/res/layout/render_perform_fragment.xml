@@ -33,5 +33,6 @@
         android:layout_height="match_parent"
         android:text="RelativeLayout的所有孩子的onMeasure会测量两次，LinearLayout带Weight的孩子也会测量两次，其它的都是测量一次。
         一个ui刷新过程主要的耗时在onDraw，onDraw的耗时会是onMeasure和onLayout耗时总和的几十倍，所以编写界面时决不允许过度绘制，
-        其次才是注意不要让测量进行两次。"/>
+        其次才是注意不要让测量进行两次。FrameLayout, RelativeLayout的onDraw默认为空、LinearLayout的onDraw默认只绘制diveder，
+        所以如果不给这些Layout设置背景的话，多层嵌套是不会出现过度绘制的。"/>
 </LinearLayout>
