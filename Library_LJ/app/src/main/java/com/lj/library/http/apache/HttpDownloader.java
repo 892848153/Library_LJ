@@ -1,9 +1,10 @@
-package com.lj.library.http;
+package com.lj.library.http.apache;
 
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
+import com.lj.library.http.common.NetworkChecker;
 import com.lj.library.util.IOStreamCloser;
 
 import org.apache.http.Header;

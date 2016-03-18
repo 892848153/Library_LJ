@@ -1,4 +1,4 @@
-package com.lj.library.http;
+package com.lj.library.http.common;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

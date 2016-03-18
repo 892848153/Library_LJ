@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 20
-    buildToolsVersion "23.0.0"
+    compileSdkVersion 22
+    buildToolsVersion '23.0.0'
 
     defaultConfig {
         applicationId "com.lj.library"
-        minSdkVersion 8
-        targetSdkVersion 23
+        minSdkVersion 9
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -17,6 +17,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    //    android6.0中删除apache包, 用此引用
+//    useLibrary 'org.apache.http.legacy'
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
@@ -34,4 +37,6 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.0-beta4'
     compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta4'
+    compile 'com.orhanobut:logger:1.11'
+    compile 'io.reactivex:rxandroid:1.1.0'
 }

@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lj.library.R;
-import com.lj.library.http.HttpHelper;
+import com.lj.library.http.apache.HttpHelper;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.Toaster;
 import com.lj.library.widget.LoadingProgress;

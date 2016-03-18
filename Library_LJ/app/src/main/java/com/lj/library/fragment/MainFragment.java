@@ -11,6 +11,7 @@ import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.animation.AnimationFragment;
 import com.lj.library.fragment.banner.BannerFragment;
+import com.lj.library.fragment.http.HttpDemoFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
@@ -48,6 +49,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
         menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
         menuList.add(new Menu(new RenderPerformFragment(), "Render Performance"));
+        menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
         return menuList;
     }
 

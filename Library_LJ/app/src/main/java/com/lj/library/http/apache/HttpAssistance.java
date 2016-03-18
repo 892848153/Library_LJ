@@ -1,6 +1,4 @@
-package com.lj.library.http;
-
-import java.io.IOException;
+package com.lj.library.http.apache;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -12,6 +10,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
+
+import java.io.IOException;
 
 /**
  * 网络请求铺助类.

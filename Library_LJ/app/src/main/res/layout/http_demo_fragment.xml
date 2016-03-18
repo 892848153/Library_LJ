@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    tools:context="com.mangocity.internettest.MainActivity">
+
+    <Button
+        android:id="@+id/okhttp_get_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okHttp Get"/>
+
+    <Button
+        android:id="@+id/okhttp_post_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okHttp Post"/>
+
+    <Button
+        android:id="@+id/okhttp_download_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okHttp Download"/>
+
+    <Button
+        android:id="@+id/okhttp_upload_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="okHttp Upload"/>
+
+    <Button
+        android:id="@+id/retrofit_get_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retrofit Get"/>
+
+    <Button
+        android:id="@+id/retrofit_post_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retrofit Post"/>
+
+    <Button
+        android:id="@+id/retrofit_download_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retrofit Download"/>
+
+    <Button
+        android:id="@+id/retrofit_upload_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Retrofit Upload"/>
+
+
+</LinearLayout>

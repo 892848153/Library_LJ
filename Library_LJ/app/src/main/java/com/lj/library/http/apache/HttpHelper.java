@@ -1,4 +1,4 @@
-package com.lj.library.http;
+package com.lj.library.http.apache;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 
 import com.lj.library.constants.ExecutorHolder;
-import com.lj.library.http.NetworkChecker.NetworkType;
+import com.lj.library.http.common.NetworkChecker;
 import com.lj.library.util.LogUtil;
 
 import org.apache.http.HttpStatus;
@@ -98,7 +98,7 @@ public class HttpHelper {
         if (Build.VERSION.SDK_INT < 11) {
             task.execute();
         } else {
-            NetworkType type = NetworkChecker.getNetworkType(context);
+            NetworkChecker.NetworkType type = NetworkChecker.getNetworkType(context);
             switch (type) {
                 case NETWORK_TYPE_3G:
                 case NETWORK_TYPE_WIFI:

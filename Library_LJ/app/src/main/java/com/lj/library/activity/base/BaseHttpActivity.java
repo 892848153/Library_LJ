@@ -1,6 +1,6 @@
 package com.lj.library.activity.base;
 
-import com.lj.library.http.HttpHelper.OnHttpCallback;
+import com.lj.library.http.apache.HttpHelper.OnHttpCallback;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.Toaster;
 import com.lj.library.widget.LoadingProgress;
