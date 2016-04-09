@@ -3,7 +3,6 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 22
     buildToolsVersion '23.0.0'
-
     defaultConfig {
         applicationId "com.lj.library"
         minSdkVersion 9
@@ -11,16 +10,25 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'lj'
+            keyPassword '2021516'
+            storeFile file('/Users/liujie_gyh/Documents/ljkeystore')
+            storePassword '2021516'
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
         }
     }
-
     //    android6.0中删除apache包, 用此引用
 //    useLibrary 'org.apache.http.legacy'
-
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/NOTICE'

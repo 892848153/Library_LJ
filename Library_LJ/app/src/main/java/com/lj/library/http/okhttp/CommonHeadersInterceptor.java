@@ -28,8 +28,8 @@ public class CommonHeadersInterceptor implements Interceptor {
         Request request = chain.request()
                 .newBuilder()
                 .addHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8")
-                .addHeader("Connection", "keep-alive")
-                .addHeader("Accept-Encoding", "gzip, deflate")
+                .addHeader("Connection", "keep-alive")  // 默认值 详情见 {@link HttpEngine#networkRequest()}
+                .addHeader("Accept-Encoding", "gzip")   // 默认值 详情见 {@link HttpEngine#networkRequest()}
                 .build();
         return chain.proceed(request);
     }
