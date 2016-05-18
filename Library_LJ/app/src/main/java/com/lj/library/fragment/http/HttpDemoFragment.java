@@ -37,6 +37,10 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by liujie_gyh on 16/3/11.
@@ -200,6 +204,89 @@ public class HttpDemoFragment extends BaseFragment {
         @PUT("user/photo")
         Call<UserInfo> updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
     }
+
+    public void rxjavaGet() {
+        GitHubServiceRx gitHubServiceRx = RetrofitManager.createWithRxJava(GitHubServiceRx.class);
+        Observable<List<UserInfo>> observable = gitHubServiceRx.groupList(1);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<List<UserInfo>>() {
+                    @Override
+                    public void call(List<UserInfo> userInfos) {
+
+                    }
+                });
+    }
+
+    public void rxjavaPost() {
+        GitHubServiceRx gitHubServiceRx = RetrofitManager.createWithRxJava(GitHubServiceRx.class);
+        Observable<UserInfo> observable = gitHubServiceRx.createUser(new UserInfo());
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+
+                    }
+                });
+    }
+
+    public void rxjavaDownload() {
+        GitHubServiceRx gitHubServiceRx = RetrofitManager.createWithRxJava(GitHubServiceRx.class);
+        Observable<String> observable = gitHubServiceRx.downloadFile("README.txt");
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<String>() {
+                    @Override
+                    public void call(String s) {
+
+                    }
+                });
+    }
+
+    public void rxjavaUpload() {
+        File file = new File("README.md");
+        RequestBody requestBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                .addFormDataPart("hello", "android")
+                .addFormDataPart("photo", file.getName(), RequestBody.create(MediaType.parse("application/octet-stream"), file))
+                .build();
+        GitHubServiceRx gitHubServiceRx = RetrofitManager.createWithRxJava(GitHubServiceRx.class);
+        Observable<UserInfo> observable = gitHubServiceRx.updateUser(requestBody, requestBody);
+        observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<UserInfo>() {
+                    @Override
+                    public void call(UserInfo userInfo) {
+
+                    }
+                });
+    }
+
+    public interface GitHubServiceRx {
+        @GET("users/{user}/repos")
+        Observable<List<UserInfo>> listRepos(@Path("user") String user);
+
+        @GET("group/{id}/users")
+        Observable<List<UserInfo>> groupList(@Path("id") int groupId);
+
+        @GET("group/{id}/users")
+        Observable<List<UserInfo>> groupList(@Path("id") int groupId, @Query("sort") String sort);
+
+        @GET("group/{id}/users")
+        Observable<List<UserInfo>> groupList(@Path("id") int groupId, @QueryMap Map<String, String> options);
+
+        @GET("group/{filename}")
+        Observable<String> downloadFile(@Path("filename") String filename);
+
+
+        @POST("users/new")
+        Observable<UserInfo> createUser(@Body UserInfo user);
+
+        @FormUrlEncoded
+        @POST("user/edit")
+        Observable<UserInfo> updateUser(@Field("first_name") String first, @Field("last_name") String last);
+
+        @Multipart
+        @PUT("user/photo")
+        Observable<UserInfo> updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
+    }
+
 
     @Override
     public void onDestroyView() {
