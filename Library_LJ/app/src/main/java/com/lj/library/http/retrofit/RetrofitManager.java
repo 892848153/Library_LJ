@@ -17,11 +17,20 @@ public enum RetrofitManager {
 
     private static Retrofit sRetrofit;
 
+    private static Retrofit sRetrofitWithRxJava;
+
     static {
         sRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(OkHttpManager.INSTANCE.getClient())
                 .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        sRetrofitWithRxJava = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(OkHttpManager.INSTANCE.getClient())
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 
@@ -30,12 +39,6 @@ public enum RetrofitManager {
     }
 
     public static <T> T createWithRxJava(Class<T> cls) {
-        sRetrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .client(OkHttpManager.INSTANCE.getClient())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        return sRetrofit.create(cls);
+        return sRetrofitWithRxJava.create(cls);
     }
 }
