@@ -3,12 +3,10 @@ package com.lj.library.fragment.renderperform;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -17,14 +15,6 @@ import butterknife.OnClick;
  * Created by liujie_gyh on 16/3/1.
  */
 public class RenderPerformFragment extends BaseFragment {
-    @Bind(R.id.frame_btn)
-    Button mFrameBtn;
-    @Bind(R.id.linear_btn)
-    Button mLinearBtn;
-    @Bind(R.id.relative_btn)
-    Button mRelativeBtn;
-    @Bind(R.id.linear_weight_btn)
-    Button mLinearWeightBtn;
 
     @Override
     protected View onCreateView(LayoutInflater inflater) {
