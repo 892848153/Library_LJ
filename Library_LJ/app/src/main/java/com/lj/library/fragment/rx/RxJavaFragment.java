@@ -3,15 +3,21 @@ package com.lj.library.fragment.rx;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.orhanobut.logger.Logger;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
+import rx.subjects.SerializedSubject;
+import rx.subjects.Subject;
 
 /**
  * Created by liujie_gyh on 16/4/29.
@@ -20,11 +26,13 @@ public class RxJavaFragment extends BaseFragment {
 
     @Override
     protected View onCreateView(LayoutInflater inflater) {
-        executeTest();
-        return null;
+        View view = inflater.inflate(R.layout.rx_java_fragment, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
-    private void executeTest() {
+    @OnClick(R.id.rx_java_btn)
+    public void runRxJavaDemo() {
         simpleDemo();
         complexDemo();
     }
@@ -89,6 +97,31 @@ public class RxJavaFragment extends BaseFragment {
                         Logger.i("subscribe.Action1.call", "");
                     }
                 });
+    }
 
+    /**
+     * 几个Subject类的区别见<a href="http://www.tuicool.com/articles/E32amy2">RxJava开发精要2</a>
+     */
+    @OnClick(R.id.rx_bus_btn)
+    public void runRxBusDemo() {
+        Subject subject = new SerializedSubject(PublishSubject.create());
+        subject.subscribe(new Subscriber() {
+            @Override
+            public void onCompleted() {
+                Logger.i("onCompleted", "");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                Logger.e(throwable, "", "");
+            }
+
+            @Override
+            public void onNext(Object o) {
+                Logger.i("onNext:", "");
+            }
+        });
+
+        subject.onNext("hello world");
     }
 }
