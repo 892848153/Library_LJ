@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.RxBus;
 import com.orhanobut.logger.Logger;
 
 import butterknife.ButterKnife;
@@ -15,9 +16,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
-import rx.subjects.PublishSubject;
-import rx.subjects.SerializedSubject;
-import rx.subjects.Subject;
 
 /**
  * Created by liujie_gyh on 16/4/29.
@@ -104,24 +102,43 @@ public class RxJavaFragment extends BaseFragment {
      */
     @OnClick(R.id.rx_bus_btn)
     public void runRxBusDemo() {
-        Subject subject = new SerializedSubject(PublishSubject.create());
-        subject.subscribe(new Subscriber() {
+//        Subject subject = new SerializedSubject(PublishSubject.create());
+//        subject.subscribe(new Subscriber() {
+//            @Override
+//            public void onCompleted() {
+//                Logger.i("onCompleted", "");
+//            }
+//
+//            @Override
+//            public void onError(Throwable throwable) {
+//                Logger.e(throwable, "", "");
+//            }
+//
+//            @Override
+//            public void onNext(Object o) {
+//                Logger.i("onNext:", "");
+//            }
+//        });
+//
+//        subject.onNext("hello world");
+        Observable<String> observable = RxBus.getInstance().register(this, String.class);
+        observable.subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
-                Logger.i("onCompleted", "");
+
             }
 
             @Override
             public void onError(Throwable throwable) {
-                Logger.e(throwable, "", "");
+
             }
 
             @Override
-            public void onNext(Object o) {
-                Logger.i("onNext:", "");
+            public void onNext(String o) {
+
             }
         });
+        RxBus.getInstance().post(this, "hello");
 
-        subject.onNext("hello world");
     }
 }
