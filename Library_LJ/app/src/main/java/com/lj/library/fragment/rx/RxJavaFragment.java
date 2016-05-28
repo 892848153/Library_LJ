@@ -5,8 +5,8 @@ import android.view.View;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
-import com.orhanobut.logger.Logger;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -58,7 +58,6 @@ public class RxJavaFragment extends BaseFragment {
                 Logger.i("onNext:%s", s);
             }
         });
-
     }
 
     /**
@@ -102,25 +101,6 @@ public class RxJavaFragment extends BaseFragment {
      */
     @OnClick(R.id.rx_bus_btn)
     public void runRxBusDemo() {
-//        SubjectWrapper subject = new SerializedSubject(PublishSubject.create());
-//        subject.subscribe(new Subscriber() {
-//            @Override
-//            public void onCompleted() {
-//                Logger.i("onCompleted", "");
-//            }
-//
-//            @Override
-//            public void onError(Throwable throwable) {
-//                Logger.e(throwable, "", "");
-//            }
-//
-//            @Override
-//            public void onNext(Object o) {
-//                Logger.i("onNext:", "");
-//            }
-//        });
-//
-//        subject.onNext("hello world");
         Observable<String> observable = RxBus.getInstance().register(this, String.class);
         observable.subscribe(new Subscriber<String>() {
             @Override
@@ -141,11 +121,10 @@ public class RxJavaFragment extends BaseFragment {
         observable.subscribe(new Action1<String>() {
             @Override
             public void call(String s) {
-
+                Logger.i("Action1.call:%s", s);
             }
         });
         RxBus.getInstance().post(this, 1);
         RxBus.getInstance().post(this, "hello");
-
     }
 }

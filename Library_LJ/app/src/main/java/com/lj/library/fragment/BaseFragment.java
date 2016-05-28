@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.lj.library.R;
 import com.lj.library.http.apache.HttpHelper;
 import com.lj.library.util.LogUtil;
+import com.lj.library.util.RxBus;
 import com.lj.library.util.Toaster;
 import com.lj.library.widget.LoadingProgress;
 
@@ -198,5 +199,11 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
 
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        RxBus.getInstance().unregister(this);
     }
 }

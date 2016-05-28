@@ -1,6 +1,6 @@
 package com.lj.library.util;
 
-import com.orhanobut.logger.BuildConfig;
+import com.lj.library.BuildConfig;
 import com.orhanobut.logger.Printer;
 import com.orhanobut.logger.Settings;
 
