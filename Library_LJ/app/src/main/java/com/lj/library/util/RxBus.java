@@ -16,7 +16,7 @@ import rx.subjects.Subject;
  */
 public class RxBus {
 
-    private ConcurrentHashMap<Object, List<Subject>> mSubjectMapper = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<Object, List<SubjectWrapper>> mSubjectMapper = new ConcurrentHashMap<>();
 
     public static final RxBus getInstance() {
         return InstanceHolder.INSTANCE;
@@ -29,42 +29,72 @@ public class RxBus {
     private RxBus() {
     }
 
-    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> cls) {
-        List<Subject> subjectList = mSubjectMapper.get(tag);
-        if (null == subjectList) {
-            subjectList = new ArrayList<>();
-            mSubjectMapper.put(tag, subjectList);
+    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> eventType) {
+        List<SubjectWrapper> subjectWrapperList = mSubjectMapper.get(tag);
+        if (null == subjectWrapperList) {
+            subjectWrapperList = new ArrayList<>();
+            mSubjectMapper.put(tag, subjectWrapperList);
         }
 
         Subject<T, T> subject = new SerializedSubject<>(PublishSubject.<T>create());
-        subjectList.add(subject);
+        subjectWrapperList.add(new SubjectWrapper(eventType, subject));
         return subject;
     }
 
     public void unregister(@NonNull Object tag) {
-        List<Subject> subjectList = mSubjectMapper.get(tag);
-        if (subjectList != null && !subjectList.isEmpty()) {
+        List<SubjectWrapper> subjectWrapperList = mSubjectMapper.get(tag);
+        if (subjectWrapperList != null && !subjectWrapperList.isEmpty()) {
             mSubjectMapper.remove(tag);
         }
     }
 
     public void unregister(@NonNull Object tag, @NonNull Observable observable) {
-        List<Subject> subjectList = mSubjectMapper.get(tag);
-        if (subjectList != null) {
-            subjectList.remove(observable);
-            if (subjectList.isEmpty()) {
+        List<SubjectWrapper> subjectWrapperList = mSubjectMapper.get(tag);
+        if (subjectWrapperList != null && !subjectWrapperList.isEmpty()) {
+            for (SubjectWrapper subjectWrapper : subjectWrapperList) {
+                if (subjectWrapper.getSubject() == observable) {
+                    subjectWrapperList.remove(subjectWrapper);
+                }
+            }
+
+            if (subjectWrapperList.isEmpty()) {
                 mSubjectMapper.remove(tag);
             }
         }
     }
 
-    public void post(@NonNull Object tag, @NonNull Object content) {
-        List<Subject> subjectList = mSubjectMapper.get(tag);
-        if (subjectList != null && !subjectList.isEmpty()) {
-            for (Subject subject : subjectList) {
-                subject.onNext(content);
+    public <T> void post(@NonNull Object tag, @NonNull T content) {
+        List<SubjectWrapper> subjectWrapperList = mSubjectMapper.get(tag);
+        if (subjectWrapperList != null && !subjectWrapperList.isEmpty()) {
+            dispatchPost(content, subjectWrapperList);
+        }
+    }
+
+    private <T> void dispatchPost(@NonNull T content, List<SubjectWrapper> subjectWrapperList) {
+        for (SubjectWrapper subjectWrapper : subjectWrapperList) {
+            if (subjectWrapper.getEventType() == content.getClass()) {
+                subjectWrapper.getSubject().onNext(content);
             }
         }
     }
 
+    private class SubjectWrapper {
+
+        private Class mEventType;
+
+        private Subject mSubject;
+
+        public SubjectWrapper(Class eventType, Subject subject) {
+            mEventType = eventType;
+            mSubject = subject;
+        }
+
+        public Class getEventType() {
+            return mEventType;
+        }
+
+        public rx.subjects.Subject getSubject() {
+            return mSubject;
+        }
+    }
 }

@@ -102,7 +102,7 @@ public class RxJavaFragment extends BaseFragment {
      */
     @OnClick(R.id.rx_bus_btn)
     public void runRxBusDemo() {
-//        Subject subject = new SerializedSubject(PublishSubject.create());
+//        SubjectWrapper subject = new SerializedSubject(PublishSubject.create());
 //        subject.subscribe(new Subscriber() {
 //            @Override
 //            public void onCompleted() {
@@ -125,19 +125,26 @@ public class RxJavaFragment extends BaseFragment {
         observable.subscribe(new Subscriber<String>() {
             @Override
             public void onCompleted() {
-
+                Logger.i("onCompleted", "");
             }
 
             @Override
             public void onError(Throwable throwable) {
-
+                Logger.e(throwable, "", "");
             }
 
             @Override
             public void onNext(String o) {
+                Logger.i("onNext:%s", o);
+            }
+        });
+        observable.subscribe(new Action1<String>() {
+            @Override
+            public void call(String s) {
 
             }
         });
+        RxBus.getInstance().post(this, 1);
         RxBus.getInstance().post(this, "hello");
 
     }
