@@ -55,7 +55,7 @@ public class FrameAnimFragment extends BaseFragment implements View.OnClickListe
                 mAnimDraw = new AnimationDrawable();
                 for (int i = 1; i <= 9; i++) {
                     //根据资源名称和目录获取R.java中对应的资源ID
-                    int id = getResources().getIdentifier("img000" + i, "mipmap", mActivity.getPackageName());
+                    int id = getResources().getIdentifier("img000" + i, "drawable", mActivity.getPackageName());
                     //根据资源ID获取到Drawable对象
                     Drawable drawable = getResources().getDrawable(id);
                     //将此帧添加到AnimationDrawable中
