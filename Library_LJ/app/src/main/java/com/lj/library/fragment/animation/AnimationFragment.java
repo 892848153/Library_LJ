@@ -53,6 +53,6 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
     @Override
     public boolean onBackPressed() {
         LogUtil.d(this, "onBackPressed");
-        return true;
+        return false;
     }
 }
