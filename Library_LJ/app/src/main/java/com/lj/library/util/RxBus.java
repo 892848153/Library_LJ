@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
@@ -27,6 +29,23 @@ public class RxBus {
     }
 
     private RxBus() {
+    }
+
+    private static final Action1<Throwable> DEFAULT_ON_ERROR = new Action1<Throwable>() {
+        @Override
+        public void call(Throwable throwable) {
+            Logger.e(throwable, "", "");
+        }
+    };
+
+    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> eventType, @NonNull Action1<T> onNext) {
+        return register(tag, eventType, onNext, DEFAULT_ON_ERROR);
+    }
+
+    public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> eventType, @NonNull Action1<T> onNext, @NonNull Action1<Throwable> onError) {
+        Observable<T> observable = register(tag, eventType);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribe(onNext, onError);
+        return observable;
     }
 
     public <T> Observable<T> register(@NonNull Object tag, @NonNull Class<T> eventType) {

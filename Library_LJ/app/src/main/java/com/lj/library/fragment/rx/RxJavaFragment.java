@@ -126,5 +126,15 @@ public class RxJavaFragment extends BaseFragment {
         });
         RxBus.getInstance().post(this, 1);
         RxBus.getInstance().post(this, "hello");
+
+
+        RxBus.getInstance().register(this, String.class, new Action1<String>() {
+            @Override
+            public void call(String s) {
+                Logger.i(" RxBus.getInstance().register(this, String.class, new Action1<String>()", "");
+            }
+        });
+        RxBus.getInstance().post(this, "world");
+
     }
 }
