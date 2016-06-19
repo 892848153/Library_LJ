@@ -9,11 +9,17 @@ import android.text.TextUtils;
 import com.lj.library.BuildConfig;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
+import com.lj.library.dao.realm.MyMigration;
+import com.lj.library.dao.realm.MySchemaModule;
 import com.lj.library.util.PreferenceUtil;
 
+import java.security.SecureRandom;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class MyApplication extends Application {
 
@@ -64,6 +70,7 @@ public class MyApplication extends Application {
         sInstance = this;
         restoreUserInfoFromPref();
         initStrictMode();
+        initRealm();
 
         // Thread.setDefaultUncaughtExceptionHandler(new
         // MyUncaughtExceptionHandler());
@@ -86,6 +93,24 @@ public class MyApplication extends Application {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         }
+    }
+
+    /**
+     * 初始化Realm
+     */
+    private void initRealm() {
+        byte[] key = new byte[64];
+        new SecureRandom().nextBytes(key);
+        RealmConfiguration config = new RealmConfiguration.Builder(sInstance)
+                .name("default.realm")  //在Context.getFileDir()的路径下生成一个该名字的文件
+                .encryptionKey(key)  //AES-256加密的key
+                .schemaVersion(0) //  数据库版本号, 默认是0
+                .modules(new MySchemaModule())  //数据库支持的表,默认支持代码中所有扫描到的表
+                .migration(new MyMigration())  // 数据库升级会调用这个
+                //开发阶段,调用此函数会在代表数据库表的Bean类和数据库里面的数据匹配不上的时候,直接删除数据库,重新建立一个匹配的上的
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
     }
 
     /**
