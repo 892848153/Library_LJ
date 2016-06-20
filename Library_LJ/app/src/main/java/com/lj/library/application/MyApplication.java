@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
+import com.crashlytics.android.Crashlytics;
 import com.lj.library.BuildConfig;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -74,6 +76,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         sInstance = this;
         mRefWatcher = LeakCanary.install(this);
 
