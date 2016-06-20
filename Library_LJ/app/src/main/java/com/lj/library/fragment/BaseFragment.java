@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lj.library.R;
+import com.lj.library.application.MyApplication;
 import com.lj.library.http.apache.HttpHelper;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.RxBus;
@@ -199,6 +200,12 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
 
     public boolean onBackPressed() {
         return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MyApplication.getRefWatcher().watch(this);
     }
 
     @Override

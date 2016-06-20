@@ -12,6 +12,8 @@ import com.lj.library.constants.Constants;
 import com.lj.library.dao.realm.MyMigration;
 import com.lj.library.dao.realm.MySchemaModule;
 import com.lj.library.util.PreferenceUtil;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.security.SecureRandom;
 import java.util.Iterator;
@@ -28,6 +30,11 @@ public class MyApplication extends Application {
     private static MyApplication sInstance;
 
     private UserInfo mUserInfo;
+
+    /**
+     * leakCanary: Use a RefWatcher to watch references that should be GCed
+     */
+    private RefWatcher mRefWatcher;
 
     public static synchronized MyApplication getInstance() {
         if (null == sInstance) {
@@ -68,6 +75,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        mRefWatcher = LeakCanary.install(this);
+
         restoreUserInfoFromPref();
         initStrictMode();
         initRealm();
@@ -162,5 +171,9 @@ public class MyApplication extends Application {
         } else {
             return true;
         }
+    }
+
+    public static RefWatcher getRefWatcher() {
+        return getInstance().mRefWatcher;
     }
 }
