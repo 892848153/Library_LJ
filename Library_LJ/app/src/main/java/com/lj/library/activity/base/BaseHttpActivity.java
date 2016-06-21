@@ -11,7 +11,7 @@ import com.lj.library.widget.LoadingProgress;
  * @time 2015年3月12日 下午3:57:50
  * @author jie.liu
  */
-public class BaseHttpActivity extends BaseActivity implements OnHttpCallback {
+public abstract class BaseHttpActivity extends BaseActivity implements OnHttpCallback {
 
 	@Override
 	public void onHttpNetworkNotFound(String path) {

@@ -8,19 +8,20 @@ import com.lj.library.R;
 import com.lj.library.activity.base.BaseHttpActivity;
 import com.lj.library.fragment.MainFragment;
 import com.lj.library.http.apache.HttpDownloader.OnDownloadListener;
-import com.lj.library.http.apache.HttpHelper.OnHttpCallback;
 import com.lj.library.http.apache.HttpUploader.OnUploadListener;
 import com.lj.library.util.LogUtil;
 
 import java.util.Map;
 
-public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
-        OnUploadListener, OnDownloadListener {
+public class MainActivity extends BaseHttpActivity implements OnUploadListener, OnDownloadListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
@@ -38,8 +39,7 @@ public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
 
     @Override
     public void onHttpReturn(String path, int response, String result) {
-        LogUtil.i(this, "onHttpReturn   " + path + "  response" + response
-                + " result" + result);
+        LogUtil.i(this, "onHttpReturn   " + path + "  response" + response + " result" + result);
     }
 
     @Override
@@ -55,7 +55,6 @@ public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
     @Override
     public void onHttpNothingReturn(String path) {
         LogUtil.i(this, "onHttpNothingReturn   " + path);
-
     }
 
     @Override
@@ -79,8 +78,7 @@ public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
     }
 
     @Override
-    public void onUploadSuccess(String url, Map<String, String> files,
-                                String result) {
+    public void onUploadSuccess(String url, Map<String, String> files, String result) {
         LogUtil.i(this, "onUploadSuccess   " + url + "  result" + result);
     }
 
@@ -101,22 +99,18 @@ public class MainActivity extends BaseHttpActivity implements OnHttpCallback,
 
     @Override
     public void onDownloadSuccess(String url, String targetFilePath) {
-        LogUtil.i(this, "onDownloadSuccess   " + url + "targetFilePath  "
-                + targetFilePath);
+        LogUtil.i(this, "onDownloadSuccess   " + url + "targetFilePath  " + targetFilePath);
     }
 
     @Override
     public void onDownloadFail(String url, String targetFilePath) {
-        LogUtil.i(this, "onDownloadFail   " + url + "targetFilePath"
-                + targetFilePath);
+        LogUtil.i(this, "onDownloadFail   " + url + "targetFilePath" + targetFilePath);
     }
 
     @Override
-    public void onDownloadProgress(String url, String targetFilePath,
-                                   long curLength, long totalLength) {
+    public void onDownloadProgress(String url, String targetFilePath, long curLength, long totalLength) {
         LogUtil.i(this, "onDownloadProgress   " + url + "targetFilePath "
-                + targetFilePath + "   curLength " + curLength
-                + "  totalLength " + totalLength);
+                + targetFilePath + "   curLength " + curLength + "  totalLength " + totalLength);
     }
 
     @Override
