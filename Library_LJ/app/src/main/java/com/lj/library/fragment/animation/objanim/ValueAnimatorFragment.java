@@ -8,6 +8,7 @@ import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.graphics.PointF;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,33 +17,30 @@ import android.widget.ImageView;
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by liujie_gyh on 15/9/28.
  */
 public class ValueAnimatorFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     private float mScreenHeight;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.value_animation_fragment, null);
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View rootView) {
-        mScreenHeight = getResources().getDisplayMetrics().heightPixels;
-
-
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.ver_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.parabola_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.fade_out_anim_btn).setOnClickListener(this);
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.value_animation_fragment, null);
     }
 
     @Override
+    protected void initComp(Bundle savedInstanceState) {
+        mScreenHeight = getResources().getDisplayMetrics().heightPixels;
+    }
+
+    @OnClick({R.id.ver_anim_btn, R.id.parabola_anim_btn, R.id.fade_out_anim_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ver_anim_btn:
@@ -144,4 +142,5 @@ public class ValueAnimatorFragment extends BaseFragment implements View.OnClickL
         });
         anim.start();
     }
+
 }

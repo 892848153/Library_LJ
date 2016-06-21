@@ -1,7 +1,9 @@
 package com.lj.library.fragment.http;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.bean.UserInfo;
@@ -16,7 +18,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -50,10 +51,13 @@ public class HttpDemoFragment extends BaseFragment {
     private final OkHttpClient HTTP_CLIENT = OkHttpManager.INSTANCE.getClient();
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.http_demo_fragment, null);
-        ButterKnife.bind(this, view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.http_demo_fragment, null);
+    }
+
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
     }
 
     @OnClick(R.id.okhttp_get_btn)
@@ -176,6 +180,7 @@ public class HttpDemoFragment extends BaseFragment {
         call.enqueue(new com.lj.library.http.retrofit.SimpleCallback<UserInfo>());
     }
 
+
     public interface GitHubService {
         @GET("users/{user}/repos")
         Call<List<UserInfo>> listRepos(@Path("user") String user);
@@ -287,10 +292,4 @@ public class HttpDemoFragment extends BaseFragment {
         Observable<UserInfo> updateUser(@Part("photo") RequestBody photo, @Part("description") RequestBody description);
     }
 
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
 }

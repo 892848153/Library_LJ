@@ -3,11 +3,11 @@ package com.lj.library.fragment.renderperform;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -16,11 +16,15 @@ import butterknife.OnClick;
  */
 public class RenderPerformFragment extends BaseFragment {
 
+
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.render_perform_fragment, null);
-        ButterKnife.bind(this, view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.render_perform_fragment, null);
+    }
+
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
     }
 
     @OnClick({R.id.frame_btn, R.id.linear_btn, R.id.relative_btn, R.id.linear_weight_btn})
@@ -47,11 +51,5 @@ public class RenderPerformFragment extends BaseFragment {
 
     private void putLayoutIdInArgs(Bundle args, int layoutId) {
         args.putInt("layoutId", layoutId);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 }

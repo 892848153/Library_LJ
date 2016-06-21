@@ -4,12 +4,17 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * AnimatorInflater Demo
@@ -17,22 +22,20 @@ import com.lj.library.fragment.BaseFragment;
  */
 public class AnimatorInflaterFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.animator_inflater_fragment, null);
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.scale_x_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.scale_xy_btn).setOnClickListener(this);
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.animator_inflater_fragment, null);
     }
 
     @Override
+    protected void initComp(Bundle savedInstanceState) {
+
+    }
+
+    @OnClick({R.id.scale_x_btn, R.id.scale_xy_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.scale_x_btn:

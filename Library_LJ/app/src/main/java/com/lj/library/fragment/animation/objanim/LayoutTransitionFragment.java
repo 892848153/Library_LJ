@@ -4,6 +4,7 @@ import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,55 +17,56 @@ import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * LayoutTransition Demo.
  * Created by liujie_gyh on 15/10/17.
  */
 public class LayoutTransitionFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
+    @Bind(R.id.id_container)
+    ViewGroup mViewGroup;
     private GridLayout mGridLayout;
     private int mVal;
     private LayoutTransition mTransition;
-
-    private CheckBox mAppear, mChangeAppear, mDisAppear, mChangeDisAppear;
+    @Bind(R.id.id_appear)
+    CheckBox mAppear;
+    @Bind(R.id.id_change_appear)
+    CheckBox mChangeAppear;
+    @Bind(R.id.id_disappear)
+    CheckBox mDisAppear;
+    @Bind(R.id.id_change_disappear)
+    CheckBox mChangeDisAppear;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.layout_transition_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.layout_transition_fragment, null);
     }
 
+    @Override
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
-    private void initViews(View rootView) {
-        ViewGroup viewGroup = (ViewGroup) rootView.findViewById(R.id.id_container);
-
-        mAppear = (CheckBox) rootView.findViewById(R.id.id_appear);
-        mChangeAppear = (CheckBox) rootView.findViewById(R.id.id_change_appear);
-        mDisAppear = (CheckBox) rootView.findViewById(R.id.id_disappear);
-        mChangeDisAppear = (CheckBox) rootView.findViewById(R.id.id_change_disappear);
-
+    protected void initComp(Bundle savedInstanceState) {
         mAppear.setOnCheckedChangeListener(this);
         mChangeAppear.setOnCheckedChangeListener(this);
         mDisAppear.setOnCheckedChangeListener(this);
         mChangeDisAppear.setOnCheckedChangeListener(this);
-        rootView.findViewById(R.id.add_btn).setOnClickListener(this);
 
         // 创建一个GridLayout
         mGridLayout = new GridLayout(mActivity);
         // 设置每列5个按钮
         mGridLayout.setColumnCount(5);
         // 添加到布局中
-        viewGroup.addView(mGridLayout);
+        mViewGroup.addView(mGridLayout);
         // 默认动画全部开启
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.APPEARING, (mAppear
-                .isChecked() ? ObjectAnimator.ofFloat(null, "scaleX", 0, 1)
-                : null));
+                .isChecked() ? ObjectAnimator.ofFloat(null, "scaleX", 0, 1) : null));
         mGridLayout.setLayoutTransition(mTransition);
     }
 
-    @Override
+    @OnClick(R.id.add_btn)
     public void onClick(View v) {
         final Button button = new Button(mActivity);
         button.setText((++mVal) + "");
@@ -88,4 +90,5 @@ public class LayoutTransitionFragment extends BaseFragment implements CompoundBu
         mTransition.setAnimator(LayoutTransition.CHANGE_DISAPPEARING, mChangeDisAppear.isChecked() ? mTransition.getAnimator(LayoutTransition.CHANGE_DISAPPEARING) : null);
         mGridLayout.setLayoutTransition(mTransition);
     }
+
 }

@@ -4,12 +4,17 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * PropertyValueHolder Demo.
@@ -17,22 +22,21 @@ import com.lj.library.fragment.BaseFragment;
  */
 public class PropertyValueHolderFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.property_value_holder_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.property_value_holder_fragment, null);
     }
 
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.start_anim_btn).setOnClickListener(this);
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
+    @OnClick(R.id.start_anim_btn)
     public void onClick(View v) {
         PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f, 0f, 1f);
         PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f, 0f, 1f);

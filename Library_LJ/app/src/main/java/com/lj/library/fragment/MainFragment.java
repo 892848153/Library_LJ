@@ -1,7 +1,9 @@
 package com.lj.library.fragment;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -21,6 +23,9 @@ import com.lj.library.util.Toaster;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnItemClick;
+
 /**
  * 主页菜单目录.
  * Created by liujie_gyh on 15/9/3.
@@ -29,19 +34,19 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     private MenuAdapter mAdapter;
 
+    @Bind(R.id.list_view)
+    ListView mListView;
+
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.main_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.main_fragment, null);
     }
 
-    private void initViews(View rootView) {
-        ListView listView = (ListView) rootView.findViewById(R.id.list_view);
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
         List<Menu> list = buildMenus();
         mAdapter = new MenuAdapter(list, mActivity);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(this);
+        mListView.setAdapter(mAdapter);
     }
 
     private List<Menu> buildMenus() {
@@ -52,14 +57,27 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new RenderPerformFragment(), "Render Performance"));
         menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
         menuList.add(new Menu(new RxJavaFragment(), "RxJava"));
+
+//        menuList.add(new Menu(BannerFragment.class, "Banner Demo", ""));
+//        menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
+//        menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
+//        menuList.add(new Menu(new RenderPerformFragment(), "Render Performance"));
+//        menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
+//        menuList.add(new Menu(new RxJavaFragment(), "RxJava"));
         return menuList;
     }
 
-    @Override
+    @OnItemClick(R.id.list_view)
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Menu menu = (Menu) mAdapter.getItem(i);
         if (menu.targetFragment != null) {
+//            try {
             startFragment(menu.targetFragment);
+//            } catch (java.lang.InstantiationException e) {
+//                e.printStackTrace();
+//            } catch (IllegalAccessException e) {
+//                e.printStackTrace();
+//            }
         } else if (menu.targetActivity != null) {
             ContextUtil.pushToActivity(mActivity, menu.targetActivity);
         } else {

@@ -1,14 +1,15 @@
 package com.lj.library.fragment.rx;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
 
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import rx.Observable;
 import rx.Subscriber;
@@ -23,10 +24,13 @@ import rx.schedulers.Schedulers;
 public class RxJavaFragment extends BaseFragment {
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.rx_java_fragment, null);
-        ButterKnife.bind(this, view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.rx_java_fragment, null);
+    }
+
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
     }
 
     @OnClick(R.id.rx_java_btn)
@@ -137,4 +141,5 @@ public class RxJavaFragment extends BaseFragment {
         RxBus.getInstance().post(this, "world");
 
     }
+
 }

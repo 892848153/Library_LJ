@@ -4,13 +4,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * AnimatorSet Demo.
@@ -18,22 +23,20 @@ import com.lj.library.fragment.BaseFragment;
  */
 public class AnimatorSetFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.animator_set_fragment, null);
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.together_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.play_with_after_btn).setOnClickListener(this);
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.animator_set_fragment, null);
     }
 
     @Override
+    protected void initComp(Bundle savedInstanceState) {
+
+    }
+
+    @OnClick({R.id.together_btn, R.id.play_with_after_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.together_btn:
@@ -45,7 +48,6 @@ public class AnimatorSetFragment extends BaseFragment implements View.OnClickLis
             default:
                 throw new UnknownError("点击了未处理的控件");
         }
-
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)

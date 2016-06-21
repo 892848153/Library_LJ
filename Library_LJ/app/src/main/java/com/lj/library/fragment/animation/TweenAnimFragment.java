@@ -1,8 +1,10 @@
 package com.lj.library.fragment.animation;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -14,30 +16,28 @@ import android.widget.ImageView;
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * Created by liujie_gyh on 15/9/9.
  */
 public class TweenAnimFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.tween_anim_fragment, null);
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.alpha_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.rotate_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.scale_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.translate_anim_btn).setOnClickListener(this);
-        rootView.findViewById(R.id.anim_set_btn).setOnClickListener(this);
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.tween_anim_fragment, null);
     }
 
     @Override
+    protected void initComp(Bundle savedInstanceState) {
+
+    }
+
+    @OnClick({R.id.alpha_anim_btn, R.id.rotate_anim_btn, R.id.scale_anim_btn, R.id.translate_anim_btn, R.id.anim_set_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.alpha_anim_btn:
@@ -158,4 +158,5 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
     private void setAnimationDuration(Animation animation) {
         animation.setDuration(2000);
     }
+
 }

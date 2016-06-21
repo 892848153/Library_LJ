@@ -2,13 +2,18 @@ package com.lj.library.fragment.animation.objanim;
 
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * View.animate() Demo.
@@ -16,24 +21,22 @@ import com.lj.library.util.LogUtil;
  */
 public class ViewAnimFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mBlueBall;
+    @Bind(R.id.image_view)
+    ImageView mBlueBall;
     private float mScreenHeight;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.view_anim_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.view_anim_fragment, null);
     }
 
-    private void initViews(View rootView) {
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
         mScreenHeight = getResources().getDisplayMetrics().heightPixels;
-        mBlueBall = (ImageView) rootView.findViewById(R.id.image_view);
-        rootView.findViewById(R.id.view_anim_btn).setOnClickListener(this);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
+    @OnClick(R.id.view_anim_btn)
     public void onClick(View v) {
         // need API12
         mBlueBall.animate()//
@@ -63,4 +66,5 @@ public class ViewAnimFragment extends BaseFragment implements View.OnClickListen
             }
         }).start();
     }
+
 }

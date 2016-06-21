@@ -21,6 +21,20 @@ public class FragmentC extends BaseFragment {
     private static final String TAG = FragmentC.class.getSimpleName();
 
     @Override
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogUtil.i(this, "initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)");
+        View view = inflater.inflate(R.layout.tab_fragment, null);
+        TextView tv = (TextView) view.findViewById(R.id.tv);
+        tv.setText(TAG);
+        return view;
+    }
+
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         LogUtil.i(this, "onAttach");
@@ -36,15 +50,6 @@ public class FragmentC extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LogUtil.i(this, "onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)");
         return super.onCreateView(inflater, container, savedInstanceState);
-    }
-
-    @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        LogUtil.i(this, "onCreateView(LayoutInflater inflater)");
-        View view = inflater.inflate(R.layout.tab_fragment, null);
-        TextView tv = (TextView) view.findViewById(R.id.tv);
-        tv.setText(TAG);
-        return view;
     }
 
     @Override

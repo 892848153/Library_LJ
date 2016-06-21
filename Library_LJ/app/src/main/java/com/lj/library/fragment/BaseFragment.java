@@ -19,6 +19,8 @@ import com.lj.library.util.RxBus;
 import com.lj.library.util.Toaster;
 import com.lj.library.widget.LoadingProgress;
 
+import butterknife.ButterKnife;
+
 /**
  * Fragment基础类.
  *
@@ -62,18 +64,12 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
                 parent.removeView(mRootView);
             }
         } else {
-            mRootView = onCreateView(inflater);
+            mRootView = initLayout(inflater, container, savedInstanceState);
+            ButterKnife.bind(this, mRootView);
+            initComp(savedInstanceState);
         }
         return mRootView;
     }
-
-    /**
-     * 子类在次方法中返回布局并且初始化.
-     *
-     * @param inflater
-     * @return
-     */
-    protected abstract View onCreateView(LayoutInflater inflater);
 
     @Override
     public void onStart() {
@@ -213,4 +209,19 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
         super.onDetach();
         RxBus.getInstance().unregister(this);
     }
+
+    /**
+     * 子类在次方法中返回布局并且初始化.
+     *
+     * @param inflater
+     * @return
+     */
+    protected abstract View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+
+    /**
+     * 初始化组件.
+     *
+     * @param savedInstanceState
+     */
+    protected abstract void initComp(Bundle savedInstanceState);
 }

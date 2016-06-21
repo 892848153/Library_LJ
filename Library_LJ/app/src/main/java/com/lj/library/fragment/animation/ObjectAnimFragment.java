@@ -1,7 +1,9 @@
 package com.lj.library.fragment.animation;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -21,26 +23,29 @@ import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.OnItemClick;
+
 /**
  * Created by liujie_gyh on 15/9/9.
  */
 public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnItemClickListener {
 
+    @Bind(R.id.list_view)
+    ListView mListView;
+
     private MenuAdapter mAdapter;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.main_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.main_fragment, null);
     }
 
-    private void initViews(View rootView) {
-        ListView listView = (ListView) rootView.findViewById(R.id.list_view);
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
         List<Menu> list = buildMenus();
         mAdapter = new MenuAdapter(list, mActivity);
-        listView.setAdapter(mAdapter);
-        listView.setOnItemClickListener(this);
+        mListView.setAdapter(mAdapter);
     }
 
     private List<Menu> buildMenus() {
@@ -56,7 +61,7 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         return menuList;
     }
 
-    @Override
+    @OnItemClick(R.id.list_view)
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Menu menu = (Menu) mAdapter.getItem(i);
         startFragment(menu.targetFragment);

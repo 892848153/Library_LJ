@@ -4,12 +4,17 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+
+import butterknife.Bind;
+import butterknife.OnClick;
 
 /**
  * ObjectAnimator的demo.<p/>
@@ -28,22 +33,21 @@ import com.lj.library.fragment.BaseFragment;
  */
 public class ObjectAnimatorFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.object_animator_fragment, null);
-        initViews(view);
-        return view;
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.object_animator_fragment, null);
     }
 
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        mImageView.setOnClickListener(this);
+    @Override
+    protected void initComp(Bundle savedInstanceState) {
+
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
+    @OnClick(R.id.image_view)
     public void onClick(View v) {
         final ObjectAnimator anim = ObjectAnimator.ofFloat(mImageView, "zhy", 1.0f, 0.2f)
                 .setDuration(500);
@@ -58,7 +62,6 @@ public class ObjectAnimatorFragment extends BaseFragment implements View.OnClick
                 mImageView.setScaleY(cVal);
             }
         });
-
-
     }
+
 }

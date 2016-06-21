@@ -2,8 +2,10 @@ package com.lj.library.fragment.animation;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -11,36 +13,36 @@ import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 
+import butterknife.Bind;
+import butterknife.OnClick;
+
 /**
  * 帧动画.
  * Created by liujie_gyh on 15/9/9.
  */
 public class FrameAnimFragment extends BaseFragment implements View.OnClickListener {
 
-    private ImageView mImageView;
+    @Bind(R.id.image_view)
+    ImageView mImageView;
 
-    private Button mXmlBtn;
-    private Button mJavaBtn;
+    @Bind(R.id.xml_btn)
+    Button mXmlBtn;
+    @Bind(R.id.java_btn)
+    Button mJavaBtn;
 
     private AnimationDrawable mAnimDraw;
 
     @Override
-    protected View onCreateView(LayoutInflater inflater) {
-        View view = inflater.inflate(R.layout.frame_anim_fragment, null);
-        initViews(view);
-        return view;
-    }
-
-    private void initViews(View rootView) {
-        mImageView = (ImageView) rootView.findViewById(R.id.image_view);
-        mXmlBtn = (Button) rootView.findViewById(R.id.xml_btn);
-        mJavaBtn = (Button) rootView.findViewById(R.id.java_btn);
-
-        mXmlBtn.setOnClickListener(this);
-        mJavaBtn.setOnClickListener(this);
+    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.frame_anim_fragment, null);
     }
 
     @Override
+    protected void initComp(Bundle savedInstanceState) {
+
+    }
+
+    @OnClick({R.id.xml_btn, R.id.java_btn})
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.xml_btn:
