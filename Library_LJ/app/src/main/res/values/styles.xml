@@ -33,6 +33,6 @@
 	</style>
     <!-- 启动页的主题 -->
     <style name="Launcher" parent="android:Theme.Light.NoTitleBar.Fullscreen">
-        <item name="android:windowBackground">@drawable/img0004</item>
+        <item name="android:windowBackground">@drawable/splash_loading</item>
     </style>
 </resources>
