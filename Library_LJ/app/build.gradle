@@ -41,8 +41,8 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    // log日志
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    //log日志
     compile 'com.orhanobut:logger:1.11'
     //butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
@@ -59,8 +59,12 @@ dependencies {
     //support 兼容包
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.android.support:recyclerview-v7:23.4.0'
-    // dagger2
+    //dagger2
     compile 'com.google.dagger:dagger:2.5'
-    // android-apt插件引入dagger-compiler包, 不会编译到最后的源码中
+    //android-apt插件-引入dagger-compiler包, 不会编译到最后的源码中
     apt 'com.google.dagger:dagger-compiler:2.5'
+    //单元测试-引入junit包, 会自动引入hamcrest包
+    testCompile 'junit:junit:4.12'
+    //Mock方式的包mockito
+    testCompile 'org.mockito:mockito-core:2.0.76-beta'
 }
