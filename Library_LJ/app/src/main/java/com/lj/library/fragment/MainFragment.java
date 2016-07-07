@@ -15,6 +15,7 @@ import com.lj.library.fragment.animation.AnimationFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
 import com.lj.library.fragment.http.HttpDemoFragment;
+import com.lj.library.fragment.permissionmanage.PermissionTestFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.fragment.rx.RxJavaFragment;
 import com.lj.library.util.ContextUtil;
@@ -59,6 +60,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
         menuList.add(new Menu(new RxJavaFragment(), "RxJava Demo"));
         menuList.add(new Menu(new DaggerFragment(), "Dagger Demo"));
+        menuList.add(new Menu(new PermissionTestFragment(), "Android6.0 Permission"));
         return menuList;
     }
 
