@@ -59,13 +59,6 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
         menuList.add(new Menu(new RxJavaFragment(), "RxJava Demo"));
         menuList.add(new Menu(new DaggerFragment(), "Dagger Demo"));
-
-//        menuList.add(new Menu(BannerFragment.class, "Banner Demo", ""));
-//        menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
-//        menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
-//        menuList.add(new Menu(new RenderPerformFragment(), "Render Performance"));
-//        menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
-//        menuList.add(new Menu(new RxJavaFragment(), "RxJava"));
         return menuList;
     }
 
@@ -73,13 +66,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Menu menu = (Menu) mAdapter.getItem(i);
         if (menu.targetFragment != null) {
-//            try {
             startFragment(menu.targetFragment);
-//            } catch (java.lang.InstantiationException e) {
-//                e.printStackTrace();
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
         } else if (menu.targetActivity != null) {
             ContextUtil.pushToActivity(mActivity, menu.targetActivity);
         } else {
