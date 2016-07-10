@@ -9,7 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +44,9 @@ public class PermissionTestFragment extends BaseFragment {
 
     @OnClick(R.id.pick_contact_btn)
     public void pickContact(View view) {
-        if (ContextCompat.checkSelfPermission(mActivity, Manifest.permission.READ_CONTACTS)
+        //ContextCompat.checkSelfPermission()在targetSdkVersion<23时
+        // 即使是Android6.0的手机也会一直返回PackageManager.permission.PERMISSION_GRANTED
+        if (PermissionChecker.checkSelfPermission(mActivity, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
                 Toaster.showShort(mActivity, "需要此权限来选取联系人信息");
