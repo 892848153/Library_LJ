@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import com.lj.library.application.MyApplication;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.RxBus;
 
 import butterknife.ButterKnife;
 
@@ -41,6 +42,7 @@ public abstract class BaseActivity extends FragmentActivity implements BackHandl
     protected void onDestroy() {
         super.onDestroy();
         MyApplication.getInstance().removeActivity(mContext);
+        RxBus.getInstance().unregister(this);
     }
 
     @Override
