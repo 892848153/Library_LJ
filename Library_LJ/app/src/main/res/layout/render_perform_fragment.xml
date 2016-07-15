@@ -32,7 +32,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="RelativeLayout的所有孩子的onMeasure会测量两次，LinearLayout带Weight的孩子也会测量两次，其它的都是测量一次。
-        一个ui刷新过程主要的耗时在onDraw，onDraw的耗时会是onMeasure和onLayout耗时总和的几十倍，所以编写界面时决不允许过度绘制，
-        其次才是注意不要让测量进行两次。FrameLayout, RelativeLayout的onDraw默认为空、LinearLayout的onDraw默认只绘制diveder，
-        所以如果不给这些Layout设置背景的话，多层嵌套是不会出现过度绘制的。"/>
+        一个布局的onMeasure时间往往是onLayout时间的几倍，onDraw的耗时主要看需要绘制的内容丰不丰富, 编写界面时决不允许过度绘制，
+        其次是注意不要让测量进行两次，不要有过多的View存在。FrameLayout, RelativeLayout的onDraw默认为空、LinearLayout的onDraw默认只绘制divider，
+        所以如果不给这些Layout设置背景的话，多层嵌套是不会出现过度绘制的。\n\n   做一个实验：内容是三个TextView，左边一个，右边上下两个排列。
+        利用RelativeLayout实现，每个TextView都测量了两次，layout了一次， onDraw了一次，总耗时  onMeasure:973229   onLayout:113125\n
+        利用LinearLayout实现， 每个TextView都测量了一次，不过多了一个LinearLayout控件，总耗时,   onMeasure:621198, onLayout:141979\n
+        两种方式的onDraw耗时差不多，LinearLayout方式因为多了一个内部LinearLayout控件，所以onLayout稍微多一些时间。onMeasure耗时，\n
+        RelativeLayout方式一共测量了6次(三个TextView都测量了两次)，而LinearLayout方式测量了4次(三个TextView加一个内部LinearLayout)\n
+        所以RelativeLayout方式的耗时比LinearLayout多"/>
 </LinearLayout>
