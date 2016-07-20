@@ -18,6 +18,7 @@ import com.lj.library.fragment.http.HttpDemoFragment;
 import com.lj.library.fragment.permissionmanage.PermissionTestFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.fragment.rx.RxJavaFragment;
+import com.lj.library.fragment.serialization.SerializationFragment;
 import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.Toaster;
@@ -61,6 +62,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new RxJavaFragment(), "RxJava Demo"));
         menuList.add(new Menu(new DaggerFragment(), "Dagger Demo"));
         menuList.add(new Menu(new PermissionTestFragment(), "Android6.0 Permission"));
+        menuList.add(new Menu(new SerializationFragment(), "Serialization Demo"));
         return menuList;
     }
 
