@@ -1,8 +1,5 @@
 package com.lj.library.widget.viewpager;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -15,6 +12,9 @@ import android.widget.Scroller;
 
 import com.lj.library.util.LogUtil;
 import com.lj.library.widget.frameweight.FrameWeightConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 自定义ViewPager.
@@ -41,9 +41,9 @@ public class MyViewPager<T> extends ViewGroup {
 	/******************** 解决滑动冲突开始 *******************************/
 	private List<ViewGroup> mParentViews;
 
-	private float mXoriginal = 0f;
+	private float mOriginalX = 0f;
 
-	private float mYoriginal = 0f;
+	private float mOriginalY = 0f;
 
 	private boolean mMaybeClickEvent = false;
 	/******************** 解决滑动冲突 *******************************/
@@ -99,8 +99,7 @@ public class MyViewPager<T> extends ViewGroup {
 			final View childView = getChildAt(i);
 			if (childView.getVisibility() != View.GONE) {
 				final int childWidth = childView.getMeasuredWidth();
-				childView.layout(childLeft, 0, childLeft + childWidth,
-						childView.getMeasuredHeight());
+				childView.layout(childLeft, 0, childLeft + childWidth, childView.getMeasuredHeight());
 				childLeft += childWidth;
 			}
 		}
@@ -114,8 +113,7 @@ public class MyViewPager<T> extends ViewGroup {
 		float heightWeight = mConfig.getHeightWeight();
 		// 如果有设置宽高比例，就按比例决定高的大小
 		if (measuredWidth >= 0 && widthWeight > 0 && heightWeight > 0) {
-			setMeasuredDimension(measuredWidth, (int) (heightWeight
-					* measuredWidth / widthWeight));
+			setMeasuredDimension(measuredWidth, (int) (heightWeight * measuredWidth / widthWeight));
 		} else {
 			// 获取孩子中最高的
 			int maxChildHeight = getMaxChildHeight(widthMeasureSpec);
@@ -127,8 +125,7 @@ public class MyViewPager<T> extends ViewGroup {
 				finalHeight = Math.max(maxChildHeight, backHeight);
 			}
 
-			heightMeasureSpec = MeasureSpec.makeMeasureSpec(finalHeight,
-					MeasureSpec.EXACTLY);
+			heightMeasureSpec = MeasureSpec.makeMeasureSpec(finalHeight, MeasureSpec.EXACTLY);
 			super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 		}
 
@@ -143,35 +140,33 @@ public class MyViewPager<T> extends ViewGroup {
 	}
 
 	private int getMaxChildHeight(int widthMeasureSpec) {
-		int height = 1;
+		int maxHeight = 1;
 		for (int i = 0; i < getChildCount(); i++) {
 			View child = getChildAt(i);
 			// 为了获取孩子的高度，所以设置成 MeasureSpec.UNSPECIFIED模式
-			child.measure(widthMeasureSpec,
-					MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+			child.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
 			int h = child.getMeasuredHeight();
-			if (h > height)
-				height = h;
+			if (h > maxHeight)
+				maxHeight = h;
 		}
-		return height;
+		return maxHeight;
 	}
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent event) {
-		LogUtil.i(this, "onInterceptTouchEvent");
 		final int action = event.getAction();
 		final float x = event.getX();
 
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			LogUtil.d(this, "onInterceptTouchEvent ACTION_DOWN");
-			// 当手指触到控件的时候，让父ScrollView交出ontouch权限，也就是让父scrollview停住不能滚动
+			// 当手指触到控件的时候，让父ScrollView交出onTouch权限，也就是让父scrollview停住不能滚动
 			setParentScrollable(false);
 
 			// 为判断是否是点击事件做准备
 			mMaybeClickEvent = true;
-			mXoriginal = event.getRawX();
-			mYoriginal = event.getRawY();
+			mOriginalX = event.getRawX();
+			mOriginalY = event.getRawY();
 
 			// 滑动事件的处理
 			if (mVelocityTracker == null) {
@@ -188,19 +183,18 @@ public class MyViewPager<T> extends ViewGroup {
 		case MotionEvent.ACTION_MOVE:
 			LogUtil.d(this, "onInterceptTouchEvent ACTION_MOVE");
 			// 判断是否是点击事件
-			int scaledTouchSlop = ViewConfiguration.get(getContext())
-					.getScaledTouchSlop();
-			float xDelta = Math.abs(mXoriginal - event.getRawX());
-			float yDelta = Math.abs(mYoriginal - event.getRawY());
+			int scaledTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+			float xDelta = Math.abs(mOriginalX - event.getRawX());
+			float yDelta = Math.abs(mOriginalY - event.getRawY());
 			if (xDelta >= scaledTouchSlop || yDelta >= scaledTouchSlop) {
 				LogUtil.d(this, "是滑动事件，不是点击事件");
-				// 说明是滑动事件，不会是点击事件.点击事件是down->up，但是用户很容易出现move，所以允许稍微的move
+				// 说明是滑动事件，不会是点击事件.点击事件是down->up，但是很容易出现move，所以允许稍微的move
 				mMaybeClickEvent = false;
 			}
 
 			// 滑动事件处理
 			int deltaX = calcDeltaX((int) (mLastMotionX - x));
-			if (isCanMove(deltaX)) {
+			if (canScroll(deltaX)) {
 				if (mVelocityTracker != null) {
 					mVelocityTracker.addMovement(event);
 				}
@@ -220,17 +214,18 @@ public class MyViewPager<T> extends ViewGroup {
 			}
 
 			int attachScreen = calcAttachScreen();
+			// 右滑并且attachScreen不是第一个页
 			if (velocityX > SNAP_VELOCITY && attachScreen > 0) {
 				LogUtil.i(this, "snap left");
 				if (mCurScreen - attachScreen == 1) {
 					// 左侧页面属于attachScreen的时候
 					snapToScreen(attachScreen);
 				} else {
-					// 当前页或右侧界面属于attachScrren的时候
+					// 当前页或右侧界面属于attachScreen的时候
 					snapToScreen(attachScreen - 1);
 				}
-			} else if (velocityX < -SNAP_VELOCITY
-					&& attachScreen < getChildCount() - 1) {
+			} else if (velocityX < -SNAP_VELOCITY && attachScreen < getChildCount() - 1) {
+				//左滑并且attachScreen不是最后一页
 				LogUtil.i(this, "snap right");
 				if (attachScreen - mCurScreen == 1) {
 					// 右侧界面属于attachScreen的时候
@@ -312,15 +307,14 @@ public class MyViewPager<T> extends ViewGroup {
 		}
 
 		// 右滑时
-		int slidingDistance = ((getChildCount() - 1) * getWidth())
-				- getScrollX();
+		int slidingDistance = ((getChildCount() - 1) * getWidth()) - getScrollX();
 		if (resultDelta > 0 && resultDelta > slidingDistance) {
 			resultDelta = slidingDistance;
 		}
 		return resultDelta;
 	}
 
-	private boolean isCanMove(int deltaX) {
+	private boolean canScroll(int deltaX) {
 		if (getScrollX() <= 0 && deltaX <= 0) {
 			return false;
 		}
@@ -364,8 +358,7 @@ public class MyViewPager<T> extends ViewGroup {
 		whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
 		if (getScrollX() != (whichScreen * getWidth())) {
 			final int delta = whichScreen * getWidth() - getScrollX();
-			mScroller.startScroll(getScrollX(), 0, delta, 0,
-					getScrollDuration(delta));
+			mScroller.startScroll(getScrollX(), 0, delta, 0, getScrollDuration(delta));
 			invalidate();
 		}
 	}
@@ -401,18 +394,20 @@ public class MyViewPager<T> extends ViewGroup {
 
 		int residue = getScrollX() % getWidth();
 		int result = getScrollX() / getWidth();
-		if (residue == 0 && result != mCurScreen) {
+		float density = getContext().getResources().getDisplayMetrics().density;
+		// 边界还有8dp的时候就将提前修改当前页的参数, 防止用户该参数还没修改,用户就再滑动到下一页,导致回滑.
+		if ((residue >= -density * 8 || residue <= density * 8) && result != mCurScreen) {
 			mCurScreen = result;
 			if (mOnPageChangeListener != null) {
-				// LogUtil.i(this, "onVeiwChange     scrollX" + getScrollX()
-				// + "   currenScreen:" + mCurScreen);
+//				 LogUtil.i(this, "onVeiwChange     scrollX" + getScrollX()
+//				 + "   currenScreen:" + mCurScreen);
 				mOnPageChangeListener.OnPageChange(mCurScreen);
 			}
 		}
 	}
 
 	public boolean isScrolling() {
-		return getScrollX() % getWidth() == 0 ? false : true;
+		return getScrollX() % getWidth() != 0;
 	}
 
 	public void SetOnViewChangeListener(OnPageChangeListener listener) {
@@ -450,8 +445,7 @@ public class MyViewPager<T> extends ViewGroup {
 		refreshPager(adapter, shouldCleanChildren);
 	}
 
-	private void refreshPager(PagerAdapter<T> pagerAdapter,
-			boolean shouldCleanChildren) {
+	private void refreshPager(PagerAdapter<T> pagerAdapter, boolean shouldCleanChildren) {
 		if (shouldCleanChildren) {
 			removeAllViews();
 		}
