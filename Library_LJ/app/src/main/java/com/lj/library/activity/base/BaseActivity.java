@@ -39,11 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
         int layoutId = initLayout(savedInstanceState);
         if (layoutId > 0) {
             setContentView(layoutId);
+            translucentStatusBar();
             ButterKnife.bind(this);
             initComp(savedInstanceState);
         }
-
-        translucentStatusBar();
     }
 
     /**

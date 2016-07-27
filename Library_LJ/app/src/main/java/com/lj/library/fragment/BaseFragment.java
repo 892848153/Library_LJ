@@ -49,10 +49,10 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!(getActivity() instanceof BackHandlerInterface)){
+        if(!(mActivity instanceof BackHandlerInterface)){
             throw new ClassCastException("Hosting Activity must implement BackHandledInterface");
         }else{
-            this.mBackHandlerInterface = (BackHandlerInterface)getActivity();
+            this.mBackHandlerInterface = (BackHandlerInterface)mActivity;
         }
     }
 
@@ -143,10 +143,8 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
      */
     protected LayoutInflater setTheme(LayoutInflater inflater) {
         // 给Fragment设置主题,主题传递0，则采用系统的默认主题
-        final Context contextThemeWrapper = new ContextThemeWrapper(
-                getActivity(), 0);
-        LayoutInflater localInflater = inflater
-                .cloneInContext(contextThemeWrapper);
+        final Context contextThemeWrapper = new ContextThemeWrapper(mActivity, 0);
+        LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater;
     }
 

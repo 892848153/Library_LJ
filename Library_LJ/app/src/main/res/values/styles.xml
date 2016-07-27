@@ -24,7 +24,9 @@
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
         <!-- 修改Theme.AppCompat下主题中的属性，更改app bar的底色.ActionBar/ToolBar都是叫app bar-->
         <item name="colorPrimary">@color/colorPrimary</item>
+        <!-- 修改Theme.AppCompat下主题中的属性，更改全局色调，查看：http://892848153.iteye.com/blog/2313507-->
         <item name="colorAccent">@color/colorAccent</item>
+        <!-- 修改Theme.AppCompat下主题中的属性，更改状态栏的底色，5.0及以上系统才有效-->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     </style>
 	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
