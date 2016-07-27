@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>     <!-- app bar的底色-->
+    <color name="colorPrimaryDark">#303F9F</color> <!-- 状态栏的底色-->
+    <color name="colorAccent">#FF4081</color>      <!-- 全局色调，查看http://892848153.iteye.com/blog/2313507 -->
+</resources>

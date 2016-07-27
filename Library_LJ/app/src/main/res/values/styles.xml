@@ -16,11 +16,18 @@
     </style>
 
     <!-- Application theme.   mce_bogus="1" -->
-	<style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar"></style>
-	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
+	<!--<style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar"></style>-->
+    <!-- Activity继承v7包的AppCompatActivity的话，主题需要继承v7包的Theme.AppCompat下的主题-->
+	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+        <!-- 修改Theme.AppCompat下主题中的属性，更改app bar的底色.ActionBar/ToolBar都是叫app bar-->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    </style>
+	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>
 	<!-- 自定义dialog -->
 	<style name="BaseDialogTheme" parent="android:Theme.Dialog">
