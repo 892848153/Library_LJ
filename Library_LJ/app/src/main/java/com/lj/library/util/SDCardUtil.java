@@ -85,8 +85,8 @@ public class SDCardUtil {
 			sdcardPaths.add(Environment.getExternalStorageDirectory()
 					.getAbsolutePath());
 		} finally {
-			IOStreamCloser.closeReader(inBr);
-			IOStreamCloser.closeInputStream(in);
+			IOStreamUtils.closeReader(inBr);
+			IOStreamUtils.closeInputStream(in);
 		}
 
 		optimize(sdcardPaths);

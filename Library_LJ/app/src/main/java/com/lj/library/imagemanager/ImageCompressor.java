@@ -12,7 +12,7 @@ import android.media.ThumbnailUtils;
 import android.view.View;
 
 import com.lj.library.util.BitmapUtils;
-import com.lj.library.util.IOStreamCloser;
+import com.lj.library.util.IOStreamUtils;
 import com.lj.library.util.LogUtil;
 
 /**
@@ -251,7 +251,7 @@ public class ImageCompressor {
 			options -= 10;
 			bmp.compress(Bitmap.CompressFormat.JPEG, options, baos);
 		}
-		IOStreamCloser.closeOutputStream(baos);
+		IOStreamUtils.closeOutputStream(baos);
 
 		FileOutputStream fos = null;
 		try {
@@ -261,7 +261,7 @@ public class ImageCompressor {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			IOStreamCloser.closeOutputStream(fos);
+			IOStreamUtils.closeOutputStream(fos);
 		}
 	}
 

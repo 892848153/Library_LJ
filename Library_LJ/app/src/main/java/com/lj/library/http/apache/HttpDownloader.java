@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.text.TextUtils;
 
 import com.lj.library.http.common.NetworkChecker;
-import com.lj.library.util.IOStreamCloser;
+import com.lj.library.util.IOStreamUtils;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -125,8 +125,8 @@ public class HttpDownloader {
 				}
 				e.printStackTrace();
 			} finally {
-				IOStreamCloser.closeOutputStream(os);
-				IOStreamCloser.closeInputStream(is);
+				IOStreamUtils.closeOutputStream(os);
+				IOStreamUtils.closeInputStream(is);
 				HttpAssistance.shutdown(client);
 			}
 

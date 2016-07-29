@@ -106,10 +106,10 @@ public class Installer {
 					e.printStackTrace();
 					result = false;
 				} finally {
-					IOStreamCloser.closeOutputStream(dos);
-					IOStreamCloser.closeOutputStream(os);
-					IOStreamCloser.closeReader(bufferReader);
-					IOStreamCloser.closeInputStream(bufferIs);
+					IOStreamUtils.closeOutputStream(dos);
+					IOStreamUtils.closeOutputStream(os);
+					IOStreamUtils.closeReader(bufferReader);
+					IOStreamUtils.closeInputStream(bufferIs);
 
 					if (mCallback != null) {
 						mCallback.onInstallResult(result);
