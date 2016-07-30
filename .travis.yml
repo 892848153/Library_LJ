@@ -14,7 +14,7 @@ android:
 
     # The BuildTools version used by your project
     - build-tools-23.0.3
-    -android-23
+    - android-23
     # Additional components
     - extra-android-m2repository
     - extra-android-support
