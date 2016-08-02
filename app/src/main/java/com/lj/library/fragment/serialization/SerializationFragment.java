@@ -11,6 +11,7 @@ import com.lj.library.bean.serialization.GoogleProtobuf;
 import com.lj.library.bean.serialization.WirePerson;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.IOStreamUtils;
+import com.lj.library.util.JsonUtil;
 import com.lj.library.util.Logger;
 
 import java.io.IOException;
@@ -37,8 +38,10 @@ public class SerializationFragment extends BaseFragment {
     @Override
     protected void initComp(Bundle savedInstanceState) {
         javaSerializationTest();
+        jsonSerializationTest();
         googleProtobufTest();
         squareWireTest();
+
     }
 
     /**
@@ -48,6 +51,14 @@ public class SerializationFragment extends BaseFragment {
         JavaPerson john = initJavaPerson();
         Logger.i("java serialization方式序列化自己写的Person, Person的大小为%dByte",
                 IOStreamUtils.getSerialBytes(john).length);
+    }
+
+    /**
+     * -------------------------Json Serialization的序列化方式-------------------------------
+     */
+    private void jsonSerializationTest() {
+        String json = JsonUtil.toJson(initJavaPerson());
+        Logger.i("json序列化自己写的Person, Json字符串大小为%dByte\nJson字符串：%s", json.getBytes().length, json);
     }
 
     private JavaPerson initJavaPerson() {
