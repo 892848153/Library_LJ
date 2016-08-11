@@ -3,9 +3,7 @@ package com.lj.library.fragment.animation.objanim;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
@@ -26,8 +24,8 @@ public class ViewAnimFragment extends BaseFragment implements View.OnClickListen
     private float mScreenHeight;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.view_anim_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.view_anim_fragment;
     }
 
     @Override

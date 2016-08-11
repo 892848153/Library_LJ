@@ -1,9 +1,6 @@
 package com.lj.library.fragment.http;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.bean.UserInfo;
@@ -51,8 +48,8 @@ public class HttpDemoFragment extends BaseFragment {
     private final OkHttpClient HTTP_CLIENT = OkHttpManager.INSTANCE.getClient();
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.http_demo_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.http_demo_fragment;
     }
 
     @Override

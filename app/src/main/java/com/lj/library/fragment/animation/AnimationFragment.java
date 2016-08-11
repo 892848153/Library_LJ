@@ -1,9 +1,7 @@
 package com.lj.library.fragment.animation;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -30,8 +28,8 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
     ListView mListView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.main_fragment;
     }
 
     @Override

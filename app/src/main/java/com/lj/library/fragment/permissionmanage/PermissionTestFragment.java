@@ -10,9 +10,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.content.PermissionChecker;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.lj.library.R;
@@ -33,8 +31,8 @@ public class PermissionTestFragment extends BaseFragment {
     TextView mPhoneNumTV;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.permission_test_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.permission_test_fragment;
     }
 
     @Override

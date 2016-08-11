@@ -2,9 +2,7 @@ package com.lj.library.fragment.animation;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -28,8 +26,8 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
     ImageView mImageView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tween_anim_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.tween_anim_fragment;
     }
 
     @Override

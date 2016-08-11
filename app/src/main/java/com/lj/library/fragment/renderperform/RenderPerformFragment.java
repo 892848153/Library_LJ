@@ -1,9 +1,7 @@
 package com.lj.library.fragment.renderperform;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
@@ -18,8 +16,8 @@ public class RenderPerformFragment extends BaseFragment {
 
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.render_perform_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.render_perform_fragment;
     }
 
     @Override

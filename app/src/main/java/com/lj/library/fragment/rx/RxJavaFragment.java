@@ -1,9 +1,6 @@
 package com.lj.library.fragment.rx;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
@@ -24,8 +21,8 @@ import rx.schedulers.Schedulers;
 public class RxJavaFragment extends BaseFragment {
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.rx_java_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.rx_java_fragment;
     }
 
     @Override

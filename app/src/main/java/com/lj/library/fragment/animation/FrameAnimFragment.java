@@ -3,9 +3,7 @@ package com.lj.library.fragment.animation;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
@@ -33,8 +31,8 @@ public class FrameAnimFragment extends BaseFragment implements View.OnClickListe
     private AnimationDrawable mAnimDraw;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.frame_anim_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.frame_anim_fragment;
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.lj.library.fragment.banner;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.bean.Menu;
@@ -28,8 +27,8 @@ public class BannerFragment extends BaseFragment {
     BannerView mBannerView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.banner_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.banner_fragment;
     }
 
     @Override

@@ -34,7 +34,7 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
      **/
     protected Activity mActivity;
 
-    private View mRootView;
+    protected View mRootView;
 
     private Fragment mContent;
 
@@ -64,7 +64,7 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
                 parent.removeView(mRootView);
             }
         } else {
-            mRootView = initLayout(inflater, container, savedInstanceState);
+            mRootView = inflater.inflate(initLayout(savedInstanceState), container, false);
             ButterKnife.bind(this, mRootView);
             initComp(savedInstanceState);
         }
@@ -210,11 +210,10 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
 
     /**
      * 子类在次方法中返回布局并且初始化.
-     *
-     * @param inflater
+     * @param savedInstanceState
      * @return
      */
-    protected abstract View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState);
+    protected abstract int initLayout(Bundle savedInstanceState);
 
     /**
      * 初始化组件.

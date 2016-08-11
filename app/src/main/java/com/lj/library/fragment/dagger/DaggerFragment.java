@@ -50,8 +50,8 @@ public class DaggerFragment extends BaseFragment {
 
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceSte) {
-        return inflater.inflate(R.layout.test_fragment, null);
+    protected int initLayout(Bundle savedInstanceSte) {
+        return R.layout.test_fragment;
     }
 
     @Override

@@ -13,10 +13,8 @@ import com.lj.library.fragment.BaseFragment;
 public class RenderContentFragment extends BaseFragment {
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        int layoutId = getLayoutId();
-        View view = layoutId != -1 ? inflater.inflate(layoutId, null) : null;
-        return view;
+    protected int initLayout(Bundle savedInstanceState) {
+        return getLayoutId();
     }
 
     private int getLayoutId() {

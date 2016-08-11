@@ -5,9 +5,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
@@ -27,8 +25,8 @@ public class AnimatorSetFragment extends BaseFragment implements View.OnClickLis
     ImageView mImageView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.animator_set_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.animator_set_fragment;
     }
 
     @Override

@@ -21,17 +21,15 @@ public class FragmentA extends BaseFragment {
     private static final String TAG = FragmentA.class.getSimpleName();
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected int initLayout(Bundle savedInstanceState) {
         LogUtil.i(this, "initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)");
-        View view = inflater.inflate(R.layout.tab_fragment, null);
-        TextView tv = (TextView) view.findViewById(R.id.tv);
-        tv.setText(TAG);
-        return view;
+        return R.layout.tab_fragment;
     }
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
-
+        TextView tv = (TextView) mRootView.findViewById(R.id.tv);
+        tv.setText(TAG);
     }
 
     @Override

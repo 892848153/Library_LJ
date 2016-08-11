@@ -1,9 +1,6 @@
 package com.lj.library.fragment.serialization;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.lj.library.R;
@@ -31,8 +28,8 @@ public class SerializationFragment extends BaseFragment {
     private static final String PHONE_NUMBER = "555-4321";
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.test_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.test_fragment;
     }
 
     @Override

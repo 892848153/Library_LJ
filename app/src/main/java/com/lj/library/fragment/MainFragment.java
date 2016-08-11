@@ -1,9 +1,7 @@
 package com.lj.library.fragment;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -41,8 +39,8 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
     ListView mListView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.main_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.main_fragment;
     }
 
     @Override

@@ -5,9 +5,7 @@ import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.lj.library.R;
@@ -26,8 +24,8 @@ public class AnimatorInflaterFragment extends BaseFragment implements View.OnCli
     ImageView mImageView;
 
     @Override
-    protected View initLayout(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.animator_inflater_fragment, null);
+    protected int initLayout(Bundle savedInstanceState) {
+        return R.layout.animator_inflater_fragment;
     }
 
     @Override
