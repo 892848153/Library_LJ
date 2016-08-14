@@ -1,24 +1,24 @@
 package com.lj.library.widget.viewpager.customduration;
 
-import java.lang.reflect.Field;
-
-import com.lj.library.util.LogUtil;
-
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.animation.Interpolator;
 
-public class ViewPagerCustomDuration extends ViewPager {
+import com.lj.library.util.LogUtil;
 
-	private ScrollerCustomDuration mScroller = null;
+import java.lang.reflect.Field;
 
-	public ViewPagerCustomDuration(Context context) {
+public class CustomDurationViewPager extends ViewPager {
+
+	private CustomDurationScroller mScroller = null;
+
+	public CustomDurationViewPager(Context context) {
 		super(context);
 		postInitViewPager();
 	}
 
-	public ViewPagerCustomDuration(Context context, AttributeSet attrs) {
+	public CustomDurationViewPager(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		postInitViewPager();
 	}
@@ -35,7 +35,7 @@ public class ViewPagerCustomDuration extends ViewPager {
 			scroller.setAccessible(true);
 			Field interpolator = viewpager.getDeclaredField("sInterpolator");
 			interpolator.setAccessible(true);
-			mScroller = new ScrollerCustomDuration(getContext(), (Interpolator) interpolator.get(null));
+			mScroller = new CustomDurationScroller(getContext(), (Interpolator) interpolator.get(null));
 			scroller.set(this, mScroller);
 		} catch (Exception e) {
 		}

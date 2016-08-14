@@ -151,7 +151,7 @@ public class BannerView<T> extends RelativeLayout implements
             inflater.inflate(R.layout.banner_view, this);
             mViewPager = (MyViewPager<T>) findViewById(R.id.view_pager);
             mIndicatorLlyt = (LinearLayout) findViewById(R.id.indicator_llyt);
-            mViewPager.SetOnViewChangeListener(this);
+            mViewPager.setOnViewChangeListener(this);
         }
     }
 
@@ -192,7 +192,7 @@ public class BannerView<T> extends RelativeLayout implements
      *
      * @param listener
      */
-    public void SetOnViewChangeListener(OnPageChangeListener listener) {
+    public void setOnViewChangeListener(OnPageChangeListener listener) {
         if (mOutListener != listener) {
             mOutListener = listener;
         }

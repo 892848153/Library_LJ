@@ -74,8 +74,10 @@ dependencies {
     testCompile 'junit:junit:4.12'
     //Mock方式的包mockito
     testCompile 'org.mockito:mockito-core:2.0.76-beta'
-    //protobuf运行时环境
+    //google的protobuf运行时环境
     compile 'com.google.protobuf:protobuf-java:3.0.0-beta-3'
-    // square公司出的protobuf方案wire的运行时环境
+    //square公司出的protobuf方案"wire"的运行时环境
     compile 'com.squareup.wire:wire-runtime:2.2.0'
+    //fresco加载图片
+    compile 'com.facebook.fresco:fresco:0.12.0'
 }

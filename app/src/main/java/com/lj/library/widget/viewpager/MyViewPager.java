@@ -410,7 +410,7 @@ public class MyViewPager<T> extends ViewGroup {
 		return getScrollX() % getWidth() != 0;
 	}
 
-	public void SetOnViewChangeListener(OnPageChangeListener listener) {
+	public void setOnViewChangeListener(OnPageChangeListener listener) {
 		if (mOnPageChangeListener != listener) {
 			mOnPageChangeListener = listener;
 		}

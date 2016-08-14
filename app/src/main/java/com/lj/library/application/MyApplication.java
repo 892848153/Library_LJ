@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.StrictMode;
 import android.text.TextUtils;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.lj.library.BuildConfig;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
@@ -80,6 +81,7 @@ public class MyApplication extends Application {
         restoreUserInfoFromPref();
         initStrictMode();
         initRealm();
+        initFresco();
 
         // Thread.setDefaultUncaughtExceptionHandler(new
         // MyUncaughtExceptionHandler());
@@ -120,6 +122,10 @@ public class MyApplication extends Application {
                 .deleteRealmIfMigrationNeeded()
                 .build();
         Realm.setDefaultConfiguration(config);
+    }
+
+    private void initFresco() {
+        Fresco.initialize(sInstance);
     }
 
     /**
