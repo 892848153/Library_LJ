@@ -9,6 +9,7 @@ import com.lj.library.R;
 import com.lj.library.activity.TabHostActivity;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
+import com.lj.library.fragment.algorigthm.AlgorithmFragment;
 import com.lj.library.fragment.animation.AnimationFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
@@ -51,7 +52,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
     private List<Menu> buildMenus() {
-        List<Menu> menuList = new ArrayList<Menu>();
+        List<Menu> menuList = new ArrayList<>();
         menuList.add(new Menu(new BannerFragment(), "Banner Demo"));
         menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
         menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
@@ -61,6 +62,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new DaggerFragment(), "Dagger Demo"));
         menuList.add(new Menu(new PermissionTestFragment(), "Android6.0 Permission"));
         menuList.add(new Menu(new SerializationFragment(), "Serialization Demo"));
+        menuList.add(new Menu(new AlgorithmFragment(), "Algorithm Demo"));
         return menuList;
     }
 

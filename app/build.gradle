@@ -39,11 +39,14 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
     // 解决lint检查出错误导致打包失败的问题
-    android {
-      lintOptions {
-          abortOnError false
-      }
-  }
+    lintOptions {
+        abortOnError false
+    }
+    // 启动DataBinding
+    dataBinding {
+        enabled = true
+    }
+
 }
 
 dependencies {
