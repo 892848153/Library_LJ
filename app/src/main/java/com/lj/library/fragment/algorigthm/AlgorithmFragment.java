@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.EncryptionUtils;
+import com.lj.library.util.Logger;
 
 /**
  * Created by liujie_gyh on 16/8/20.
@@ -18,6 +20,14 @@ public class AlgorithmFragment extends BaseFragment{
     @Override
     protected void initComp(Bundle savedInstanceState) {
         testQuickSort();
+
+        String originalContent = "e________";
+        String privateKey = "wocao";
+
+        String confusedContent = EncryptionUtils.xorEncrypt(originalContent, privateKey);
+        Logger.i(confusedContent, "");
+        String decryptContent = EncryptionUtils.xorDecrypt(confusedContent, privateKey);
+        Logger.i(decryptContent, "");
     }
 
     private void testQuickSort() {

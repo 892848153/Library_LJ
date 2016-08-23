@@ -1,13 +1,5 @@
 package com.lj.library.imagemanager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Arrays;
-import java.util.Comparator;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -16,7 +8,15 @@ import android.util.Log;
 
 import com.lj.library.constants.Constants;
 import com.lj.library.util.EncryptionUtils;
-import com.lj.library.util.SDCardUtil;
+import com.lj.library.util.StorageUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * 文件缓存.
@@ -182,7 +182,7 @@ public class ImageFileCache {
 	 * 
 	 **/
 	private String getDirectory() {
-		String dir = SDCardUtil.getSDPath() + "/" + CACHDIR;
+		String dir = StorageUtils.getSDCardPath() + "/" + CACHDIR;
 		return dir;
 	}
 

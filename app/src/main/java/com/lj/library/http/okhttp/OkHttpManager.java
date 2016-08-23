@@ -1,11 +1,12 @@
 package com.lj.library.http.okhttp;
 
-import com.lj.library.util.SDCardUtil;
+import com.lj.library.util.StorageUtils;
 
 import java.io.File;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * OkHttp的管理器
@@ -23,11 +24,13 @@ public enum OkHttpManager {
     static {
         // Interceptor有两种,详情见https://github.com/square/okhttp/wiki/Interceptors
         // 开启缓存响应数据功能  http://www.devtf.cn/?p=1264
-        final File baseDir = new File(SDCardUtil.getSDPath(), OKHTTP_CACHE_DIR);
+        final File baseDir = new File(StorageUtils.getSDCardPath(), OKHTTP_CACHE_DIR);
         sOkHttpClient = new OkHttpClient.Builder()
                 .cache(new Cache(baseDir, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE))
                 .addInterceptor(CommonHeadersInterceptor.getInstance())
-                .addInterceptor(LoggingInterceptor.getInstance()).build();
+                .addInterceptor(LoggingInterceptor.getInstance())
+                .addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BASIC)).build();
     }
 
     public OkHttpClient getClient() {

@@ -1,8 +1,9 @@
 package com.lj.library.util;
 
-import java.security.MessageDigest;
-
+import android.support.annotation.NonNull;
 import android.util.Base64;
+
+import java.security.MessageDigest;
 
 /**
  * 一些加密，解密算法.
@@ -11,6 +12,11 @@ import android.util.Base64;
  * @author jie.liu
  */
 public class EncryptionUtils {
+
+	/**
+	 * 异或加密用到的基数.
+	 */
+	private static final int XOR_RADIX = 16;
 
 	/**
 	 * MD5信息摘要算法.
@@ -121,5 +127,52 @@ public class EncryptionUtils {
 
 	public static byte[] fromBASE64(String s) {
 		return Base64.decode(s, Base64.DEFAULT);
+	}
+
+	/**
+	 * 异或加密, 不支持中文, 因为本算法只支持三位数的ASCII值
+	 *
+	 * @param content
+	 * @param privateKey
+     * @return
+     */
+	public static String xorEncrypt(@NonNull String content, @NonNull String privateKey) {
+		int[] snNum = new int[content.length()];
+		String result = "";
+		String temp = "";
+		for(int i=0,j=0; i<content.length(); i++,j++){
+			if(j == privateKey.length())
+				j = 0;
+			snNum[i] = content.charAt(i) ^ privateKey.charAt(j);
+		}
+
+		for(int k=0; k<content.length(); k++){
+			if(snNum[k] < 10){
+				temp = "00" + snNum[k];
+			}else{
+				if(snNum[k] < 100){
+					temp = "0" + snNum[k];
+				}
+			}
+			result += temp;
+		}
+		return result;
+	}
+
+	public static String xorDecrypt(@NonNull String confusedContent, @NonNull String privateKey) {
+		char[] snNum = new char[confusedContent.length()/3];
+		String result = "";
+
+		for(int i=0,j=0; i<confusedContent.length()/3; i++,j++){
+			if(j == privateKey.length())
+				j = 0;
+			int n = Integer.parseInt(confusedContent.substring(i*3,i*3+3));
+			snNum[i] = (char)((char)n ^ privateKey.charAt(j));
+		}
+
+		for(int k=0; k<confusedContent.length()/3; k++){
+			result += snNum[k];
+		}
+		return result;
 	}
 }
