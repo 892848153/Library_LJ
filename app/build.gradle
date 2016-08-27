@@ -29,6 +29,16 @@ android {
             signingConfig signingConfigs.releaseConfig
         }
     }
+
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'armeabi-v7a'
+            universalApk false
+        }
+    }
+
     //    android6.0中删除apache包, 用此引用
     useLibrary 'org.apache.http.legacy'
     packagingOptions {

@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
     <application
         android:name=".application.MyApplication"
@@ -26,12 +27,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity"></activity>
-        <activity android:name=".activity.TabHostActivity"></activity>
-
+        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.TabHostActivity"/>
+        <activity android:name=".activity.WebViewActivity"/>
+        <activity android:name=".activity.X5WebViewActivity"
+                  android:configChanges="orientation|screenSize|keyboardHidden"
+                  android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity
+            android:name="com.tencent.smtt.sdk.VideoActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="false"
+            android:launchMode="singleTask"
+            android:alwaysRetainTaskState="true">
+            <intent-filter>
+                <action android:name="com.tencent.smtt.tbs.video.PLAY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="91e21fe7f60278b7bc4113f33cb18536f06e2bb7"/>
+        <!-- 腾讯X5内核的key, 不写这个也可以使用-->
+        <meta-data
+            android:name="QBSDKAppKey"
+            android:value="QaegYlyIEh45EOD+eXXtVxj9"/>
     </application>
 
 </manifest>

@@ -15,6 +15,7 @@ import com.lj.library.dao.realm.MySchemaModule;
 import com.lj.library.util.PreferenceUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.smtt.sdk.QbSdk;
 
 import java.security.SecureRandom;
 import java.util.Iterator;
@@ -82,6 +83,7 @@ public class MyApplication extends Application {
         initStrictMode();
         initRealm();
         initFresco();
+        initQbSdk();
 
         // Thread.setDefaultUncaughtExceptionHandler(new
         // MyUncaughtExceptionHandler());
@@ -126,6 +128,16 @@ public class MyApplication extends Application {
 
     private void initFresco() {
         Fresco.initialize(sInstance);
+    }
+
+    /**
+     * 初始化腾讯X5内核浏览器
+     */
+    private void initQbSdk() {
+        QbSdk.initX5Environment(sInstance, QbSdk.WebviewInitType.FIRSTUSE_ONLY, null);
+        if (!QbSdk.isTbsCoreInited()) {
+            QbSdk.preInit(this);
+        }
     }
 
     /**

@@ -7,6 +7,7 @@ import android.widget.ListView;
 
 import com.lj.library.R;
 import com.lj.library.activity.TabHostActivity;
+import com.lj.library.activity.X5WebViewActivity;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.algorigthm.AlgorithmFragment;
@@ -63,6 +64,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new PermissionTestFragment(), "Android6.0 Permission"));
         menuList.add(new Menu(new SerializationFragment(), "Serialization Demo"));
         menuList.add(new Menu(new AlgorithmFragment(), "Algorithm Demo"));
+        menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         return menuList;
     }
 
