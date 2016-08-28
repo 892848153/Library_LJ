@@ -1,14 +1,19 @@
 package com.lj.library.fragment.algorigthm;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
+
+import java.util.BitSet;
 
 /**
  * Created by liujie_gyh on 16/8/20.
  */
 public class AlgorithmFragment extends BaseFragment{
+
+    private static final String TAG = AlgorithmFragment.class.getSimpleName();
 
     @Override
     protected int initLayout(Bundle savedInstanceState) {
@@ -18,6 +23,7 @@ public class AlgorithmFragment extends BaseFragment{
     @Override
     protected void initComp(Bundle savedInstanceState) {
         testQuickSort();
+        findDuplicateAppear();
     }
 
     private void testQuickSort() {
@@ -59,5 +65,34 @@ public class AlgorithmFragment extends BaseFragment{
         }
         data[low] = temp;
         return low;
+    }
+
+    /**
+     * 找出取值为0~99的数组中重复出现的数字.
+     */
+    private void findDuplicateAppear() {
+        int [] data = {1, 2, 5, 7, 9, 3, 2, 4, 5, 23, 21, 43, 66,  11, 22, 23, 8, 10, 1};
+        // 因为数组中取值范围为0~99, 所以这里是100的大小
+        BitSet bitSet = new BitSet(100);
+        BitSet occurs = new BitSet(100);
+
+        for (int i : data) {
+            if (!occurs.get(i)) {
+                // 第一次遍历到这个数
+                occurs.set(i);
+                bitSet.set(i);
+            } else {
+                // 重复出现这个数
+                bitSet.set(i, false);
+            }
+        }
+
+        bitSet.xor(occurs);
+
+        for (int i = 0; i < bitSet.length(); i++) {
+            if (bitSet.get(i)) {
+                Log.e(TAG, i + "");
+            }
+        }
     }
 }

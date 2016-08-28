@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.tencent.smtt.export.external.interfaces.GeolocationPermissionsCallback;
+import com.tencent.smtt.sdk.QbSdk;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -31,6 +32,7 @@ public class X5WebViewActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        QbSdk.allowThirdPartyAppDownload(true);
         setContentView(R.layout.x5_webview_activity);
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
