@@ -18,6 +18,13 @@ import java.util.List;
 
 /**
  * 几种序列化方式的对比.
+ *
+ * flatbuffer不能用于ios系统,所以这里不举例。<p/>
+ *
+ * kryo需要一系列 api的调用, 而且不跨语言.
+ * 如果是rpc，两端都必须按同样的顺序注册，否则会出错，因为必须要明确类对应的唯一id。
+ * 太过繁琐了,不适合,也就不举例了。
+ *
  * Created by liujie_gyh on 16/7/20.
  */
 public class SerializationFragment extends BaseFragment {
@@ -38,7 +45,6 @@ public class SerializationFragment extends BaseFragment {
         jsonSerializationTest();
         googleProtobufTest();
         squareWireTest();
-
     }
 
     /**
