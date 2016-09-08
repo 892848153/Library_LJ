@@ -3,12 +3,12 @@ apply plugin: 'realm-android'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '23.0.3'
+    compileSdkVersion 24
+    buildToolsVersion '24.0.1'
     defaultConfig {
         applicationId "com.lj.library"
-        minSdkVersion 9
-        targetSdkVersion 23
+        minSdkVersion 14
+        targetSdkVersion 24
         versionCode 1
         versionName "1.0"
     }
@@ -77,9 +77,10 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     //support 兼容包
-    compile 'com.android.support:support-v4:23.4.0'
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'com.android.support:design:24.2.0'
+    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
     //dagger2
     compile 'com.google.dagger:dagger:2.5'
     //android-apt插件-引入dagger-compiler包, 不会编译到最后的源码中
@@ -94,4 +95,5 @@ dependencies {
     compile 'com.squareup.wire:wire-runtime:2.2.0'
     //fresco加载图片
     compile 'com.facebook.fresco:fresco:0.12.0'
+
 }

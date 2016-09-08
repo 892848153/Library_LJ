@@ -1,8 +1,13 @@
 package com.lj.library.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.view.MenuItem;
 
 import com.lj.library.R;
 import com.lj.library.activity.base.BaseHttpActivity;
@@ -13,7 +18,11 @@ import com.lj.library.util.LogUtil;
 
 import java.util.Map;
 
-public class MainActivity extends BaseHttpActivity implements OnUploadListener, OnDownloadListener {
+public class MainActivity extends BaseHttpActivity implements OnUploadListener, OnDownloadListener, NavigationView.OnNavigationItemSelectedListener{
+
+    private DrawerLayout mDrawer;
+
+    private NavigationView mNavigationView;
 
     @Override
     protected int initLayout(Bundle savedInstanceState) {
@@ -29,6 +38,26 @@ public class MainActivity extends BaseHttpActivity implements OnUploadListener, 
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
             transaction.addToBackStack(null);
             transaction.commit();
+        }
+
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        mNavigationView.setCheckedItem(R.id.nav_home);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        mDrawer.closeDrawer(GravityCompat.START);
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
     }
 
@@ -120,5 +149,6 @@ public class MainActivity extends BaseHttpActivity implements OnUploadListener, 
     @Override
     public void onDownloadingStoped(String url, String targetFilePath) {
     }
+
 
 }

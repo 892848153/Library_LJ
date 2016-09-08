@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/drawer_menu_home"
+            android:title="首页"/>
+
+    </group>
+
+    <item android:title="第二个菜单">
+        <menu>
+            <item
+                android:id="@+id/nav_login"
+                android:icon="@drawable/drawer_menu_login"
+                android:title="登录"/>
+        </menu>
+    </item>
+
+
+</menu>
