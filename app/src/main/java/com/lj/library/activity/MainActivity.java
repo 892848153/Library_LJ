@@ -32,6 +32,11 @@ public class MainActivity extends BaseHttpActivity implements OnUploadListener, 
     @Override
     protected void initComp(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
+            mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            mNavigationView = (NavigationView) findViewById(R.id.nav_view);
+            mNavigationView.setNavigationItemSelectedListener(this);
+            mNavigationView.setCheckedItem(R.id.nav_home);
+
             FragmentManager manager = getSupportFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();
             transaction.replace(R.id.fragment_container, new MainFragment());
@@ -39,11 +44,6 @@ public class MainActivity extends BaseHttpActivity implements OnUploadListener, 
             transaction.addToBackStack(null);
             transaction.commit();
         }
-
-        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mNavigationView = (NavigationView) findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
-        mNavigationView.setCheckedItem(R.id.nav_home);
     }
 
     @Override

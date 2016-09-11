@@ -1,6 +1,7 @@
 package com.lj.library.fragment;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -47,6 +48,9 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
+        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        toolbar.setTitle(getString(R.string.app_name));
+
         List<Menu> list = buildMenus();
         mAdapter = new MenuAdapter(list, mActivity);
         mListView.setAdapter(mAdapter);
