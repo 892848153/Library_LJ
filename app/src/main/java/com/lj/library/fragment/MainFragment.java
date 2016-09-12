@@ -20,6 +20,7 @@ import com.lj.library.fragment.permissionmanage.PermissionTestFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.fragment.rx.RxJavaFragment;
 import com.lj.library.fragment.serialization.SerializationFragment;
+import com.lj.library.fragment.update.SmartUpdateFragment;
 import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.Toaster;
@@ -69,6 +70,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new SerializationFragment(), "Serialization Demo"));
         menuList.add(new Menu(new AlgorithmFragment(), "Algorithm Demo"));
         menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
+        menuList.add(new Menu(new SmartUpdateFragment(), "Smart Update Demo"));
         return menuList;
     }
 

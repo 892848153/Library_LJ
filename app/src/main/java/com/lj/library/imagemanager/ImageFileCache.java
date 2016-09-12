@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 
-import com.lj.library.constants.Constants;
 import com.lj.library.util.EncryptionUtils;
 import com.lj.library.util.StorageUtils;
 
@@ -25,9 +24,8 @@ import java.util.Comparator;
  * @author jie.liu
  */
 public class ImageFileCache {
-	private static final String CACHDIR = Constants.APP_ROOT_DIR
-			+ "/ImageCache";
-	private static final String WHOLESALE_CONV = ".cach";
+	private static final String CACHE_DIR = StorageUtils.getCacheRootDirPath() + "/ImageCache";
+	private static final String WHOLESALE_CONV = ".cache";
 
 	private static final int MB = 1024 * 1024;
 	private static final int CACHE_SIZE = 1000;
@@ -182,7 +180,7 @@ public class ImageFileCache {
 	 * 
 	 **/
 	private String getDirectory() {
-		String dir = StorageUtils.getSDCardPath() + "/" + CACHDIR;
+		String dir = StorageUtils.getSDCardPath() + File.separator + CACHE_DIR;
 		return dir;
 	}
 

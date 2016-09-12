@@ -5,6 +5,8 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
+import com.lj.library.constants.Constants;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,6 +22,15 @@ import java.util.List;
  * Created by jie.liu on 16/8/23.
  */
 public class StorageUtils {
+
+    /**
+     * 获取项目在SDCard中保存缓存的根目录路径.
+     *
+     * @return
+     */
+    public static String getCacheRootDirPath() {
+        return getSDCardPath() + File.separator + Constants.CACHE_ROOT_DIR_NAME;
+    }
 
     /**
      * 在/data/data/packagename/files/目录下创建文件.
