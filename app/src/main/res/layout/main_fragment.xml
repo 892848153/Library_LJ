@@ -6,11 +6,13 @@
 
     <include layout="@layout/include_toolbar"/>
 
-    <ListView
+    <com.lj.library.widget.renderperform.CustomListView
         android:id="@+id/list_view"
         android:layout_width="match_parent"
         android:cacheColorHint="@android:color/transparent"
         android:drawSelectorOnTop="false"
+        android:smoothScrollbar="true"
+        android:animationCache="false"
         android:layout_height="match_parent" />
 
 </LinearLayout>

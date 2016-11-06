@@ -1,13 +1,15 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 apply plugin: 'com.neenbedankt.android-apt'
+//apply tinker插件
+//apply plugin: 'com.tencent.tinker.patch'
 
 android {
     compileSdkVersion 24
     buildToolsVersion '24.0.1'
     defaultConfig {
         applicationId "com.lj.library"
-        minSdkVersion 14
+        minSdkVersion 17
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
@@ -77,6 +79,7 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     //support 兼容包
+    compile('com.android.support:multidex:1.0.1')
     compile 'com.android.support:design:24.2.0'
     compile 'com.android.support:support-v4:24.2.0'
     compile 'com.android.support:appcompat-v7:24.2.0'
@@ -95,5 +98,38 @@ dependencies {
     compile 'com.squareup.wire:wire-runtime:2.2.0'
     //fresco加载图片
     compile 'com.facebook.fresco:fresco:0.12.0'
+    //tinker,可选，用于生成application类
+    provided('com.tencent.tinker:tinker-android-anno:1.7.1')
+    //tinker的核心库
+    compile('com.tencent.tinker:tinker-android-lib:1.7.1')
 
 }
+
+/*tinkerPatch {
+    //有问题的apk的地址
+    oldApk = "D://app_bug.apk"
+    ignoreWarning = false
+    useSign = true
+    buildConfig{
+        tinkerId = "1.0"
+    }
+    packageConfig{
+        //写这个为了修复一个bug,详见github issue #22
+        configField("TINKER_ID", "1.0")
+    }
+    dex{
+        dexMode = "jar"
+        pattern = ["classes*.dex", "assets/secondary-dex-?.jar"]
+        loader = ["com.tencent.tinker.loader.*", "com.lj.library.application.SampleApplication"]
+    }
+    lib{
+        pattern = ["lib/armeabi*//*.so","lib/arm64-v8a*//*.so","lib/armeabi-v7a*//*.so","lib/mips*//*.so","lib/mips64*//*.so","lib/x86*//*.so","lib/x86_64*//*.so"]
+    }
+    res{
+        pattern = ["res*//*", "assets*//*", "resources.arsc", "AndroidManifest.xml"]
+        largeModSize = 100
+    }
+    sevenZip{
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+    }
+}*/

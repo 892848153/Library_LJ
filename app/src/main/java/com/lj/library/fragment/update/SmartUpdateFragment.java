@@ -27,6 +27,7 @@ public class SmartUpdateFragment extends BaseFragment {
 //        // localApkSign跟本地版本号一起发送到服务器请求最新版本,服务器验证
 //        // 若版本号不是最新的, 并且localApkMd5与服务器上的一致,
 //        // 则返回最新版本号, patch文件的url, 新apk文件的url, 新apk文件的md5值
+//        // 服务器最好再返回一个增量更新的开关变量, 万一出问题了,可以直接关闭该功能
 //
 //        // 假设网络请求返回, 并且下载好了patch文件,
 //        int newVerCode = 510;
