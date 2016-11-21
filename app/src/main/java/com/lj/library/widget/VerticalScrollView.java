@@ -19,9 +19,9 @@ import com.lj.library.util.LogUtil;
  */
 public class VerticalScrollView extends ScrollView {
 
-	private float mXoriginal = 0f;
+	private float mLastXIntercept = 0f;
 
-	private float mYoriginal = 0f;
+	private float mLastYIntercept = 0f;
 
 	private boolean mIsVerticalScrolling;
 
@@ -37,8 +37,8 @@ public class VerticalScrollView extends ScrollView {
 		switch (action) {
 		case MotionEvent.ACTION_DOWN:
 			LogUtil.i(this, "onInterceptTouchEvent  --  ACTION_DOWN");
-			mXoriginal = event.getRawX();
-			mYoriginal = event.getRawY();
+			mLastXIntercept = event.getX();
+			mLastYIntercept = event.getY();
 			break;
 		case MotionEvent.ACTION_MOVE:
 			LogUtil.i(this, "onInterceptTouchEvent  ------  ACTION_MOVE");
@@ -46,8 +46,8 @@ public class VerticalScrollView extends ScrollView {
 				LogUtil.d(this, "isScrolling  --> false");
 				int scaledTouchSlop = ViewConfiguration.get(getContext())
 						.getScaledTouchSlop();
-				float xDelta = Math.abs(mXoriginal - event.getRawX());
-				float yDelta = Math.abs(mYoriginal - event.getRawY());
+				float xDelta = Math.abs(mLastXIntercept - event.getRawX());
+				float yDelta = Math.abs(mLastYIntercept - event.getRawY());
 				if (yDelta >= scaledTouchSlop || xDelta >= scaledTouchSlop) {
 					if (Math.abs(yDelta) > Math.abs(xDelta)) {
 						mIsVerticalScrolling = true;
@@ -67,8 +67,8 @@ public class VerticalScrollView extends ScrollView {
 			LogUtil.i(this, "onInterceptTouchEvent  ----------  ACTION_CANCEL");
 			mIsVerticalScrolling = false;
 			mIsScrolling = false;
-			mXoriginal = 0f;
-			mYoriginal = 0f;
+			mLastXIntercept = 0f;
+			mLastYIntercept = 0f;
 			break;
 		default:
 			break;
@@ -87,8 +87,8 @@ public class VerticalScrollView extends ScrollView {
 			LogUtil.i(this, "onTouchEvent  --  ACTION_CANCEL");
 			mIsVerticalScrolling = false;
 			mIsScrolling = false;
-			mXoriginal = 0f;
-			mYoriginal = 0f;
+			mLastXIntercept = 0f;
+			mLastYIntercept = 0f;
 			break;
 		}
 		return super.onTouchEvent(ev);
