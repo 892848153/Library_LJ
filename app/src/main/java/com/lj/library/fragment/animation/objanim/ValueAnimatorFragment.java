@@ -82,12 +82,14 @@ public class ValueAnimatorFragment extends BaseFragment implements View.OnClickL
         animator.setDuration(2000);
         animator.setObjectValues(new PointF(0f, 0f));
         animator.setEvaluator(new TypeEvaluator<PointF>() {
+
+            private PointF mPointF = new PointF(0, 0);
+
             @Override
             public PointF evaluate(float fraction, PointF startValue, PointF endValue) {
-                PointF point = new PointF();
-                point.x = 200 * fraction * 3;
-                point.y = 0.5f * 100 * (fraction * 3) * (fraction * 3);
-                return point;
+                mPointF.x = 200 * fraction * 3;
+                mPointF.y = 0.5f * 100 * (fraction * 3) * (fraction * 3);
+                return mPointF;
             }
         });
 

@@ -1,6 +1,5 @@
 package com.lj.library.fragment.animation.objanim;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.os.Build;
@@ -44,22 +43,22 @@ public class ObjectAnimatorFragment extends BaseFragment implements View.OnClick
 
     }
 
+    private ValueAnimator.AnimatorUpdateListener mAnimatorUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            float cVal = (Float) animation.getAnimatedValue();
+            mImageView.setAlpha(cVal);
+            mImageView.setScaleX(cVal);
+            mImageView.setScaleY(cVal);
+        }
+    };
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @OnClick(R.id.image_view)
     public void onClick(View v) {
-        final ObjectAnimator anim = ObjectAnimator.ofFloat(mImageView, "zhy", 1.0f, 0.2f)
-                .setDuration(500);
+        final ValueAnimator anim = ValueAnimator.ofFloat(1.0f, 0.2f).setDuration(500);
+        anim.addUpdateListener(mAnimatorUpdateListener);
         anim.start();
-
-        anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                float cVal = (Float) animation.getAnimatedValue();
-                mImageView.setAlpha(cVal);
-                mImageView.setScaleX(cVal);
-                mImageView.setScaleY(cVal);
-            }
-        });
     }
 
 }
