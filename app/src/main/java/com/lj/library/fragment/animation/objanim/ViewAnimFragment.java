@@ -39,30 +39,37 @@ public class ViewAnimFragment extends BaseFragment implements View.OnClickListen
         // need API12
         mBlueBall.animate()//
                 .alpha(0)//
-                .y(mScreenHeight / 2).setDuration(1000)
+                .y(mScreenHeight / 2)
+                .setDuration(1000)
                 // need API 12
-                .withStartAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        LogUtil.i(this, "START");
-
-                    }
-                    // need API 16
-                }).withEndAction(new Runnable() {
-
-            @Override
-            public void run() {
-                LogUtil.i(this, "START");
-                mActivity.runOnUiThread(new Runnable() {
-                    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-                    @Override
-                    public void run() {
-                        mBlueBall.setY(0);
-                        mBlueBall.setAlpha(1.0f);
-                    }
-                });
-            }
-        }).start();
+                .withStartAction( mStartAction)
+                // need API 16
+                .withEndAction(mEndAction).start();
     }
+
+    private Runnable mStartAction = new Runnable() {
+        @Override
+        public void run() {
+            LogUtil.i(this, "START");
+        }
+    };
+
+    private Runnable mEndAction = new Runnable() {
+        @Override
+        public void run() {
+            LogUtil.i(this, "START");
+            mActivity.runOnUiThread(mUpdateBlueBall);
+        }
+    };
+
+    private Runnable mUpdateBlueBall = new Runnable() {
+
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        public void run() {
+            mBlueBall.setY(0);
+            mBlueBall.setAlpha(1.0f);
+        }
+    };
 
 }

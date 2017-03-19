@@ -29,6 +29,8 @@ public class ValueAnimatorFragment extends BaseFragment implements View.OnClickL
 
     private float mScreenHeight;
 
+    private ValueAnimator mAnimator = new ValueAnimator();
+
     @Override
     protected int initLayout(Bundle savedInstanceState) {
         return R.layout.value_animation_fragment;
@@ -65,44 +67,48 @@ public class ValueAnimatorFragment extends BaseFragment implements View.OnClickL
         animator.setTarget(mImageView);
         animator.setDuration(1000);
         animator.start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mImageView.setTranslationY((Float) animation.getAnimatedValue());
-            }
-        });
+        animator.addUpdateListener(mVerticalRunUpdateListener);
     }
+
+    private ValueAnimator.AnimatorUpdateListener mVerticalRunUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            mImageView.setTranslationY((Float) animation.getAnimatedValue());
+        }
+    };
 
     /**
      * 抛物线
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void parabolaRun() {
-        ValueAnimator animator = new ValueAnimator();
-        animator.setDuration(2000);
-        animator.setObjectValues(new PointF(0f, 0f));
-        animator.setEvaluator(new TypeEvaluator<PointF>() {
-
-            private PointF mPointF = new PointF(0, 0);
-
-            @Override
-            public PointF evaluate(float fraction, PointF startValue, PointF endValue) {
-                mPointF.x = 200 * fraction * 3;
-                mPointF.y = 0.5f * 100 * (fraction * 3) * (fraction * 3);
-                return mPointF;
-            }
-        });
-
-        animator.start();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                PointF point = (PointF) animation.getAnimatedValue();
-                mImageView.setX(point.x);
-                mImageView.setY(point.y);
-            }
-        });
+        mAnimator.setDuration(2000);
+        mAnimator.setObjectValues(new PointF(0f, 0f));
+        mAnimator.setEvaluator(mTypeEvaluator);
+        mAnimator.start();
+        mAnimator.addUpdateListener(mParabolaRunUpdateListener);
     }
+
+    private TypeEvaluator<PointF> mTypeEvaluator = new TypeEvaluator<PointF>() {
+
+        private PointF mPointF = new PointF(0, 0);
+
+        @Override
+        public PointF evaluate(float fraction, PointF startValue, PointF endValue) {
+            mPointF.x = 200 * fraction * 3;
+            mPointF.y = 0.5f * 100 * (fraction * 3) * (fraction * 3);
+            return mPointF;
+        }
+    };
+
+    private ValueAnimator.AnimatorUpdateListener mParabolaRunUpdateListener = new ValueAnimator.AnimatorUpdateListener() {
+        @Override
+        public void onAnimationUpdate(ValueAnimator animation) {
+            PointF point = (PointF) animation.getAnimatedValue();
+            mImageView.setX(point.x);
+            mImageView.setY(point.y);
+        }
+    };
 
     /**
      * 淡出且删除

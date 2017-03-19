@@ -23,13 +23,15 @@ import com.lj.library.util.LogUtil;
  */
 public class AnimatorView extends View {
 
-    public static final float RADIUS = 50f;
-
-    private Point currentPoint;
-
-    private String color;
+    private String mColor;
 
     private Paint mPaint;
+
+    public static final float RADIUS = 50f;
+    private final Point START_POINT = new Point(RADIUS, RADIUS);
+    private Point mEndPoint;
+
+    private Point mCurrentPoint = START_POINT;
 
     public AnimatorView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,8 +41,7 @@ public class AnimatorView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if (currentPoint == null) {
-            currentPoint = new Point(RADIUS, RADIUS);
+        if (mCurrentPoint == START_POINT) {
             drawCircle(canvas);
             startAnimation();
         } else {
@@ -49,27 +50,28 @@ public class AnimatorView extends View {
     }
 
     private void drawCircle(Canvas canvas) {
-        float x = currentPoint.getX();
-        float y = currentPoint.getY();
+        float x = mCurrentPoint.getX();
+        float y = mCurrentPoint.getY();
         canvas.drawCircle(x, y, RADIUS, mPaint);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void startAnimation() {
-        Point startPoint = new Point(RADIUS, RADIUS);
-        Point endPoint = new Point(getWidth() - RADIUS, getHeight() - RADIUS);
-        ValueAnimator anim = ValueAnimator.ofObject(new PointEvaluator(), startPoint, endPoint);
+        if (mEndPoint == null) {
+            mEndPoint = new Point(getWidth() - RADIUS, getHeight() - RADIUS);
+        }
+        ValueAnimator anim = ValueAnimator.ofObject(new PointEvaluator(), START_POINT, mEndPoint);
         anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                currentPoint = (Point) animation.getAnimatedValue();
+                mCurrentPoint = (Point) animation.getAnimatedValue();
                 invalidate();
             }
         });
         anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                currentPoint = null;
+                mCurrentPoint = START_POINT;
                 invalidate();
             }
         });
@@ -82,11 +84,11 @@ public class AnimatorView extends View {
     }
 
     public String getColor() {
-        return color;
+        return mColor;
     }
 
     public void setColor(String color) {
-        this.color = color;
+        this.mColor = color;
         LogUtil.i(this, "parseColor:" + color);
         mPaint.setColor(Color.parseColor(color));
         invalidate();

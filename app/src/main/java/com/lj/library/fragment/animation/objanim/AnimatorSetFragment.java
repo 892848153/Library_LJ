@@ -24,6 +24,10 @@ public class AnimatorSetFragment extends BaseFragment implements View.OnClickLis
     @Bind(R.id.image_view)
     ImageView mImageView;
 
+    private AnimatorSet mTogetherRunAnimSet;
+
+    private AnimatorSet mPlayWithAfterAnimSet;
+
     @Override
     protected int initLayout(Bundle savedInstanceState) {
         return R.layout.animator_set_fragment;
@@ -50,42 +54,40 @@ public class AnimatorSetFragment extends BaseFragment implements View.OnClickLis
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void togetherRun() {
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(mImageView, "scaleX",
-                1.0f, 2f);
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(mImageView, "scaleY",
-                1.0f, 2f);
+        ObjectAnimator anim1 = ObjectAnimator.ofFloat(mImageView, "scaleX", 1.0f, 2f);
+        ObjectAnimator anim2 = ObjectAnimator.ofFloat(mImageView, "scaleY", 1.0f, 2f);
 
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.setDuration(2000);
-        animSet.setInterpolator(new LinearInterpolator());
-        //两个动画同时执行
-        animSet.playTogether(anim1, anim2);
-//		animSet.playSequentially(items)
-        animSet.start();
+        if (mTogetherRunAnimSet == null) {
+            mTogetherRunAnimSet = new AnimatorSet();
+            mTogetherRunAnimSet.setDuration(2000);
+            mTogetherRunAnimSet.setInterpolator(new LinearInterpolator());
+            //两个动画同时执行
+            mTogetherRunAnimSet.playTogether(anim1, anim2);
+//		mTogetherRunAnimSet.playSequentially(items)
+        }
+        mTogetherRunAnimSet.start();
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public void playWithAfter() {
-        float cx = mImageView.getX();
-
-        ObjectAnimator anim1 = ObjectAnimator.ofFloat(mImageView, "scaleX",
-                1.0f, 2f);
-        ObjectAnimator anim2 = ObjectAnimator.ofFloat(mImageView, "scaleY",
-                1.0f, 2f);
-        ObjectAnimator anim3 = ObjectAnimator.ofFloat(mImageView,
-                "x", cx, 0f);
-        ObjectAnimator anim4 = ObjectAnimator.ofFloat(mImageView,
-                "x", cx);
-
         /**
          * anim1，anim2,anim3同时执行
          * anim4接着执行
          */
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.play(anim1).with(anim2);
-        animSet.play(anim2).with(anim3);
-        animSet.play(anim4).after(anim3);
-        animSet.setDuration(1000);
-        animSet.start();
+        if (mPlayWithAfterAnimSet == null) {
+            mPlayWithAfterAnimSet = new AnimatorSet();
+            float cx = mImageView.getX();
+
+            ObjectAnimator anim1 = ObjectAnimator.ofFloat(mImageView, "scaleX", 1.0f, 2f);
+            ObjectAnimator anim2 = ObjectAnimator.ofFloat(mImageView, "scaleY", 1.0f, 2f);
+            ObjectAnimator anim3 = ObjectAnimator.ofFloat(mImageView, "x", cx, 0f);
+            ObjectAnimator anim4 = ObjectAnimator.ofFloat(mImageView, "x", cx);
+
+            mPlayWithAfterAnimSet.play(anim1).with(anim2);
+            mPlayWithAfterAnimSet.play(anim2).with(anim3);
+            mPlayWithAfterAnimSet.play(anim4).after(anim3);
+            mPlayWithAfterAnimSet.setDuration(1000);
+        }
+        mPlayWithAfterAnimSet.start();
     }
 }

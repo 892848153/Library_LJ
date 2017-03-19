@@ -68,21 +68,22 @@ public class LayoutTransitionFragment extends BaseFragment implements CompoundBu
     @OnClick(R.id.add_btn)
     public void onClick(View v) {
         final Button button = new Button(mActivity);
-        button.setText((++mVal) + "");
+        button.setText(String.valueOf(++mVal));
         mGridLayout.addView(button, Math.min(1, mGridLayout.getChildCount()));
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mGridLayout.removeView(button);
-            }
-        });
+        button.setOnClickListener(mGridItemClickListener);
     }
+
+    private View.OnClickListener mGridItemClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            mGridLayout.removeView(v);
+        }
+    };
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
         LogUtil.i(this, "onCheckedChanged");
-        mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.APPEARING, mAppear.isChecked() ? ObjectAnimator.ofFloat(this, "scaleX", 0, 1) : null);
         mTransition.setAnimator(LayoutTransition.CHANGE_APPEARING, mChangeAppear.isChecked() ? mTransition.getAnimator(LayoutTransition.CHANGE_APPEARING) : null);
         mTransition.setAnimator(LayoutTransition.DISAPPEARING, mDisAppear.isChecked() ? mTransition.getAnimator(LayoutTransition.DISAPPEARING) : null);
