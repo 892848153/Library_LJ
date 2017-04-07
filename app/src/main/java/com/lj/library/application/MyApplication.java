@@ -1,12 +1,13 @@
 package com.lj.library.application;
 
 import android.app.Activity;
-import android.app.Application;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.multidex.MultiDexApplication;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.stetho.Stetho;
 import com.lj.library.BuildConfig;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
@@ -25,7 +26,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MyApplication extends Application {
+public class MyApplication extends MultiDexApplication {
 
     private final List<Activity> mActivityList = new LinkedList<Activity>();
 
@@ -78,6 +79,7 @@ public class MyApplication extends Application {
         super.onCreate();
         sInstance = this;
         mRefWatcher = LeakCanary.install(this);
+        Stetho.initializeWithDefaults(this);
 
         restoreUserInfoFromPref();
         initStrictMode();
@@ -194,4 +196,5 @@ public class MyApplication extends Application {
     public static RefWatcher getRefWatcher() {
         return getInstance().mRefWatcher;
     }
+
 }

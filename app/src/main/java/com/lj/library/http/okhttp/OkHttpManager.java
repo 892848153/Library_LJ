@@ -1,5 +1,6 @@
 package com.lj.library.http.okhttp;
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.lj.library.util.StorageUtils;
 
 import java.io.File;
@@ -30,7 +31,8 @@ public enum OkHttpManager {
                 .addInterceptor(CommonHeadersInterceptor.getInstance())
                 .addInterceptor(LoggingInterceptor.getInstance())
                 .addInterceptor(new HttpLoggingInterceptor()
-                        .setLevel(HttpLoggingInterceptor.Level.BASIC)).build();
+                        .setLevel(HttpLoggingInterceptor.Level.BASIC))
+                .addNetworkInterceptor(new StethoInterceptor()).build();
     }
 
     public OkHttpClient getClient() {
