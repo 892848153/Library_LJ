@@ -3,6 +3,12 @@ apply plugin: 'realm-android'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'AndResGuard'
 //apply plugin: 'com.tencent.tinker.patch'
+apply plugin: 'bugly'
+
+bugly {
+    appId = 'b1e580cd5e' // 注册时分配的App ID
+    appKey = '1548eece-4f5f-478d-a23e-b75944144286' // 注册时分配的App Key
+}
 
 android {
     compileSdkVersion 25
@@ -107,8 +113,11 @@ dependencies {
     //facebook的调优工具stecho
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
-
+    // bugly
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//升级SDK已经集成crash上报功能
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 }
+
 
 // Tinker配置开始-------------------------------
 /*tinkerPatch {

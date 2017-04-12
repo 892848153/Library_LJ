@@ -16,6 +16,7 @@ import com.lj.library.dao.realm.MySchemaModule;
 import com.lj.library.util.PreferenceUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.bugly.Bugly;
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.security.SecureRandom;
@@ -83,6 +84,7 @@ public class MyApplication extends MultiDexApplication {
 
         restoreUserInfoFromPref();
         initStrictMode();
+        initBugly();
         initRealm();
         initFresco();
         initQbSdk();
@@ -108,6 +110,13 @@ public class MyApplication extends MultiDexApplication {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         }
+    }
+
+    /**
+     * 初始化Bugly
+     */
+    private void initBugly() {
+        Bugly.init(getApplicationContext(), "b1e580cd5e", BuildConfig.DEBUG);
     }
 
     /**
