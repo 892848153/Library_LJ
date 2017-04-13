@@ -1,9 +1,6 @@
 package com.lj.library.fragment.dagger;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
@@ -56,26 +53,26 @@ public class DaggerFragment extends BaseFragment {
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
-        CommonComponent component = DaggerCommonComponent.builder().commonModule(new CommonModule()).build();
-        //由于CommonModule的构造函数是默认的无参构造函数,所以可以省略,Dagger会为我们自动填充
-//        CommonComponent component = DaggerCommonComponent.builder().build();
-        //由于所有的Module的构造函数都是默认的无参构造函数,所有Component中会有create方法供我们创建Component
-//        CommonComponent component = DaggerCommonComponent.create();
-
-        // Dagger为会该类中所有需要依赖注入的地方提供注入
-        component.injectDaggerFragment(this);
-        // Dagger会通过带有@Inject注解的构造函数new一个该对象,并提供必要的依赖注入
-        ConstructorInjection constructorInjection = component.createConstructorInjection();
-        // 自己new一个该对象, dagger无法提供依赖注入,所以它的域FieldInjection=null
-        ConstructorInjection injection = new ConstructorInjection(null);
-
-        //第一次调用Lazy<T>.get()方法,Dagger才会我们实例化一个对象, 每次调用Lazy<T>.get()得到的是同一个对象
-        FieldInjection fieldInjection = mLazy.get();
-
-        // 每次调用Provider<T>.get()都将得到一个新对象.
-        mProvider.get();
-        mProvider.get();
-        mProvider.get();
+//        CommonComponent component = DaggerCommonComponent.builder().commonModule(new CommonModule()).build();
+//        //由于CommonModule的构造函数是默认的无参构造函数,所以可以省略,Dagger会为我们自动填充
+////        CommonComponent component = DaggerCommonComponent.builder().build();
+//        //由于所有的Module的构造函数都是默认的无参构造函数,所有Component中会有create方法供我们创建Component
+////        CommonComponent component = DaggerCommonComponent.create();
+//
+//        // Dagger为会该类中所有需要依赖注入的地方提供注入
+//        component.injectDaggerFragment(this);
+//        // Dagger会通过带有@Inject注解的构造函数new一个该对象,并提供必要的依赖注入
+//        ConstructorInjection constructorInjection = component.createConstructorInjection();
+//        // 自己new一个该对象, dagger无法提供依赖注入,所以它的域FieldInjection=null
+//        ConstructorInjection injection = new ConstructorInjection(null);
+//
+//        //第一次调用Lazy<T>.get()方法,Dagger才会我们实例化一个对象, 每次调用Lazy<T>.get()得到的是同一个对象
+//        FieldInjection fieldInjection = mLazy.get();
+//
+//        // 每次调用Provider<T>.get()都将得到一个新对象.
+//        mProvider.get();
+//        mProvider.get();
+//        mProvider.get();
 
 
     }

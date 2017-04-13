@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
-apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'AndResGuard'
 //apply plugin: 'com.tencent.tinker.patch'
 apply plugin: 'bugly'
@@ -33,8 +32,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true //启动proguard
-            shrinkResources true // 编译阶段去除无用的资源
+            minifyEnabled false //启动proguard
+            shrinkResources false // 编译阶段去除无用的资源, 设为true打包会出错，有空研究下
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.releaseConfig
         }
@@ -87,15 +86,15 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
     //support 兼容包
-    compile('com.android.support:multidex:1.0.1')
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support:support-v4:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     //dagger2
     compile 'com.google.dagger:dagger:2.5'
     //android-apt插件-引入dagger-compiler包, 不会编译到最后的源码中
-    apt 'com.google.dagger:dagger-compiler:2.5'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.5'
     //单元测试-引入junit包, 会自动引入hamcrest包
     testCompile 'junit:junit:4.12'
     //Mock方式的包mockito
@@ -107,15 +106,16 @@ dependencies {
     //fresco加载图片
     compile 'com.facebook.fresco:fresco:0.12.0'
     //tinker,可选，用于生成application类
-    provided('com.tencent.tinker:tinker-android-anno:1.7.1')
+    provided 'com.tencent.tinker:tinker-android-anno:1.7.1'
     //tinker的核心库
-    compile('com.tencent.tinker:tinker-android-lib:1.7.1')
+    compile 'com.tencent.tinker:tinker-android-lib:1.7.1'
     //facebook的调优工具stecho
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
-    // bugly
-    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//升级SDK已经集成crash上报功能
-    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    // bugly升级SDK已经集成crash上报功能
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release'
 }
 
 
@@ -154,6 +154,7 @@ dependencies {
 andResGuard {
     // mappingFile = file("./resource_mapping.txt")
     mappingFile = null
+    // 当你使用v2签名的时候，7zip压缩是无法生效的。
     use7zip = true
     useSign = true
     // 打开这个开关，会keep住所有资源的原始路径，只混淆资源的名字
@@ -205,7 +206,7 @@ andResGuard {
             "resources.arsc"
     ]
     sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.1.13'
+        artifact = 'com.tencent.mm:SevenZip:1.2.1'
         //path = "/usr/local/bin/7za"
     }
 }
