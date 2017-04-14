@@ -1,9 +1,11 @@
 package com.lj.library.application;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.support.multidex.MultiDexApplication;
+import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -17,6 +19,7 @@ import com.lj.library.util.PreferenceUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.security.SecureRandom;
@@ -27,7 +30,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
-public class MyApplication extends MultiDexApplication {
+public class MyApplication extends Application {
 
     private final List<Activity> mActivityList = new LinkedList<Activity>();
 
@@ -116,7 +119,7 @@ public class MyApplication extends MultiDexApplication {
      * 初始化Bugly
      */
     private void initBugly() {
-        Bugly.init(getApplicationContext(), "b1e580cd5e", BuildConfig.DEBUG);
+        Bugly.init(getApplicationContext(), "b1e580cd5e", true);
     }
 
     /**
@@ -206,4 +209,14 @@ public class MyApplication extends MultiDexApplication {
         return getInstance().mRefWatcher;
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        // you must install multiDex whatever tinker is installed!
+        MultiDex.install(base);
+
+
+        // 安装tinker
+        Beta.installTinker();
+    }
 }

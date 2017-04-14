@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'realm-android'
 apply plugin: 'AndResGuard'
-//apply plugin: 'com.tencent.tinker.patch'
+apply from: 'tinker-support.gradle'
 apply plugin: 'bugly'
 
 bugly {
@@ -16,9 +16,13 @@ android {
         applicationId "com.lj.library"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         multiDexEnabled true
+    }
+
+    dexOptions {
+        jumboMode true
     }
 
     signingConfigs {
@@ -43,8 +47,8 @@ android {
         abi {
             enable true
             reset()
-            include 'armeabi-v7a', 'x86'
-            universalApk false
+            include /*'armeabi-v7a',*/ 'x86'
+            universalApk true
         }
     }
 
@@ -105,10 +109,10 @@ dependencies {
     compile 'com.squareup.wire:wire-runtime:2.2.0'
     //fresco加载图片
     compile 'com.facebook.fresco:fresco:0.12.0'
-    //tinker,可选，用于生成application类
-    provided 'com.tencent.tinker:tinker-android-anno:1.7.1'
-    //tinker的核心库
-    compile 'com.tencent.tinker:tinker-android-lib:1.7.1'
+//    //tinker,可选，用于生成application类
+//    provided 'com.tencent.tinker:tinker-android-anno:1.7.1'
+//    //tinker的核心库
+//    compile 'com.tencent.tinker:tinker-android-lib:1.7.1'
     //facebook的调优工具stecho
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
@@ -117,38 +121,6 @@ dependencies {
     //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
     compile 'com.tencent.bugly:nativecrashreport:latest.release'
 }
-
-
-// Tinker配置开始-------------------------------
-/*tinkerPatch {
-    //有问题的apk的地址
-    oldApk = "D://app_bug.apk"
-    ignoreWarning = false
-    useSign = true
-    buildConfig{
-        tinkerId = "1.0"
-    }
-    packageConfig{
-        //写这个为了修复一个bug,详见github issue #22
-        configField("TINKER_ID", "1.0")
-    }
-    dex{
-        dexMode = "jar"
-        pattern = ["classes*.dex", "assets/secondary-dex-?.jar"]
-        loader = ["com.tencent.tinker.loader.*", "com.lj.library.application.SampleApplication"]
-    }
-    lib{
-        pattern = ["lib/armeabi*//*.so","lib/arm64-v8a*//*.so","lib/armeabi-v7a*//*.so","lib/mips*//*.so","lib/mips64*//*.so","lib/x86*//*.so","lib/x86_64*//*.so"]
-    }
-    res{
-        pattern = ["res*//*", "assets*//*", "resources.arsc", "AndroidManifest.xml"]
-        largeModSize = 100
-    }
-    sevenZip{
-        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
-    }
-}*/
-// Tinker配置结束-------------------------------
 
 // AndResGuard 配置开始----------------------------------
 andResGuard {
