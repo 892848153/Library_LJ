@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 
 import com.lj.library.R;
-import com.lj.library.application.MyApplication;
+import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.RxBus;
@@ -33,7 +33,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        MyApplication.getInstance().addActivity(mContext);
+//        MyApplication.getInstance().addActivity(mContext);
+        SampleApplicationLike.getInstance().addActivity(mContext);
 
         /** initViews   **/
         int layoutId = initLayout(savedInstanceState);
@@ -67,7 +68,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MyApplication.getInstance().removeActivity(mContext);
+//        MyApplication.getInstance().removeActivity(mContext);
+        SampleApplicationLike.getInstance().removeActivity(mContext);
         RxBus.getInstance().unregister(this);
     }
 

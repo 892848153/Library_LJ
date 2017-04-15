@@ -16,7 +16,7 @@ android {
         applicationId "com.lj.library"
         minSdkVersion 17
         targetSdkVersion 25
-        versionCode 3
+        versionCode 4
         versionName "1.0"
         multiDexEnabled true
     }

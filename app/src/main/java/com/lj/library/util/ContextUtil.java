@@ -1,7 +1,5 @@
 package com.lj.library.util;
 
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +10,10 @@ import android.telephony.TelephonyManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.lj.library.application.MyApplication;
+import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.bean.UserInfo;
+
+import java.util.List;
 
 public class ContextUtil {
 
@@ -46,7 +46,8 @@ public class ContextUtil {
 	 */
 	public static void pushToActivityWithLogin(Context from, Class<?> to) {
 		Intent intent = null;
-		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetClass = to;
 			// intent = new Intent(from, LoginActivity.class);
@@ -60,7 +61,8 @@ public class ContextUtil {
 	public static void pushToActivityWithLogin(Context from, Class<?> to,
 			Bundle bundle) {
 		Intent intent = null;
-		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetClass = to;
 			sBundle = bundle;
@@ -74,7 +76,8 @@ public class ContextUtil {
 	}
 
 	public static void pushToActivityWithLogin(Context context, Intent intent) {
-		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetIntent = intent;
 			// intent = new Intent(context, LoginActivity.class);
@@ -98,7 +101,8 @@ public class ContextUtil {
 			return;
 		}
 
-		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo != null) {
 			performPushToRecentlyActivity(from);
 
