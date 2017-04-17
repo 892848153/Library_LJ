@@ -152,7 +152,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
     private void initRealm() {
         byte[] key = new byte[64];
         new SecureRandom().nextBytes(key);
-        RealmConfiguration config = new RealmConfiguration.Builder(getApplication())
+        RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("default.realm")  //在Context.getFileDir()的路径下生成一个该名字的文件
                 .encryptionKey(key)  //AES-256加密的key
                 .schemaVersion(0) //  数据库版本号, 默认是0

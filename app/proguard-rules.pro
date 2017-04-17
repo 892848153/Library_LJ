@@ -15,11 +15,15 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-printconfiguration proguardConfig.txt   #输出混淆的配置到文件里面，最终的混淆配置并不止这个文件里面的这些内容
 -dontusemixedcaseclassnames
 -dontskipnonpubliclibraryclasses
 -verbose
 -dontshrink
 -dontoptimize
+-dontnote android.net.http.**
+-dontnote org.apache.http.**
+-dontnote org.apache.commons.codec.**
 
 -keep public class com.google.vending.licensing.ILicensingService
 -keep public class com.android.vending.licensing.ILicensingService
@@ -66,3 +70,5 @@
 -dontwarn com.tencent.bugly.**
 -keep public class com.tencent.bugly.**{*;}
 -keep class android.support.**{*;}
+-dontwarn ***
+#-dontwarn com.google.protobuf.**

@@ -28,8 +28,6 @@ public class BannerFragment extends BaseFragment {
 
     @Override
     protected int initLayout(Bundle savedInstanceState) {
-//        String a = null;
-//        a.toString();
         return R.layout.banner_fragment;
     }
 
