@@ -66,11 +66,11 @@
 -dontoptimize
 -printmapping /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/mapping.txt
 -dontusemixedcaseclassnames
--keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,*Annotation*,*Annotation*
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,*Annotation*,*Annotation*,*Annotation*
 -dontpreverify
 -verbose
 -dontnote com.android.vending.licensing.ILicensingService,com.google.vending.licensing.ILicensingService,com.google.android.vending.licensing.ILicensingService,android.support.**,android.net.http.**,org.apache.http.**,org.apache.commons.codec.**,rx.Observable,io.realm.internal.SyncObjectServerFacade
--dontwarn android.support.**,android.support.**,com.tencent.bugly.**,***,javax.**,io.realm.**,com.facebook.stetho.**
+-dontwarn android.support.**,android.support.**,com.tencent.bugly.**,***,com.tencent.tinker.anno.AnnotationProcessor,com.tencent.bugly.**,javax.**,io.realm.**,com.facebook.stetho.**
 -printconfiguration /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/proguardConfig.txt
 -dump /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/dump.txt
 -printseeds /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/seeds.txt
@@ -204,6 +204,54 @@
     <methods>;
 }
 
+-keep class android.support.** {
+    <fields>;
+    <methods>;
+}
+
+-keep @com.tencent.tinker.anno.DefaultLifeCycle public class *
+
+-keep public class * extends android.app.Application {
+    <fields>;
+    <methods>;
+}
+
+-keep public class com.tencent.tinker.loader.app.ApplicationLifeCycle {
+    <fields>;
+    <methods>;
+}
+
+-keep public class * extends com.tencent.tinker.loader.app.ApplicationLifeCycle {
+    <fields>;
+    <methods>;
+}
+
+-keep public class com.tencent.tinker.loader.TinkerLoader {
+    <fields>;
+    <methods>;
+}
+
+-keep public class * extends com.tencent.tinker.loader.TinkerLoader {
+    <fields>;
+    <methods>;
+}
+
+-keep public class com.tencent.tinker.loader.TinkerTestDexLoad {
+    <fields>;
+    <methods>;
+}
+
+# your dex.loader patterns here
+-keep class com.tencent.tinker.loader.**
+
+-keep class com.lj.library.application.SampleApplication
+
+-keep public class com.tencent.bugly.** {
+    <fields>;
+    <methods>;
+}
+
+# Avoid affect upgrade function, need to keep the support package of classes
 -keep class android.support.** {
     <fields>;
     <methods>;
@@ -350,7 +398,7 @@
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:64
+# view AndroidManifest.xml #generated:31
 -keep class android.support.v4.content.FileProvider {
     <init>(...);
 }
@@ -468,32 +516,32 @@
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:41
+# view AndroidManifest.xml #generated:20
 -keep class com.lj.library.activity.MainActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:31
+# view AndroidManifest.xml #generated:14
 -keep class com.lj.library.activity.SplashActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:42
+# view AndroidManifest.xml #generated:21
 -keep class com.lj.library.activity.TabHostActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:43
+# view AndroidManifest.xml #generated:22
 -keep class com.lj.library.activity.WebViewActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:44
+# view AndroidManifest.xml #generated:23
 -keep class com.lj.library.activity.X5WebViewActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:25
+# view AndroidManifest.xml #generated:13
 -keep class com.lj.library.application.SampleApplication {
     <init>(...);
 }
@@ -569,32 +617,32 @@
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:82
+# view AndroidManifest.xml #generated:36
 -keep class com.tencent.bugly.beta.tinker.TinkerResultService {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:60
+# view AndroidManifest.xml #generated:30
 -keep class com.tencent.bugly.beta.ui.BetaActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:48
+# view AndroidManifest.xml #generated:24
 -keep class com.tencent.smtt.sdk.VideoActivity {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:93
+# view AndroidManifest.xml #generated:39
 -keep class com.tencent.tinker.lib.service.DefaultTinkerResultService {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:85
+# view AndroidManifest.xml #generated:37
 -keep class com.tencent.tinker.lib.service.TinkerPatchService {
     <init>(...);
 }
 
-# view AndroidManifest.xml #generated:89
+# view AndroidManifest.xml #generated:38
 -keep class com.tencent.tinker.lib.service.TinkerPatchService$InnerService {
     <init>(...);
 }

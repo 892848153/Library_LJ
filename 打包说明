@@ -1,0 +1,16 @@
+正常情况下打包是运行Gradle projects里面的 app/Tasks/build/assembleRelease任务
+这样会在目录app/build/output/apk下生成一个打好的apk包
+
+如果要使用AndResGuard对资源进行混淆，则需要运行app/Tasks/andresguard/resguardRelease任务
+该任务会读取app/build/output/apk目录下打好的apk包进行资源混淆
+最终在app/build/output/apk/AndResGuard_app_release目录下生成最终的包
+如果app/build/output/apk目录下没有打好的包也没关系，
+该任务会先去按正常的方式打好一个包保存在app/build/output/apk目录下
+
+如果启动了tinker-support插件，则每次打包，该插件都会把app/build/output/apk
+目录下的包备份到app/build/bakApk/app-timestamp目录下,
+并且把正常打包情况下混淆产生的mapping文件复制过去
+
+packer-ng-plugin插件可以打渠道包，只要运行app/Tasks/other/apkRelease任务
+该插件会读取app/build/output/apk目录下打好的包并写入渠道信息，然后把
+生成的渠道包保存在build/archives目录下
