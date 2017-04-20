@@ -24,6 +24,7 @@ public class AlgorithmFragment extends BaseFragment{
     protected void initComp(Bundle savedInstanceState) {
         testQuickSort();
         findDuplicateAppear();
+        findMaxSubSum();
     }
 
     private void testQuickSort() {
@@ -94,5 +95,32 @@ public class AlgorithmFragment extends BaseFragment{
                 Log.e(TAG, i + "");
             }
         }
+    }
+
+    /**
+     * 求出最大子序列的和 详情见:http://blog.sina.com.cn/s/blog_7c984e770101egyb.html
+     */
+    private void findMaxSubSum() {
+        int [] arr = {-2, 11, -4, 13, -5, -2};
+        int max = maxSubSum(arr);
+        System.out.println("find max sub sum in: -2, 11, -4, 13, -5, -2" + " result: " + max);
+    }
+
+    /**
+     * 求出最大子序列的和
+     * @param arr
+     * @return
+     */
+    private int maxSubSum(int[] arr) {
+        int maxSum = 0;
+        int thisSum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            thisSum += arr[i];
+            if (thisSum > maxSum)// thisSum在[0,maxSum]之间时不需要任何处理
+                maxSum = thisSum;
+            else if (thisSum < 0)// 说明加上当前元素使得子序列为负数了,那么抛弃这段子序列(相当于thisSum赋值为0),从下一轮for开始
+                thisSum = 0;
+        }
+        return maxSum;
     }
 }

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: 'tinker-support.gradle'
+//apply from: 'tinker-support.gradle'
 apply plugin: 'realm-android'
 apply plugin: 'AndResGuard'
 apply plugin: 'bugly'
