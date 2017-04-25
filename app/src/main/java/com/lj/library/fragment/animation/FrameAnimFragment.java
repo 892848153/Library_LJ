@@ -46,7 +46,7 @@ public class FrameAnimFragment extends BaseFragment implements View.OnClickListe
             case R.id.xml_btn:
                 stopAnimIfIsRuning();
                 //noinspection ResourceType
-                mImageView.setBackgroundResource(R.anim.anim_list);
+                mImageView.setBackgroundResource(R.drawable.anim_list);
                 mAnimDraw = (AnimationDrawable) mImageView.getBackground();
                 mAnimDraw.start();
                 break;

@@ -106,6 +106,11 @@ public class SampleApplicationLike extends DefaultApplicationLike {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        if (LeakCanary.isInAnalyzerProcess(getApplication())) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
         mRefWatcher = LeakCanary.install(getApplication());
         Stetho.initializeWithDefaults(getApplication());
 
