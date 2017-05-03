@@ -71,6 +71,11 @@ android {
     dataBinding {
         enabled = true
     }
+    aaptOptions {
+        //设置为false的话，编译打包时aapt将不会使用libpng, libjpeg对图片进行压缩
+        //需要你自己使用工具压缩图片,比如pngquant, tinypng
+        cruncherEnabled true
+    }
 
 }
 
