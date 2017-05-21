@@ -1,5 +1,9 @@
-apply plugin: 'com.android.application'
-//apply from: 'tinker-support.gradle'
+if(isBuildModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+    apply from: 'tinker-support.gradle'
+}
 apply plugin: 'realm-android'
 apply plugin: 'AndResGuard'
 apply plugin: 'bugly'
@@ -20,6 +24,15 @@ android {
         versionCode 4
         versionName "1.0"
         multiDexEnabled true
+    }
+    sourceSets {
+        main {
+            if (isBuildModule.toBoolean()) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+            }
+        }
     }
 
     dexOptions {
