@@ -28,6 +28,8 @@
         <item name="colorAccent">@color/colorAccent</item>
         <!-- 修改Theme.AppCompat下主题中的属性，更改状态栏的底色，5.0及以上系统才有效-->
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- 替换字体需要用到这个，app默认字体设置成serif，然后在application中替换serif字体为自定义字体-->
+        <item name="android:typeface">serif</item>
     </style>
 	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>

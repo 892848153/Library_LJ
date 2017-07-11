@@ -13,10 +13,12 @@ import android.text.TextUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.lj.library.BuildConfig;
+import com.lj.library.R;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
 import com.lj.library.dao.realm.MyMigration;
 import com.lj.library.dao.realm.MySchemaModule;
+import com.lj.library.util.FontSwitcherUtils;
 import com.lj.library.util.PreferenceUtil;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -111,6 +113,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
             // You should not init your app in this process.
             return;
         }
+        getApplication().setTheme(R.style.AppTheme);
         mRefWatcher = LeakCanary.install(getApplication());
         Stetho.initializeWithDefaults(getApplication());
 
@@ -120,7 +123,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         initRealm();
         initFresco();
         initQbSdk();
-
+        switchFont();
         // Thread.setDefaultUncaughtExceptionHandler(new
         // MyUncaughtExceptionHandler());
     }
@@ -182,6 +185,10 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         if (!QbSdk.isTbsCoreInited()) {
             QbSdk.preInit(getApplication());
         }
+    }
+
+    private void switchFont() {
+        FontSwitcherUtils.switchFont(getApplication());
     }
 
     /**
