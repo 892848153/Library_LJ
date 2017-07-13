@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lj.library.R;
+import com.lj.library.activity.MyArchitectureActivity;
 import com.lj.library.activity.TabHostActivity;
 import com.lj.library.activity.X5WebViewActivity;
 import com.lj.library.adapter.MenuAdapter;
@@ -71,6 +72,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(new AlgorithmFragment(), "Algorithm Demo"));
         menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         menuList.add(new Menu(new SmartUpdateFragment(), "Smart Update Demo"));
+        menuList.add(new Menu(MyArchitectureActivity.class, "My Architecture"));
         return menuList;
     }
 

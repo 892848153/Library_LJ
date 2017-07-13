@@ -73,7 +73,10 @@ public class InnerListView extends ListView {
 	 * @param flag
 	 */
 	private void setParentScrollAble(boolean flag) {
-		mParentScrollView.requestDisallowInterceptTouchEvent(!flag);// 这里的parentScrollView就是listview外面的那个scrollview
+		if (mParentScrollView != null) {
+			// 这里的parentScrollView就是listview外面的那个scrollview
+			mParentScrollView.requestDisallowInterceptTouchEvent(!flag);
+		}
 	}
 
 	public void setParentScrollView(ScrollView scrollView) {
