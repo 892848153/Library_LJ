@@ -8,14 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.lj.library.R;
 import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.BaseFragment;
-import com.lj.library.util.LogUtil;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UIUtils;
+
+import butterknife.ButterKnife;
 
 /**
  * 基础类.
@@ -23,7 +25,7 @@ import com.lj.library.util.UIUtils;
  * @author jie.liu
  * @time 2015年3月6日 上午10:55:47
  */
-public abstract class BaseActivity1 extends AppCompatActivity implements BackHandlerInterface {
+public abstract class BaseActivity1 extends AppCompatActivity implements BackHandlerInterface, BaseViewAction, View.OnClickListener {
 
     private static final String TAG = "BaseActivity1";
 
@@ -33,15 +35,36 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
 
     private LinearLayout mRootLayout;
 
+    private View mLoadingLayout;
+
+    private View mNoNetworkLayout;
+
+    private View mContentLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         SampleApplicationLike.getInstance().addActivity(mContext);
 
-        setContentView(R.layout.activity_base);
+        super.setContentView(R.layout.activity_base);
+        mRootLayout = (LinearLayout) findViewById(R.id.root_layout);
         translucentStatusBar();
-        setBodyView(initLayout(savedInstanceState));
+
+        View appBar = initAppBar();
+        if (appBar != null && appBar.getParent() == null) {
+            int height = (int) (48 * getResources().getDisplayMetrics().density);
+            mRootLayout.addView(appBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
+            View back = appBar.findViewById(R.id.back_iv);
+            if (back != null)
+                back.setOnClickListener(this);
+        }
+
+        mLoadingLayout = initLoadingLayout();
+        addViewToRootLayout(mLoadingLayout);
+
+        setContentView(initLayout(savedInstanceState));
+        ButterKnife.bind(this);
         initComp(savedInstanceState);
     }
 
@@ -64,20 +87,15 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
         }
     }
 
-    public void setBodyView(int layoutId) {
-        setBodyView(View.inflate(this, layoutId, null));
+    @Override
+    public void setContentView(int layoutId) {
+        setContentView(View.inflate(this, layoutId, null));
     }
 
-    public void setBodyView(View view) {
-        mRootLayout = (LinearLayout) findViewById(R.id.root_layout);
-        if (mRootLayout == null) return;
-        LogUtil.i(this, mRootLayout.getChildCount() + "");
+    @Override
+    public void setContentView(View view) {
+        mContentLayout = view;
         mRootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        initAppbar();
-    }
-
-    protected void initAppbar() {
-
     }
 
     @Override
@@ -99,12 +117,6 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
         RxBus.getInstance().unregister(this);
     }
 
-    /**
-     * 返回布局id, 供{@link #setContentView(int)}调用.
-     *
-     * @param savedInstanceState
-     * @return
-     */
     protected abstract int initLayout(Bundle savedInstanceState);
 
     /**
@@ -113,4 +125,84 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
      * @param savedInstanceState
      */
     protected abstract void initComp(Bundle savedInstanceState);
+
+    @Override
+    public void onClick(final View v) {
+        switch (v.getId()) {
+            case R.id.back_iv:
+                onBackPressed();
+                break;
+            case R.id.retry_btn:
+                retry();
+                break;
+            default:
+        }
+    }
+
+    @Override
+    public View initAppBar() {
+        return View.inflate(mContext, R.layout.include_normal_header, null);
+    }
+
+    @Override
+    public void setTitle(final int titleId) {
+        setTitle(getString(titleId));
+    }
+
+    @Override
+    public void setTitle(final String title) {
+        View view = mRootLayout.findViewById(R.id.title_tv);
+        if (view != null) {
+            TextView titleTv = (TextView) view;
+            titleTv.setText(title);
+        }
+    }
+
+    @Override
+    public View initLoadingLayout() {
+        return View.inflate(mContext, R.layout.include_loading, null);
+    }
+
+    @Override
+    public View initNoNetworkLayout() {
+        View noNetworkLayout = View.inflate(mContext, R.layout.include_no_network, null);;
+        noNetworkLayout.findViewById(R.id.retry_btn).setOnClickListener(this);
+        return noNetworkLayout;
+    }
+
+    @Override
+    public void showNoNetworkLayout() {
+        removeViewFromRootLayout(mLoadingLayout);
+        removeViewFromRootLayout(mContentLayout);
+        if (mNoNetworkLayout == null) {
+            mNoNetworkLayout = initNoNetworkLayout();
+        }
+        addViewToRootLayout(mNoNetworkLayout);
+    }
+
+    @Override
+    public void showContentLayout() {
+        removeViewFromRootLayout(mLoadingLayout);
+        removeViewFromRootLayout(mNoNetworkLayout);
+        addViewToRootLayout(mContentLayout);
+    }
+
+    @Override
+    public void retry() {
+        removeViewFromRootLayout(mNoNetworkLayout);
+        removeViewFromRootLayout(mContentLayout);
+        addViewToRootLayout(mLoadingLayout);
+    }
+
+    private void removeViewFromRootLayout(View view) {
+        if (view != null && view.getParent() == mRootLayout) {
+            mRootLayout.removeView(view);
+        }
+    }
+
+    private void addViewToRootLayout(View view) {
+        if (view != null && view.getParent() == null) {
+            mRootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+    }
 }

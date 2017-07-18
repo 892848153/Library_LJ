@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="horizontal"
               android:layout_width="match_parent"
+              android:background="@color/colorPrimary"
               android:layout_height="@dimen/height_normal_touch_view">
 
     <ImageView
@@ -19,6 +20,7 @@
         android:gravity="center"
         android:maxLines="1"
         android:paddingRight="@dimen/width_normal_touch_view"
-        android:textSize="@dimen/text_size_large" />
+        android:textColor="@color/mainBlack"
+        android:textSize="@dimen/text_size_xlarge" />
 
 </LinearLayout>

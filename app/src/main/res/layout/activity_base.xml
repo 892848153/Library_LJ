@@ -13,8 +13,4 @@
         android:layout_height="0dp"
         android:background="@color/colorPrimaryDark"/>
 
-    <include layout="@layout/include_normal_header" />
-    <!--<include layout="@layout/include_loading"/>-->
-    <!--<include layout="@layout/include_no_network"/>-->
-
 </LinearLayout>
