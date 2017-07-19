@@ -18,10 +18,6 @@ public interface BaseViewAction {
 
     View initNoNetworkLayout();
 
-    void showNoNetworkLayout();
-
-    void showContentLayout();
-
     void retry();
 
 }

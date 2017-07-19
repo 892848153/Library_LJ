@@ -14,6 +14,7 @@ import com.lj.library.R;
 import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UIUtils;
 
@@ -171,7 +172,11 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
     }
 
     @Override
-    public void showNoNetworkLayout() {
+    public void retry() {
+        showLoadingLayout();
+    }
+
+    protected void showNoNetworkLayout() {
         removeViewFromRootLayout(mLoadingLayout);
         removeViewFromRootLayout(mContentLayout);
         if (mNoNetworkLayout == null) {
@@ -180,29 +185,32 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
         addViewToRootLayout(mNoNetworkLayout);
     }
 
-    @Override
-    public void showContentLayout() {
+    protected void showContentLayout() {
         removeViewFromRootLayout(mLoadingLayout);
         removeViewFromRootLayout(mNoNetworkLayout);
         addViewToRootLayout(mContentLayout);
     }
 
-    @Override
-    public void retry() {
+    protected void showLoadingLayout() {
         removeViewFromRootLayout(mNoNetworkLayout);
         removeViewFromRootLayout(mContentLayout);
         addViewToRootLayout(mLoadingLayout);
     }
 
-    private void removeViewFromRootLayout(View view) {
-        if (view != null && view.getParent() == mRootLayout) {
-            mRootLayout.removeView(view);
-        }
-    }
-
     private void addViewToRootLayout(View view) {
         if (view != null && view.getParent() == null) {
             mRootLayout.addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            Logger.e("the view is null or it is already have parent");
+        }
+    }
+
+    private void removeViewFromRootLayout(View view) {
+        if (view != null && view.getParent() == mRootLayout) {
+            mRootLayout.removeView(view);
+        } else {
+            Logger.e("the view is null or it's parent is not the root layout");
+
         }
     }
 }
