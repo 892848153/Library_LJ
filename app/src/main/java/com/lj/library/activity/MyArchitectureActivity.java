@@ -45,7 +45,7 @@ public class MyArchitectureActivity extends BaseActivity1 {
                 int i = new Random().nextInt(2);
                 if (i == 1) {
                     Logger.i("show no network layout, random:" + i);
-                    showNoNetworkLayout();
+                    showLoadingErrorLayout();
                 } else {
                     showContentLayout();
                     Logger.i("show content layout, random:" + i);

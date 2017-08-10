@@ -16,8 +16,14 @@ public interface BaseViewAction {
 
     View initLoadingLayout();
 
-    View initNoNetworkLayout();
+    View initLoadingErrorLayout();
 
     void retry();
+
+    void showLoadingLayout();
+
+    void showContentLayout();
+
+    void showLoadingErrorLayout();
 
 }

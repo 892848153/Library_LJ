@@ -3,10 +3,13 @@ package com.lj.library.activity.base;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,7 +41,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
 
     private View mLoadingLayout;
 
-    private View mNoNetworkLayout;
+    private View mLoadingErrorLayout;
 
     private View mContentLayout;
 
@@ -165,10 +168,28 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
     }
 
     @Override
-    public View initNoNetworkLayout() {
-        View noNetworkLayout = View.inflate(mContext, R.layout.include_no_network, null);;
-        noNetworkLayout.findViewById(R.id.retry_btn).setOnClickListener(this);
-        return noNetworkLayout;
+    public View initLoadingErrorLayout() {
+        View loadingErrorLayout = View.inflate(mContext, R.layout.include_loading_error_layout, null);
+        loadingErrorLayout.findViewById(R.id.retry_btn).setOnClickListener(this);
+        return loadingErrorLayout;
+    }
+
+    protected void setLoadingErrorIcon(@DrawableRes int drawId) {
+        if (mLoadingErrorLayout == null) {
+            throw new IllegalStateException("loading error layout has never initialed, please invoke showLoadingErrorLayout() method first.");
+        }
+
+        ImageView iconIv = (ImageView) mLoadingErrorLayout.findViewById(R.id.error_ic_iv);
+        iconIv.setImageResource(drawId);
+    }
+
+    protected void setLoadingErrorContent(@StringRes int strId) {
+        if (mLoadingErrorLayout == null) {
+            throw new IllegalStateException("loading error layout has never initialed, please invoke showLoadingErrorLayout() method first.");
+        }
+
+        TextView promptTv = (TextView) mLoadingErrorLayout.findViewById(R.id.prompt_tv);
+        promptTv.setText(strId);
     }
 
     @Override
@@ -176,25 +197,28 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
         showLoadingLayout();
     }
 
-    protected void showNoNetworkLayout() {
-        removeViewFromRootLayout(mLoadingLayout);
+    @Override
+    public void showLoadingLayout() {
+        removeViewFromRootLayout(mLoadingErrorLayout);
         removeViewFromRootLayout(mContentLayout);
-        if (mNoNetworkLayout == null) {
-            mNoNetworkLayout = initNoNetworkLayout();
-        }
-        addViewToRootLayout(mNoNetworkLayout);
+        addViewToRootLayout(mLoadingLayout);
     }
 
-    protected void showContentLayout() {
+    @Override
+    public void showContentLayout() {
         removeViewFromRootLayout(mLoadingLayout);
-        removeViewFromRootLayout(mNoNetworkLayout);
+        removeViewFromRootLayout(mLoadingErrorLayout);
         addViewToRootLayout(mContentLayout);
     }
 
-    protected void showLoadingLayout() {
-        removeViewFromRootLayout(mNoNetworkLayout);
+    @Override
+    public void showLoadingErrorLayout() {
+        removeViewFromRootLayout(mLoadingLayout);
         removeViewFromRootLayout(mContentLayout);
-        addViewToRootLayout(mLoadingLayout);
+        if (mLoadingErrorLayout == null) {
+            mLoadingErrorLayout = initLoadingErrorLayout();
+        }
+        addViewToRootLayout(mLoadingErrorLayout);
     }
 
     private void addViewToRootLayout(View view) {

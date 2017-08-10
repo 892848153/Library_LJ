@@ -5,6 +5,14 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/error_ic_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/prompt_tv"
+        android:layout_marginBottom="@dimen/space_large"
+        android:background="@drawable/common_ic_loading_error"/>
 
     <TextView
         android:id="@+id/prompt_tv"
