@@ -4,6 +4,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
+
     <ProgressBar
         android:id="@+id/progress_bar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -13,7 +14,7 @@
         android:max="100"
         android:progressDrawable="@drawable/common_webview_bg_progress_bar"/>
 
-    <com.lj.library.widget.X5WebView
+    <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

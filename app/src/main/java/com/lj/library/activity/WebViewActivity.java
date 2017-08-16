@@ -1,36 +1,76 @@
 package com.lj.library.activity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.lj.library.R;
+import com.lj.library.http.common.NetworkChecker;
+import com.lj.library.util.LogUtil;
+import com.lj.library.util.Logger;
 
 /**
  * WebView事例.
  */
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends AppCompatActivity implements View.OnClickListener{
+
+    private LinearLayout mContentLayout;
+
+    private ProgressBar mProgressBar;
 
     private WebView mWebView;
+
+    private View mErrorView;
+
+    private String mUrl;
+
+    private ErrorManager mErrorManager;
+
+    private final ErrorManager NO_NETWORK_ERROR_MANAGER = new NoNetworkErrorManager();
+
+    private final ErrorManager LOADING_ERROR_MANAGER = new LoadingErrorManager();
+
+    public static final String KEY_URL = "keyUrl";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.webview_activity);
+        initWebView();
+        loadUrl(getIntent().getStringExtra(KEY_URL));
+    }
 
-        mWebView = new WebView(this);
-        setContentView(mWebView);
+    public void loadUrl(String url) {
+        mUrl = url;
+        initWebView();
+        loadUrlIfHaveNetwork(url);
+    }
+
+    private void initWebView() {
+        mContentLayout = (LinearLayout) findViewById(R.id.web_content_llyt);
+        mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+        mWebView = (WebView) findViewById(R.id.webview);
 
         WebSettings setting = mWebView.getSettings();
         setting.setAllowFileAccess(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            setting.setAllowContentAccess(true);
-        }
+        setting.setAllowContentAccess(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             setting.setAllowFileAccessFromFileURLs(true);
             setting.setAllowUniversalAccessFromFileURLs(true);
@@ -85,6 +125,18 @@ public class WebViewActivity extends AppCompatActivity {
 
         mWebView.setWebChromeClient(new WebChromeClient(){
 
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+                LogUtil.d(WebViewActivity.this, "ProgressChanged++  " + newProgress);
+                if (newProgress >= 100) {
+                    mProgressBar.setVisibility(View.GONE);
+                } else {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                    mProgressBar.setProgress(newProgress);
+                }
+            }
+
             //=========HTML5定位==========================================================
             @Override
             public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
@@ -103,15 +155,113 @@ public class WebViewActivity extends AppCompatActivity {
 
         });
         mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
+                super.onReceivedError(view, errorCode, description, failingUrl);
+                Logger.e("onReceivedError   errorCode:" + errorCode + "  desc:" + description);
+                mErrorManager = LOADING_ERROR_MANAGER;
+                showErrorView(mErrorManager.getErrorPrompt());
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Logger.i("shouldOverrideUrlLoading:" + url);
                 view.loadUrl(url);
                 return true;
             }
 
-        });
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                Logger.i("onPageStarted");
+            }
 
-        mWebView.loadUrl("http://www.baidu.com");
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                Logger.i("onPageFinished");
+            }
+
+        });
+    }
+
+    private void initErrorView(@StringRes int errorTipId) {
+        if (mErrorView == null) {
+            mErrorView = View.inflate(this, R.layout.include_loading_error_layout, null);
+            mErrorView.findViewById(R.id.retry_btn).setOnClickListener(this);
+        }
+
+        TextView tv = (TextView) mErrorView.findViewById(R.id.prompt_tv);
+        tv.setText(errorTipId);
+    }
+
+    @Override
+    public void onClick(final View v) {
+        if (mErrorManager != null) {
+            mErrorManager.retry();
+        }
+    }
+
+    private void loadUrlIfHaveNetwork(String url) {
+        if (NetworkChecker.isNetworkAvailable(this)) {
+            showWebView();
+            mWebView.loadUrl(TextUtils.isEmpty(url) ? "http://www.baidu.com" : url);
+        } else {
+            mErrorManager = NO_NETWORK_ERROR_MANAGER;
+            showErrorView(mErrorManager.getErrorPrompt());
+        }
+    }
+
+    private void reloadUrlIfNetworkAvailable() {
+        if (NetworkChecker.isNetworkAvailable(this)) {
+            showWebView();
+            mWebView.reload();
+        } else {
+            mErrorManager = NO_NETWORK_ERROR_MANAGER;
+            showErrorView(mErrorManager.getErrorPrompt());
+        }
+    }
+
+    private void showWebView() {
+        if (mContentLayout.getChildCount() > 1) {
+            mContentLayout.removeViewAt(1);
+        }
+
+        mContentLayout.addView(mWebView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    private void showErrorView(@StringRes int errorTipId) {
+        if (mContentLayout.getChildCount() > 1) {
+            mContentLayout.removeViewAt(1);
+        }
+        initErrorView(errorTipId);
+        mContentLayout.addView(mErrorView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // 避免JS一直在后台耗电
+        mWebView.getSettings().setJavaScriptEnabled(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWebView.getSettings().setJavaScriptEnabled(true);
+    }
+
+    public void updateCookies(String url, String value) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) { // 2.3及以下
+            CookieSyncManager.createInstance(getApplicationContext());
+        }
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.setAcceptCookie(true);
+        cookieManager.setCookie(url, value);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1) {
+            CookieSyncManager.getInstance().sync();
+        }
     }
 
     @Override
@@ -129,11 +279,47 @@ public class WebViewActivity extends AppCompatActivity {
             mWebView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
             mWebView.clearHistory();
 
-            ((ViewGroup)mWebView.getParent()).removeView(mWebView);
+            if (mWebView.getParent() != null) {
+                ((ViewGroup) mWebView.getParent()).removeView(mWebView);
+            }
             mWebView.destroy();
             mWebView = null;
         }
 
         super.onDestroy();
+    }
+
+    interface ErrorManager {
+
+        int getErrorPrompt();
+
+        void retry();
+
+    }
+
+    private class NoNetworkErrorManager implements ErrorManager {
+
+        @Override
+        public int getErrorPrompt() {
+            return R.string.disconnected_from_network;
+        }
+
+        @Override
+        public void retry() {
+            loadUrlIfHaveNetwork(mUrl);
+        }
+    }
+
+    private class LoadingErrorManager implements ErrorManager {
+
+        @Override
+        public int getErrorPrompt() {
+            return R.string.common_tip_load_url_error;
+        }
+
+        @Override
+        public void retry() {
+            reloadUrlIfNetworkAvailable();
+        }
     }
 }

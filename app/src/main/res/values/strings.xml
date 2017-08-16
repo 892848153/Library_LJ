@@ -2,4 +2,6 @@
 <resources>
 	<string name="app_name">Library_LJ</string>
 	<string name="hello_world">Hello world!</string>
+	<string name="disconnected_from_network">Disconnected from network. Check your network connection.</string>
+	<string name="common_tip_load_url_error">Failed to open chat session.</string>
 </resources>
