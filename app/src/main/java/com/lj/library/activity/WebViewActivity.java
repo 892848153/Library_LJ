@@ -246,6 +246,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         if (mWebView != null && mWebView.canGoBack()) {
+            showWebView();
             mWebView.goBack();
         } else {
             super.onBackPressed();

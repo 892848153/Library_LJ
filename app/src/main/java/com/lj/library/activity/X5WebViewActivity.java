@@ -255,6 +255,7 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onBackPressed() {
         if (mWebView != null && mWebView.canGoBack()) {
+            showWebView();
             mWebView.goBack();
         } else {
             super.onBackPressed();
