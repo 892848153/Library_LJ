@@ -48,11 +48,11 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
 
     private String mUrl;
 
-    private ErrorManager mErrorManager;
+    private LoadingUrlManager mLoadingUrlManager;
 
-    private final ErrorManager NO_NETWORK_ERROR_MANAGER = new NoNetworkErrorManager();
+    private final LoadingUrlManager INITIAL_LOADING_MANAGER = new InitialLoadingUrlManager();
 
-    private final ErrorManager LOADING_ERROR_MANAGER = new LoadingErrorManager();
+    private final LoadingUrlManager RELOADING_MANAGER = new ReloadingUrlManager();
 
     public static final String KEY_URL = "keyUrl";
 
@@ -63,14 +63,10 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.x5_webview_activity);
         getWindow().setFormat(PixelFormat.TRANSLUCENT);
 
+        mUrl = getIntent().getStringExtra(KEY_URL);
         initWebView();
-        loadUrl(getIntent().getStringExtra(KEY_URL));
-    }
-
-    public void loadUrl(String url) {
-        mUrl = url;
-        initWebView();
-        loadUrlIfHaveNetwork(url);
+        mLoadingUrlManager = INITIAL_LOADING_MANAGER;
+        mLoadingUrlManager.loadUrl();
     }
 
     private void initWebView() {
@@ -170,8 +166,8 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
             public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 Logger.e("onReceivedError   errorCode:" + errorCode + "  desc:" + description);
-                mErrorManager = LOADING_ERROR_MANAGER;
-                showErrorView(mErrorManager.getErrorPrompt());
+                mLoadingUrlManager = RELOADING_MANAGER;
+                showErrorView(mLoadingUrlManager.getLoadingErrorPrompt());
             }
 
             @Override
@@ -208,32 +204,13 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(final View v) {
-        if (mErrorManager != null) {
-            mErrorManager.retry();
-        }
-    }
-
-    private void loadUrlIfHaveNetwork(String url) {
-        if (NetworkChecker.isNetworkAvailable(this)) {
-            showWebView();
-            mWebView.loadUrl(TextUtils.isEmpty(url) ? "http://www.baidu.com" : url);
-        } else {
-            mErrorManager = NO_NETWORK_ERROR_MANAGER;
-            showErrorView(mErrorManager.getErrorPrompt());
-        }
-    }
-
-    private void reloadUrlIfNetworkAvailable() {
-        if (NetworkChecker.isNetworkAvailable(this)) {
-            showWebView();
-            mWebView.reload();
-        } else {
-            mErrorManager = NO_NETWORK_ERROR_MANAGER;
-            showErrorView(mErrorManager.getErrorPrompt());
+        if (mLoadingUrlManager != null) {
+            mLoadingUrlManager.loadUrlIfNetworkAvailable();
         }
     }
 
     private void showWebView() {
+        Logger.i("----------------  show WebView");
         if (mContentLayout.getChildCount() > 1) {
             mContentLayout.removeViewAt(1);
         }
@@ -242,6 +219,7 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void showErrorView(@StringRes int errorTipId) {
+        Logger.i("----------------  showErrorView");
         if (mContentLayout.getChildCount() > 1) {
             mContentLayout.removeViewAt(1);
         }
@@ -299,37 +277,57 @@ public class X5WebViewActivity extends AppCompatActivity implements View.OnClick
         super.onDestroy();
     }
 
-    interface ErrorManager {
+    interface LoadingUrlManager {
 
-        int getErrorPrompt();
+        int getNoNetworkErrorPrompt();
 
-        void retry();
+        int getLoadingErrorPrompt();
+
+        void loadUrl();
+
+        void loadUrlIfNetworkAvailable();
 
     }
 
-    private class NoNetworkErrorManager implements ErrorManager {
+    private abstract class BaseLoadingUrlManager implements LoadingUrlManager {
 
         @Override
-        public int getErrorPrompt() {
+        public int getNoNetworkErrorPrompt() {
             return R.string.disconnected_from_network;
         }
 
         @Override
-        public void retry() {
-            loadUrlIfHaveNetwork(mUrl);
-        }
-    }
-
-    private class LoadingErrorManager implements ErrorManager {
-
-        @Override
-        public int getErrorPrompt() {
+        public int getLoadingErrorPrompt() {
             return R.string.common_tip_load_url_error;
         }
 
         @Override
-        public void retry() {
-            reloadUrlIfNetworkAvailable();
+        public void loadUrlIfNetworkAvailable() {
+            if (NetworkChecker.isNetworkAvailable(X5WebViewActivity.this)) {
+                showWebView();
+                loadUrl();
+            } else {
+                Logger.i("show no network error view");
+                showErrorView(mLoadingUrlManager.getNoNetworkErrorPrompt());
+            }
+        }
+    }
+
+    private class InitialLoadingUrlManager extends BaseLoadingUrlManager {
+
+        @Override
+        public void loadUrl() {
+            Logger.i("InitialLoadingUrlManager.loadUrl()");
+            mWebView.loadUrl(TextUtils.isEmpty(mUrl) ? "http://www.baidu.com" : mUrl);
+        }
+    }
+
+    private class ReloadingUrlManager extends BaseLoadingUrlManager {
+
+        @Override
+        public void loadUrl() {
+            Logger.i("ReloadingUrlManager.loadUrl()");
+            mWebView.reload();
         }
     }
 }

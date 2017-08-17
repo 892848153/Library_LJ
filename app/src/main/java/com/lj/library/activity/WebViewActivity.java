@@ -41,26 +41,23 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
 
     private String mUrl;
 
-    private ErrorManager mErrorManager;
+    private LoadingUrlManager mLoadingUrlManager;
 
-    private final ErrorManager NO_NETWORK_ERROR_MANAGER = new NoNetworkErrorManager();
+    private final LoadingUrlManager INITIAL_LOADING_MANAGER = new InitialLoadingUrlManager();
 
-    private final ErrorManager LOADING_ERROR_MANAGER = new LoadingErrorManager();
+    private final LoadingUrlManager RELOADING_MANAGER = new ReloadingUrlManager();
 
     public static final String KEY_URL = "keyUrl";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.webview_activity);
-        initWebView();
-        loadUrl(getIntent().getStringExtra(KEY_URL));
-    }
+        setContentView(R.layout.x5_webview_activity);
 
-    public void loadUrl(String url) {
-        mUrl = url;
+        mUrl = getIntent().getStringExtra(KEY_URL);
         initWebView();
-        loadUrlIfHaveNetwork(url);
+        mLoadingUrlManager = INITIAL_LOADING_MANAGER;
+        mLoadingUrlManager.loadUrl();
     }
 
     private void initWebView() {
@@ -86,7 +83,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         setting.setBuiltInZoomControls(true);
         // 设置是否支持缩放按钮和手势缩放网页, 默认是true
         setting.setSupportZoom(true);
-        if (Build.VERSION.SDK_INT >=  Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // 设置在build-in zoom 机制下,是否显示缩放按钮,默认是true
             setting.setDisplayZoomControls(false);
         }
@@ -104,7 +101,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         setting.setDomStorageEnabled(true);
         // 开启Application Caches功能
         setting.setAppCacheEnabled(true);
-        setting.setAppCachePath(getFilesDir().getAbsolutePath() + "app_cache") ;
+        setting.setAppCachePath(getFilesDir().getAbsolutePath() + "app_cache");
         // 支持定位
         String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         setting.setGeolocationEnabled(true);
@@ -123,7 +120,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         setting.setSupportMultipleWindows(true);
         setting.setJavaScriptCanOpenWindowsAutomatically(true);
 
-        mWebView.setWebChromeClient(new WebChromeClient(){
+        mWebView.setWebChromeClient(new WebChromeClient() {
 
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
@@ -139,9 +136,9 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
 
             //=========HTML5定位==========================================================
             @Override
-            public void onGeolocationPermissionsShowPrompt(final String origin, final GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, false);//注意个函数，第二个参数就是是否同意定位权限，第三个是是否希望内核记住
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
+            public void onGeolocationPermissionsShowPrompt(final String s, final GeolocationPermissions.Callback geolocationPermissionsCallback) {
+                geolocationPermissionsCallback.invoke(s, true, false);//注意个函数，第二个参数就是是否同意定位权限，第三个是是否希望内核记住
+                super.onGeolocationPermissionsShowPrompt(s, geolocationPermissionsCallback);
             }
 
             //=========多窗口的问题==========================================================
@@ -160,8 +157,8 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
             public void onReceivedError(final WebView view, final int errorCode, final String description, final String failingUrl) {
                 super.onReceivedError(view, errorCode, description, failingUrl);
                 Logger.e("onReceivedError   errorCode:" + errorCode + "  desc:" + description);
-                mErrorManager = LOADING_ERROR_MANAGER;
-                showErrorView(mErrorManager.getErrorPrompt());
+                mLoadingUrlManager = RELOADING_MANAGER;
+                showErrorView(mLoadingUrlManager.getLoadingErrorPrompt());
             }
 
             @Override
@@ -198,32 +195,13 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(final View v) {
-        if (mErrorManager != null) {
-            mErrorManager.retry();
-        }
-    }
-
-    private void loadUrlIfHaveNetwork(String url) {
-        if (NetworkChecker.isNetworkAvailable(this)) {
-            showWebView();
-            mWebView.loadUrl(TextUtils.isEmpty(url) ? "http://www.baidu.com" : url);
-        } else {
-            mErrorManager = NO_NETWORK_ERROR_MANAGER;
-            showErrorView(mErrorManager.getErrorPrompt());
-        }
-    }
-
-    private void reloadUrlIfNetworkAvailable() {
-        if (NetworkChecker.isNetworkAvailable(this)) {
-            showWebView();
-            mWebView.reload();
-        } else {
-            mErrorManager = NO_NETWORK_ERROR_MANAGER;
-            showErrorView(mErrorManager.getErrorPrompt());
+        if (mLoadingUrlManager != null) {
+            mLoadingUrlManager.loadUrlIfNetworkAvailable();
         }
     }
 
     private void showWebView() {
+        Logger.i("----------------  show WebView");
         if (mContentLayout.getChildCount() > 1) {
             mContentLayout.removeViewAt(1);
         }
@@ -232,6 +210,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void showErrorView(@StringRes int errorTipId) {
+        Logger.i("----------------  showErrorView");
         if (mContentLayout.getChildCount() > 1) {
             mContentLayout.removeViewAt(1);
         }
@@ -289,37 +268,57 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         super.onDestroy();
     }
 
-    interface ErrorManager {
+    interface LoadingUrlManager {
 
-        int getErrorPrompt();
+        int getNoNetworkErrorPrompt();
 
-        void retry();
+        int getLoadingErrorPrompt();
+
+        void loadUrl();
+
+        void loadUrlIfNetworkAvailable();
 
     }
 
-    private class NoNetworkErrorManager implements ErrorManager {
+    private abstract class BaseLoadingUrlManager implements LoadingUrlManager {
 
         @Override
-        public int getErrorPrompt() {
+        public int getNoNetworkErrorPrompt() {
             return R.string.disconnected_from_network;
         }
 
         @Override
-        public void retry() {
-            loadUrlIfHaveNetwork(mUrl);
-        }
-    }
-
-    private class LoadingErrorManager implements ErrorManager {
-
-        @Override
-        public int getErrorPrompt() {
+        public int getLoadingErrorPrompt() {
             return R.string.common_tip_load_url_error;
         }
 
         @Override
-        public void retry() {
-            reloadUrlIfNetworkAvailable();
+        public void loadUrlIfNetworkAvailable() {
+            if (NetworkChecker.isNetworkAvailable(WebViewActivity.this)) {
+                showWebView();
+                loadUrl();
+            } else {
+                Logger.i("show no network error view");
+                showErrorView(mLoadingUrlManager.getNoNetworkErrorPrompt());
+            }
+        }
+    }
+
+    private class InitialLoadingUrlManager extends BaseLoadingUrlManager {
+
+        @Override
+        public void loadUrl() {
+            Logger.i("InitialLoadingUrlManager.loadUrl()");
+            mWebView.loadUrl(TextUtils.isEmpty(mUrl) ? "http://www.baidu.com" : mUrl);
+        }
+    }
+
+    private class ReloadingUrlManager extends BaseLoadingUrlManager {
+
+        @Override
+        public void loadUrl() {
+            Logger.i("ReloadingUrlManager.loadUrl()");
+            mWebView.reload();
         }
     }
 }
