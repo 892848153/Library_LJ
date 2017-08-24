@@ -27,7 +27,7 @@ import butterknife.ButterKnife;
  * @author jie.liu
  * @time 2014年10月28日 上午10:40:13
  */
-public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttpCallback {
+public abstract class BaseFragment extends Fragment implements FragmentBackManager, HttpHelper.OnHttpCallback {
 
     /**
      * 解决 {@link #getActivity()} 为null的bug
@@ -84,7 +84,7 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
      *
      * @param targetFragment
      */
-    public void startFragment(BaseFragment targetFragment) {
+    public void startFragment(Fragment targetFragment) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, targetFragment);
@@ -192,6 +192,7 @@ public abstract class BaseFragment extends Fragment implements HttpHelper.OnHttp
         LoadingProgress.getInstance().dismiss();
     }
 
+    @Override
     public boolean onBackPressed() {
         return false;
     }

@@ -1,6 +1,7 @@
 package com.lj.library.fragment.animation;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -41,16 +42,23 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
 
     private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<Menu>();
-        menuList.add(new Menu(new FrameAnimFragment(), "Frame Anim Demo"));
-        menuList.add(new Menu(new TweenAnimFragment(), "Tween Anim Demo"));
-        menuList.add(new Menu(new ObjectAnimFragment(), "Object Anim Demo"));
+        menuList.add(new Menu(FrameAnimFragment.class, "Frame Anim Demo"));
+        menuList.add(new Menu(TweenAnimFragment.class, "Tween Anim Demo"));
+        menuList.add(new Menu(ObjectAnimFragment.class, "Object Anim Demo"));
         return menuList;
     }
 
     @OnItemClick(R.id.list_view)
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Menu menu = (Menu) mAdapter.getItem(i);
-        startFragment(menu.targetFragment);
+        try {
+            Menu menu = (Menu) mAdapter.getItem(i);
+            Fragment fragment = (Fragment) menu.target.newInstance();
+            startFragment(fragment);
+        } catch (java.lang.InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

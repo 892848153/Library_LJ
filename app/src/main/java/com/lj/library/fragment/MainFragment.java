@@ -1,19 +1,22 @@
 package com.lj.library.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lj.library.R;
-import com.lj.library.activity.MyArchitectureActivity;
+import com.lj.library.activity.MvpArchitectureActivity;
 import com.lj.library.activity.TabHostActivity;
 import com.lj.library.activity.X5WebViewActivity;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.algorigthm.AlgorithmFragment;
 import com.lj.library.fragment.animation.AnimationFragment;
+import com.lj.library.fragment.architecture.MvpArchitectureFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
 import com.lj.library.fragment.http.HttpDemoFragment;
@@ -24,7 +27,6 @@ import com.lj.library.fragment.serialization.SerializationFragment;
 import com.lj.library.fragment.update.SmartUpdateFragment;
 import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
-import com.lj.library.util.Toaster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,31 +62,38 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     private List<Menu> buildMenus() {
         List<Menu> menuList = new ArrayList<>();
-        menuList.add(new Menu(new BannerFragment(), "Banner Demo"));
-        menuList.add(new Menu(new AnimationFragment(), "Animation Demo"));
+        menuList.add(new Menu(BannerFragment.class, "Banner Demo"));
+        menuList.add(new Menu(AnimationFragment.class, "Animation Demo"));
         menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
-        menuList.add(new Menu(new RenderPerformFragment(), "Render Performance"));
-        menuList.add(new Menu(new HttpDemoFragment(), "Http Demo"));
-        menuList.add(new Menu(new RxJavaFragment(), "RxJava Demo"));
-        menuList.add(new Menu(new DaggerFragment(), "Dagger Demo"));
-        menuList.add(new Menu(new PermissionTestFragment(), "Android6.0 Permission"));
-        menuList.add(new Menu(new SerializationFragment(), "Serialization Demo"));
-        menuList.add(new Menu(new AlgorithmFragment(), "Algorithm Demo"));
+        menuList.add(new Menu(RenderPerformFragment.class, "Render Performance"));
+        menuList.add(new Menu(HttpDemoFragment.class, "Http Demo"));
+        menuList.add(new Menu(RxJavaFragment.class, "RxJava Demo"));
+        menuList.add(new Menu(DaggerFragment.class, "Dagger Demo"));
+        menuList.add(new Menu(PermissionTestFragment.class, "Android6.0 Permission"));
+        menuList.add(new Menu(SerializationFragment.class, "Serialization Demo"));
+        menuList.add(new Menu(AlgorithmFragment.class, "Algorithm Demo"));
         menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
-        menuList.add(new Menu(new SmartUpdateFragment(), "Smart Update Demo"));
-        menuList.add(new Menu(MyArchitectureActivity.class, "My Architecture"));
+        menuList.add(new Menu(SmartUpdateFragment.class, "Smart Update Demo"));
+        menuList.add(new Menu(MvpArchitectureActivity.class, "Mvp Architecture Activity"));
+        menuList.add(new Menu(MvpArchitectureFragment.class, "Mvp Architecture Fragment"));
         return menuList;
     }
 
     @OnItemClick(R.id.list_view)
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Menu menu = (Menu) mAdapter.getItem(i);
-        if (menu.targetFragment != null) {
-            startFragment(menu.targetFragment);
-        } else if (menu.targetActivity != null) {
-            ContextUtil.pushToActivity(mActivity, menu.targetActivity);
-        } else {
-            Toaster.showShort(mActivity, "未知的启动项");
+        // https://zhidao.baidu.com/question/240894762388261364.html
+        if (Fragment.class.isAssignableFrom(menu.target)) {
+            try {
+                Fragment fragment = (Fragment) menu.target.newInstance();
+                startFragment(fragment);
+            } catch (java.lang.InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        } else if (Activity.class.isAssignableFrom(menu.target)){
+                ContextUtil.pushToActivity(mActivity, menu.target);
         }
     }
 

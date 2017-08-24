@@ -5,5 +5,5 @@ package com.lj.library.fragment;
  */
 public interface BackHandlerInterface {
 
-     void setSelectedFragment(BaseFragment selectedFragment);
+     void setSelectedFragment(FragmentBackManager selectedFragment);
 }

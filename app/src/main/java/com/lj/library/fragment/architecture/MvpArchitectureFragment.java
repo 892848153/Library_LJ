@@ -1,11 +1,11 @@
-package com.lj.library.activity;
+package com.lj.library.fragment.architecture;
 
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TextView;
 
 import com.lj.library.R;
-import com.lj.library.activity.base.BaseActivity1;
+import com.lj.library.fragment.BaseFragment1;
 import com.lj.library.util.Logger;
 
 import java.util.Random;
@@ -13,9 +13,9 @@ import java.util.Random;
 import butterknife.Bind;
 
 /**
- * Created by ocean on 2017/7/13.
+ * Created by ocean on 2017/8/23.
  */
-public class MyArchitectureActivity extends BaseActivity1 {
+public class MvpArchitectureFragment extends BaseFragment1 {
 
     @Bind(R.id.text_view)
     TextView mTextView;

@@ -11,7 +11,7 @@ import android.view.Window;
 import com.lj.library.R;
 import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
-import com.lj.library.fragment.BaseFragment;
+import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UIUtils;
 
@@ -27,7 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
 
     protected Activity mContext;
 
-    protected BaseFragment mFragmentSelected;
+    protected FragmentBackManager mFragmentSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
     }
 
     @Override
-    public void setSelectedFragment(BaseFragment selectedFragment) {
+    public void setSelectedFragment(FragmentBackManager selectedFragment) {
         mFragmentSelected = selectedFragment;
     }
 

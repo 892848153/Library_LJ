@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.lj.library.R;
 import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
-import com.lj.library.fragment.BaseFragment;
+import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UIUtils;
@@ -35,7 +35,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
 
     protected Activity mContext;
 
-    protected BaseFragment mFragmentSelected;
+    protected FragmentBackManager mFragmentSelected;
 
     private LinearLayout mRootLayout;
 
@@ -103,7 +103,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
     }
 
     @Override
-    public void setSelectedFragment(BaseFragment selectedFragment) {
+    public void setSelectedFragment(FragmentBackManager selectedFragment) {
         mFragmentSelected = selectedFragment;
     }
 

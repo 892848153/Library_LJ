@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BackHandlerInterface;
-import com.lj.library.fragment.BaseFragment;
+import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.fragment.tabhost.FragmentA;
 import com.lj.library.fragment.tabhost.FragmentB;
 import com.lj.library.fragment.tabhost.FragmentC;
@@ -21,7 +21,7 @@ public class TabHostActivity extends FragmentActivity implements BackHandlerInte
 
     private FragmentTabHost mTabHost = null;
     private View mIndicator = null;
-    protected BaseFragment mFragmentSelected;
+    protected FragmentBackManager mFragmentSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class TabHostActivity extends FragmentActivity implements BackHandlerInte
     }
 
     @Override
-    public void setSelectedFragment(BaseFragment selectedFragment) {
+    public void setSelectedFragment(FragmentBackManager selectedFragment) {
         mFragmentSelected = selectedFragment;
     }
 
