@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
  */
 public abstract class BaseFragment1 extends Fragment implements FragmentBackManager, BaseViewAction, View.OnClickListener {
 
-    private static final String TAG = "BaseActivity1";
+    private static final String TAG = "BaseFragment1";
 
     /**
      * 解决 {@link #getActivity()} 为null的bug
