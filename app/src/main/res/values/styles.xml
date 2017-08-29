@@ -34,7 +34,7 @@
 	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>
 	<!-- 自定义dialog -->
-	<style name="BaseDialogTheme" parent="android:Theme.Dialog">
+	<style name="BaseDialogTheme" parent="Theme.AppCompat.Dialog">
 		<item name="android:windowIsTranslucent">true</item>
 		<item name="android:windowNoTitle">true</item>
 		<item name="android:background">@android:color/transparent</item>
@@ -46,4 +46,7 @@
     <style name="Launcher" parent="android:Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:windowBackground">@drawable/splash_loading</item>
     </style>
+
+    <!-- 按钮基础style, 去除 android5.0开始按钮背景自带阴影的效果-->
+    <style name="BaseButtonStyle" parent="Widget.AppCompat.Button.Borderless"/>
 </resources>
