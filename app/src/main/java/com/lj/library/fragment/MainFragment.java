@@ -9,14 +9,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.lj.library.R;
-import com.lj.library.activity.MvpArchitectureActivity;
 import com.lj.library.activity.TabHostActivity;
 import com.lj.library.activity.X5WebViewActivity;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.algorigthm.AlgorithmFragment;
 import com.lj.library.fragment.animation.AnimationFragment;
-import com.lj.library.fragment.architecture.MvpArchitectureFragment;
+import com.lj.library.fragment.architecture.ArchitectureFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
 import com.lj.library.fragment.http.HttpDemoFragment;
@@ -74,8 +73,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(AlgorithmFragment.class, "Algorithm Demo"));
         menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         menuList.add(new Menu(SmartUpdateFragment.class, "Smart Update Demo"));
-        menuList.add(new Menu(MvpArchitectureActivity.class, "Mvp Architecture Activity"));
-        menuList.add(new Menu(MvpArchitectureFragment.class, "Mvp Architecture Fragment"));
+        menuList.add(new Menu(ArchitectureFragment.class, "Mvp Architecture"));
         return menuList;
     }
 
