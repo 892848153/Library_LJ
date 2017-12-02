@@ -10,14 +10,14 @@ import com.lj.library.util.Logger;
 
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ocean on 2017/8/23.
  */
 public class MvpArchitectureFragment extends BaseFragment1 {
 
-    @Bind(R.id.text_view)
+    @BindView(R.id.text_view)
     TextView mTextView;
 
     @Override

@@ -16,7 +16,7 @@ import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -25,18 +25,18 @@ import butterknife.OnClick;
  */
 public class LayoutTransitionFragment extends BaseFragment implements CompoundButton.OnCheckedChangeListener, View.OnClickListener {
 
-    @Bind(R.id.id_container)
+    @BindView(R.id.id_container)
     ViewGroup mViewGroup;
     private GridLayout mGridLayout;
     private int mVal;
     private LayoutTransition mTransition;
-    @Bind(R.id.id_appear)
+    @BindView(R.id.id_appear)
     CheckBox mAppear;
-    @Bind(R.id.id_change_appear)
+    @BindView(R.id.id_change_appear)
     CheckBox mChangeAppear;
-    @Bind(R.id.id_disappear)
+    @BindView(R.id.id_disappear)
     CheckBox mDisAppear;
-    @Bind(R.id.id_change_disappear)
+    @BindView(R.id.id_change_disappear)
     CheckBox mChangeDisAppear;
 
     @Override

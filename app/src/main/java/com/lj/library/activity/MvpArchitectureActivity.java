@@ -10,14 +10,14 @@ import com.lj.library.util.Logger;
 
 import java.util.Random;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by ocean on 2017/7/13.
  */
 public class MvpArchitectureActivity extends BaseActivity1 {
 
-    @Bind(R.id.text_view)
+    @BindView(R.id.text_view)
     TextView mTextView;
 
     @Override

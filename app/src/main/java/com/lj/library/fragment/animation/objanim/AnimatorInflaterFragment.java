@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -20,7 +20,7 @@ import butterknife.OnClick;
  */
 public class AnimatorInflaterFragment extends BaseFragment implements View.OnClickListener {
 
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     ImageView mImageView;
 
     @Override

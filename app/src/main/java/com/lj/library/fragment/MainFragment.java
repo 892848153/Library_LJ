@@ -30,7 +30,7 @@ import com.lj.library.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnItemClick;
 
 /**
@@ -41,7 +41,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
 
     private MenuAdapter mAdapter;
 
-    @Bind(R.id.list_view)
+    @BindView(R.id.list_view)
     ListView mListView;
 
     @Override

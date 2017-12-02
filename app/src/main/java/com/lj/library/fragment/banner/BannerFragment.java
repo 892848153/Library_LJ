@@ -15,7 +15,7 @@ import com.lj.library.widget.viewpager.banner.BannerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * 无限循环轮播Banner DEMO.
@@ -23,7 +23,7 @@ import butterknife.Bind;
  */
 public class BannerFragment extends BaseFragment {
 
-    @Bind(R.id.banner)
+    @BindView(R.id.banner)
     BannerView mBannerView;
 
     @Override

@@ -17,7 +17,7 @@ import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.Toaster;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -27,7 +27,7 @@ public class PermissionTestFragment extends BaseFragment {
 
     private static final int REQUEST_CONTACT = 1;
 
-    @Bind(R.id.phone_num_tv)
+    @BindView(R.id.phone_num_tv)
     TextView mPhoneNumTV;
 
     @Override

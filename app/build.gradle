@@ -15,14 +15,14 @@ bugly {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "com.lj.library"
-        minSdkVersion 17
-        targetSdkVersion 25
-        versionCode 4
-        versionName "1.0"
+        minSdkVersion rootProject.ext.MIN_SDK_VERSION
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+        versionCode rootProject.ext.VERSION_CODE
+        versionName rootProject.ext.VERSION_NAME
         multiDexEnabled true
     }
     sourceSets {
@@ -95,26 +95,27 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //log日志
-    compile 'com.orhanobut:logger:1.11'
+    compile 'com.orhanobut:logger:1.15'
     //butterknife
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     //okhttp + retrofit + rxandroid
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'com.squareup.okhttp3:okhttp:3.8.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
-    compile 'com.squareup.retrofit2:retrofit:2.0.2'
-    compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.2'
+    compile "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
+    compile "com.squareup.retrofit2:converter-gson:${RETROFIT_VERSION}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${RETROFIT_VERSION}"
     //leakcanary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
-    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
+    debugCompile "com.squareup.leakcanary:leakcanary-android:${LEAK_CANARY_VERSION}"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:${LEAK_CANARY_VERSION}"
+    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:${LEAK_CANARY_VERSION}"
     //support 兼容包
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:design:25.3.1'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile "com.android.support:design:${APPCOMPAT_VERSION}"
+    compile "com.android.support:support-v4:${APPCOMPAT_VERSION}"
+    compile "com.android.support:appcompat-v7:${APPCOMPAT_VERSION}"
+    compile "com.android.support:recyclerview-v7:${APPCOMPAT_VERSION}"
     //dagger2
     compile 'com.google.dagger:dagger:2.5'
     //android-apt插件-引入dagger-compiler包, 不会编译到最后的源码中
@@ -124,11 +125,11 @@ dependencies {
     //Mock方式的包mockito
     testCompile 'org.mockito:mockito-core:2.0.76-beta'
     //google的protobuf运行时环境
-    compile 'com.google.protobuf:protobuf-java:3.0.0-beta-3'
+    compile 'com.google.protobuf:protobuf-java:3.0.0'
     //square公司出的protobuf方案"wire"的运行时环境
     compile 'com.squareup.wire:wire-runtime:2.2.0'
     //fresco加载图片
-    compile 'com.facebook.fresco:fresco:0.12.0'
+    compile 'com.facebook.fresco:fresco:0.14.1'
     //facebook的调优工具stecho
     compile 'com.facebook.stetho:stetho:1.4.2'
     compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'

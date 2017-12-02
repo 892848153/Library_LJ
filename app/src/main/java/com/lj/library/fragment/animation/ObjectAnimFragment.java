@@ -22,7 +22,7 @@ import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnItemClick;
 
 /**
@@ -30,7 +30,7 @@ import butterknife.OnItemClick;
  */
 public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnItemClickListener {
 
-    @Bind(R.id.list_view)
+    @BindView(R.id.list_view)
     ListView mListView;
 
     private MenuAdapter mAdapter;

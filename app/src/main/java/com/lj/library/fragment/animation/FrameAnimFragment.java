@@ -11,7 +11,7 @@ import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -20,12 +20,12 @@ import butterknife.OnClick;
  */
 public class FrameAnimFragment extends BaseFragment implements View.OnClickListener {
 
-    @Bind(R.id.image_view)
+    @BindView(R.id.image_view)
     ImageView mImageView;
 
-    @Bind(R.id.xml_btn)
+    @BindView(R.id.xml_btn)
     Button mXmlBtn;
-    @Bind(R.id.java_btn)
+    @BindView(R.id.java_btn)
     Button mJavaBtn;
 
     private AnimationDrawable mAnimDraw;
