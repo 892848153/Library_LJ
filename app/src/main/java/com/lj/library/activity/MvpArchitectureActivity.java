@@ -51,6 +51,6 @@ public class MvpArchitectureActivity extends BaseActivity1 {
                     Logger.i("show content layout, random:" + i);
                 }
             }
-        }, 2000l);
+        }, 2000L);
     }
 }

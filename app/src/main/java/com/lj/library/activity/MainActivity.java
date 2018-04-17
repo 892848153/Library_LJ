@@ -44,6 +44,7 @@ public class MainActivity extends BaseHttpActivity implements OnUploadListener, 
             transaction.addToBackStack(null);
             transaction.commit();
         }
+        removeStatusView(this);
     }
 
     @Override

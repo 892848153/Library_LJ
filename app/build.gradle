@@ -17,7 +17,7 @@ bugly {
 android {
     compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
     buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
-    resourcePrefix "new_house_"
+//    resourcePrefix "new_house_"
     defaultConfig {
         applicationId "com.lj.library"
         minSdkVersion rootProject.ext.MIN_SDK_VERSION
