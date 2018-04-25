@@ -73,7 +73,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
                 parent.removeView(mRootView);
             }
         } else {
-            mRootView = inflater.inflate(R.layout.activity_base, container, false);
+            mRootView = inflater.inflate(R.layout.activity_base1, container, false);
             mRootLayout = (LinearLayout) mRootView.findViewById(R.id.root_layout);
 
             View appBar = initAppBar();

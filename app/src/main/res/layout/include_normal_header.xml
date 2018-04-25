@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="horizontal"
-              android:layout_width="match_parent"
-              android:background="@color/colorPrimary"
-              android:layout_height="@dimen/height_normal_touch_view">
+<android.support.constraint.ConstraintLayout
+    android:id="@+id/normal_header_cl"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_normal_touch_view"
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/back_iv"
-        android:layout_width="@dimen/width_normal_touch_view"
-        android:layout_height="match_parent"
-        android:layout_gravity="left|center_vertical"
+        android:layout_width="@dimen/height_normal_touch_view"
+        android:layout_height="@dimen/height_normal_touch_view"
         android:scaleType="centerInside"
-        android:src="@drawable/common_ic_back" />
+        android:src="@drawable/common_ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/title_tv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:gravity="center"
         android:maxLines="1"
-        android:paddingRight="@dimen/width_normal_touch_view"
         android:textColor="@color/mainBlack"
-        android:textSize="@dimen/text_size_xlarge" />
+        android:textSize="@dimen/text_size_xlarge"
+        tools:text="Title"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/back_iv"
+        app:layout_constraintEnd_toStartOf="@+id/right_iv"/>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/right_iv"
+        android:layout_width="@dimen/height_normal_touch_view"
+        android:layout_height="@dimen/height_normal_touch_view"
+        android:scaleType="centerInside"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</android.support.constraint.ConstraintLayout>

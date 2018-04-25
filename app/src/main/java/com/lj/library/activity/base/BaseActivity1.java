@@ -54,7 +54,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
         mContext = this;
         SampleApplicationLike.getInstance().addActivity(mContext);
 
-        super.setContentView(R.layout.activity_base);
+        super.setContentView(R.layout.activity_base1);
         mRootLayout = (LinearLayout) findViewById(R.id.root_layout);
         translucentStatusBar(this);
 

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.lj.library.R;
 import com.lj.library.activity.MvpArchitectureActivity;
 import com.lj.library.activity.MvvmArchitectureActivity;
+import com.lj.library.activity.MvvmArchitectureActivity1;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
@@ -49,6 +50,7 @@ public class ArchitectureFragment extends BaseFragment {
         menuList.add(new Menu(MvpArchitectureActivity.class, "MVP architecture activity"));
         menuList.add(new Menu(MvpArchitectureFragment.class, "MVP architecture fragment"));
         menuList.add(new Menu(MvvmArchitectureActivity.class, "MVVM architecture activity"));
+        menuList.add(new Menu(MvvmArchitectureActivity1.class, "MVVM architecture activity1"));
         return menuList;
     }
 
