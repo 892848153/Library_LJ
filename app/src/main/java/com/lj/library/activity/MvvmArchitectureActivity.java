@@ -46,6 +46,6 @@ public class MvvmArchitectureActivity extends BaseActivity2<MyArchitecture2Activ
                     Logger.i("show content layout, random:" + i);
                 }
             }
-        }, 2000l);
+        }, 2000L);
     }
 }

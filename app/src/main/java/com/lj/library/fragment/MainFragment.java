@@ -37,7 +37,7 @@ import butterknife.OnItemClick;
  * 主页菜单目录.
  * Created by liujie_gyh on 15/9/3.
  */
-public class MainFragment extends BaseFragment implements AdapterView.OnItemClickListener {
+public class MainFragment extends BaseFragment {
 
     private MenuAdapter mAdapter;
 
@@ -73,7 +73,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         menuList.add(new Menu(AlgorithmFragment.class, "Algorithm Demo"));
         menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         menuList.add(new Menu(SmartUpdateFragment.class, "Smart Update Demo"));
-        menuList.add(new Menu(ArchitectureFragment.class, "Mvp Architecture"));
+        menuList.add(new Menu(ArchitectureFragment.class, "Architecture"));
         return menuList;
     }
 
