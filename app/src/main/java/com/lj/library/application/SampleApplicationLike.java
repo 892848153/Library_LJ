@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
@@ -20,6 +21,10 @@ import com.lj.library.dao.realm.MyMigration;
 import com.lj.library.dao.realm.MySchemaModule;
 import com.lj.library.util.FontSwitcherUtils;
 import com.lj.library.util.PreferenceUtil;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
@@ -119,6 +124,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
 
         restoreUserInfoFromPref();
         initStrictMode();
+        initLogger();
         initBugly();
         initRealm();
         initFresco();
@@ -145,6 +151,23 @@ public class SampleApplicationLike extends DefaultApplicationLike {
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         }
+    }
+
+    /**
+     * 初始化Logger
+     */
+    private void initLogger() {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .tag("Library_LJ")
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            @Override
+            public boolean isLoggable(final int priority, @Nullable final String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
     }
 
     /**

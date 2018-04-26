@@ -35,8 +35,8 @@ public class MvvmArchitectureActivity1 extends BaseActivity3<MyArchitecture1Acti
                     Logger.i("show no network layout, random:" + i);
                     showErrorLayout();
                 } else {
-                    showContentLayout();
                     Logger.i("show content layout, random:" + i);
+                    showContentLayout();
                 }
             }
         }, 2000L);
