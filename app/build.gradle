@@ -214,7 +214,7 @@ andResGuard {
             "resources.arsc"
     ]
     sevenzip {
-        artifact = 'com.tencent.mm:SevenZip:1.2.1'
+        artifact = 'com.tencent.mm:SevenZip:1.2.12'
         //path = "/usr/local/bin/7za"
     }
 }
