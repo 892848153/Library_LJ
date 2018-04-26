@@ -24,7 +24,7 @@ import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
-import com.lj.library.util.UIUtils;
+import com.lj.library.util.UiUtils;
 
 /**
  * Created by ocean on 2017/8/30.
@@ -111,7 +111,7 @@ public abstract class BaseActivity2<T extends ViewDataBinding> extends AppCompat
             return;
         }
 
-        int statusBarHeight = UIUtils.getStatusBarHeight(this);
+        int statusBarHeight = UiUtils.getStatusBarHeight(this);
         if (rootView != null) {
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) rootView.getLayoutParams();
             layoutParams.topMargin = statusBarHeight;
@@ -152,7 +152,7 @@ public abstract class BaseActivity2<T extends ViewDataBinding> extends AppCompat
 //            parentView.setFitsSystemWindows(true);
 //        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 //            // 4.4系统开始支持布局延伸到状态栏底下，不支持更改状态栏颜色，所以需要一个状态栏底块
-//            statusBarHolder.getLayoutParams().height = UIUtils.getStatusBarHeight(this);
+//            statusBarHolder.getLayoutParams().height = UiUtils.getStatusBarHeight(this);
 //            parentView.setFitsSystemWindows(false);
 //        } else {
 //            statusBarHolder.getLayoutParams().height = 0;

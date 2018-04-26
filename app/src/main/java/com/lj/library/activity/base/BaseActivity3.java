@@ -15,8 +15,9 @@ import android.widget.FrameLayout;
 
 import com.lj.library.R;
 import com.lj.library.application.SampleApplicationLike;
+import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
-import com.lj.library.util.UIUtils;
+import com.lj.library.util.UiUtils;
 
 
 /**
@@ -80,13 +81,13 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
      * @param activity
      */
     private void addStatusViewWithColor(Activity activity, int colorId) {
-        ViewGroup contentView = getAndroidContentView();
+        ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
         View rootView = contentView.getChildAt(0);
         if (rootView != null && rootView.getId() == R.id.status_bar_holder_id) {
             return;
         }
 
-        int statusBarHeight = UIUtils.getStatusBarHeight(this);
+        int statusBarHeight = UiUtils.getStatusBarHeight(this);
         if (rootView != null) {
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) rootView.getLayoutParams();
             layoutParams.topMargin = statusBarHeight;
@@ -101,7 +102,7 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
     }
 
     protected void removeStatusView() {
-        ViewGroup contentView = getAndroidContentView();
+        ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
         View statusView = contentView.getChildAt(0);
         if (statusView != null && statusView.getId() == STATUS_BAR_HOLDER_ID) {
             contentView.removeViewAt(0);
@@ -167,33 +168,34 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
         return loadingErrorLayout;
     }
 
-    private void showLayout(View Layout) {
-        ViewGroup contentView = getAndroidContentView();
+    private void showLayout(View layout) {
+        ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
         View firstChildView = contentView.getChildAt(0);
         if (firstChildView == null) {
-            // ContentView中没有内容
-            contentView.addView(Layout);
+            // android.R.id.content中没有内容
+            contentView.addView(layout);
+        } else if (UiUtils.parentLayoutContains(contentView, layout)) {
+            // android.R.id.content中有内容且已经包含了要显示的布局
+            Logger.d("此布局已经处于显示状态了，无需再次显示");
         } else {
+            // android.R.id.content中有内容且不包含要显示的布局
             if (firstChildView.getId() == STATUS_BAR_HOLDER_ID) {
                 // 第一个View是statusBarHolder
-
                 if (contentView.getChildCount() > 1) {
+                    // 移除statusBarHolder以外的所有布局
                     contentView.removeViewAt(1);
                 }
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) Layout.getLayoutParams();
+                // 添加layout布局并且设置其topMargin为statusBar的高度
+                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) layout.getLayoutParams();
                 if (layoutParams == null) {
                     layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 }
-                layoutParams.topMargin = UIUtils.getStatusBarHeight(this);
-                contentView.addView(Layout, layoutParams);
-            } else {
-                setContentView(Layout);
+                layoutParams.topMargin = UiUtils.getStatusBarHeight(this);
+                contentView.addView(layout, layoutParams);
+            } else  {
+                setContentView(layout);
             }
         }
-    }
-
-    private ViewGroup getAndroidContentView() {
-        return (ViewGroup) findViewById(android.R.id.content);
     }
 
     @Override

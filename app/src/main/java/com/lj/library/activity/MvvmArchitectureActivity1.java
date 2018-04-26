@@ -41,4 +41,10 @@ public class MvvmArchitectureActivity1 extends BaseActivity3<MyArchitecture1Acti
             }
         }, 2000L);
     }
+
+    @Override
+    public void onRetry() {
+        super.onRetry();
+        loadContent();
+    }
 }

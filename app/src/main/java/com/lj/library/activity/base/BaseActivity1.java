@@ -22,7 +22,7 @@ import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
-import com.lj.library.util.UIUtils;
+import com.lj.library.util.UiUtils;
 
 import butterknife.ButterKnife;
 
@@ -112,7 +112,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
             return;
         }
 
-        int statusBarHeight = UIUtils.getStatusBarHeight(this);
+        int statusBarHeight = UiUtils.getStatusBarHeight(this);
         if (rootView != null) {
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) rootView.getLayoutParams();
             layoutParams.topMargin = statusBarHeight;
