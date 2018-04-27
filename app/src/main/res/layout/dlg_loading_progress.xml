@@ -6,7 +6,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center"
-		android:background="@drawable/sp_round_black"
+		android:background="@drawable/common_sp_rounded_rectangle_with_red_bg"
 		android:gravity="center_horizontal"
 		android:orientation="vertical"
 		android:padding="16dp" >
