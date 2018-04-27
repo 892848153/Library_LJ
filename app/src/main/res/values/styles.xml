@@ -30,6 +30,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- 替换字体需要用到这个，app默认字体设置成serif，然后在application中替换serif字体为自定义字体-->
         <item name="android:typeface">serif</item>
+        <!--全局的列表分割线-->
+        <item name="android:listDivider">@drawable/common_sp_line_red</item>
     </style>
 	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
 	</style>
