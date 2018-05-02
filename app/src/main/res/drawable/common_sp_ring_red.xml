@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
        android:shape="ring"
-       android:innerRadius="@dimen/space_normal"
+       android:innerRadius="@dimen/common_normal_space"
        android:thickness="1dp"
        android:useLevel="false">
 
     <solid android:color="@color/colorPrimary"/>
     <!--宽高是 (innerRadius+thickness)*2 -->
-    <size android:height="@dimen/space_large"
-          android:width="@dimen/space_large"/>
+    <size android:height="@dimen/common_large_space"
+          android:width="@dimen/common_large_space"/>
 
     <!--http://keeganlee.me/post/android/20150830-->
 

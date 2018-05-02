@@ -24,19 +24,21 @@ import com.lj.library.util.UiUtils;
  * @author LJ.Liu
  * @date 2018/4/25.
  */
-public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompatActivity implements BaseViewAction3, View.OnClickListener {
+public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseViewModel> extends AppCompatActivity implements BaseViewAction3, View.OnClickListener {
 
     private static final String TAG = "BaseActivity3";
 
     protected Activity mContext;
 
+    protected T mBinding;
+
+    private VM mViewModel;
+
     private View mErrorLayout;
 
     private View mContentLayout;
 
-    protected T mBinding;
-
-    public static final int STATUS_BAR_HOLDER_ID = R.id.status_bar_holder_id;
+    private static final int STATUS_BAR_HOLDER_ID = R.id.status_bar_holder_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,15 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
         translucentStatusBar();
 
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), initLayout(savedInstanceState), null, false);
+        mBinding.setVariable(initVariableId(), mViewModel = initViewModel());
+
         showContentLayout();
+
         initComp(savedInstanceState);
+
+        mViewModel.onCreate();
+
+        mViewModel.onRegisterRxBus();
     }
 
     private void translucentStatusBar() {
@@ -115,6 +124,19 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
             }
         }
     }
+
+    /**
+     * 初始化ViewModel的id
+     *
+     * @return BR的id
+     */
+    protected abstract int initVariableId();
+
+    /**
+     * 实例化ViewModel
+     * @return
+     */
+    protected abstract VM initViewModel();
 
     /**
      * 返回布局的id.
@@ -203,5 +225,7 @@ public abstract class BaseActivity3<T extends ViewDataBinding> extends AppCompat
         super.onDestroy();
         SampleApplicationLike.getInstance().removeActivity(mContext);
         RxBus.getInstance().unregister(this);
+        mViewModel.onRemoveRxBus();
+        mViewModel.onDestroy();
     }
 }

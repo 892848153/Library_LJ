@@ -3,17 +3,16 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     
-    <dimen name="space_normal">8dp</dimen>
-    <dimen name="space_small">4dp</dimen>
-    <dimen name="space_large">16dp</dimen>
-    <dimen name="space_xlarge">32dp</dimen>
+    <dimen name="common_normal_space">8dp</dimen>
+    <dimen name="common_small_space">4dp</dimen>
+    <dimen name="common_large_space">16dp</dimen>
+    <dimen name="common_xlarge_space">32dp</dimen>
 
-    <dimen name="width_normal_touch_view">48dp</dimen>
-    <dimen name="height_normal_touch_view">48dp</dimen>
+    <dimen name="common_normal_touch_space">48dp</dimen>
 
     <!-- 字体大小单位用DP, 可以避免系统设置字体大小时影响字体-->
-    <dimen name="text_size_small">12dp</dimen>
-    <dimen name="text_size_normal">14dp</dimen>
-    <dimen name="text_size_large">16dp</dimen>
-    <dimen name="text_size_xlarge">18dp</dimen>
+    <dimen name="common_small_text_size">12dp</dimen>
+    <dimen name="common_normal_text_size">14dp</dimen>
+    <dimen name="common_large_text_size">16dp</dimen>
+    <dimen name="common_xlarge_text_size">18dp</dimen>
 </resources>
