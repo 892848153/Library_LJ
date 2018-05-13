@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomView">
+        <attr name="custom_integer" format="integer"/>
+        <attr name="custom_boolean" format="boolean"/>
+        <attr name="custom_color" format="color"/>
+        <attr name="custom_dimension" format="dimension"/>
+        <attr name="custom_float" format="float"/>
+        <attr name="custom_fraction" format="fraction"/>
+        <attr name="custom_reference" format="reference"/>
+        <attr name="custom_string" format="string"/>
+        <!-- 位或运算，可以指定多个 -->
+        <attr name="custom_flag" format="flag">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <!-- 只能指定其中一个值-->
+        <attr name="custom_enum" format="integer">
+            <enum name="fill_parent" value="-1" />
+            <enum name="match_parent" value="-1" />
+            <enum name="wrap_content" value="-2" />
+        </attr>
+        <attr name="android:text"/>
+    </declare-styleable>
+</resources>
