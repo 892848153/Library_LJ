@@ -10,8 +10,6 @@ public abstract class BaseViewModel implements IBaseViewModel {
 
     protected Activity mContext;
 
-    public String text;
-
     public BaseViewModel(final Activity context) {
         mContext = context;
     }

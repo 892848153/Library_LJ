@@ -16,8 +16,21 @@
         android:text="Android Custom View Attrs"/>
     <com.lj.library.widget.CustomView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:custom_integer="1233"/>
+        android:layout_height="48dp"
+        android:background="#FF0000"
+        app:custom_integer="1233"
+        app:custom_boolean="true"
+        app:custom_color="@color/colorPrimary"
+        app:custom_dimension="@dimen/common_large_space"
+        app:custom_enum="match_parent"
+        app:custom_float="1.2"
+        app:custom_string="@string/app_name"
+        android:text="@string/hello_world"
+        app:custom_reference="@string/app_name"
+        app:custom_fraction="50%"
+        app:custom_flag="bold|italic|normal"
+        app:global_attr_one="global attr one"
+        app:global_attr_two="99"/>
 
 
 </LinearLayout>
