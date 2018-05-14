@@ -6,6 +6,7 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.ColorRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +47,7 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         mContext = this;
 
         SampleApplicationLike.getInstance().addActivity(mContext);
-        translucentStatusBar();
+        overflowStatusBar();
 
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), initLayout(savedInstanceState), null, false);
         mBinding.setVariable(initVariableId(), mViewModel = initViewModel());
@@ -60,15 +61,19 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         mViewModel.onRegisterRxBus();
     }
 
-    private void translucentStatusBar() {
+    private void overflowStatusBar() {
+        overflowStatusBar(R.color.colorPrimary);
+    }
+
+    private void overflowStatusBar(@ColorRes int statusBarBgColorRes) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            addStatusViewWithColor(this, R.color.colorPrimary);
+            addStatusViewWithColor(this, statusBarBgColorRes);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
                 Window window = getWindow();
                 View decorView = window.getDecorView();
                 //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间但不会覆盖状态栏
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | decorView.getSystemUiVisibility();
                 decorView.setSystemUiVisibility(option);
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 window.setStatusBarColor(Color.TRANSPARENT);
@@ -122,6 +127,27 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
                 layoutParams.topMargin = 0;
                 rootView.setLayoutParams(layoutParams);
             }
+        }
+    }
+
+    /**
+     * 状态栏亮色模式，状态栏字体颜色为黑色.
+     */
+    protected void lightStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+        }
+    }
+
+    /**
+     * 状态栏暗色模式，状态栏字体颜色为白色.
+     */
+    protected void darkStatusBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         }
     }
 
