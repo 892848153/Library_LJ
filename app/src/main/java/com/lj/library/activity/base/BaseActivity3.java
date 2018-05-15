@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorRes;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,11 +62,11 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         mViewModel.onRegisterRxBus();
     }
 
-    private void overflowStatusBar() {
+    protected void overflowStatusBar() {
         overflowStatusBar(R.color.colorPrimary);
     }
 
-    private void overflowStatusBar(@ColorRes int statusBarBgColorRes) {
+    protected void overflowStatusBar(@ColorRes int statusBarBgColorRes) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             addStatusViewWithColor(this, statusBarBgColorRes);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -98,7 +99,7 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
         View rootView = contentView.getChildAt(0);
         if (rootView != null && rootView.getId() == R.id.status_bar_holder_id) {
-            return;
+            contentView.removeView(rootView);
         }
 
         int statusBarHeight = UiUtils.getStatusBarHeight(this);
@@ -135,9 +136,7 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
      */
     protected void lightStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR |
-                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            setSystemBarTheme(false);
         }
     }
 
@@ -146,9 +145,18 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
      */
     protected void darkStatusBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            setSystemBarTheme(true);
         }
+    }
+
+    /** Changes the System Bar Theme. */
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private final void setSystemBarTheme(final boolean isDark) {
+        // Fetch the current flags.
+        final int curFlags = getWindow().getDecorView().getSystemUiVisibility();
+        // Update the SystemUiVisibility dependening on whether we want a Light or Dark theme.
+        getWindow().getDecorView().setSystemUiVisibility(isDark ? (curFlags & ~View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR) : (curFlags | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR));
+
     }
 
     /**
