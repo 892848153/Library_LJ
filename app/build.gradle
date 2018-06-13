@@ -35,11 +35,9 @@ android {
             }
         }
     }
-
     dexOptions {
         jumboMode true
     }
-
     signingConfigs {
         releaseConfig {
             keyAlias 'lj'
@@ -49,7 +47,6 @@ android {
             v2SigningEnabled false
         }
     }
-
     buildTypes {
         release {
             minifyEnabled true //启动proguard
@@ -58,7 +55,6 @@ android {
             signingConfig signingConfigs.releaseConfig
         }
     }
-
     splits {
         abi {
             enable true
@@ -67,7 +63,6 @@ android {
             universalApk false
         }
     }
-
     //    android6.0中删除apache包, 用此引用
     useLibrary 'org.apache.http.legacy'
     packagingOptions {
@@ -136,7 +131,7 @@ dependencies {
 
     // support 兼容包
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.1'
     implementation "com.android.support:design:${APPCOMPAT_VERSION}"
     implementation "com.android.support:support-v4:${APPCOMPAT_VERSION}"
     implementation "com.android.support:appcompat-v7:${APPCOMPAT_VERSION}"

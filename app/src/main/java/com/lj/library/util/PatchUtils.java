@@ -30,7 +30,7 @@ public class PatchUtils {
      */
 	public static String getNewApkFilePath(@NonNull Context context, int newVersionCode) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(StorageUtils.getCacheRootDirPath())
+		sb.append(StorageUtils.getAppCacheRootDirPath())
 				.append("/update/apk/")
 				.append(AppUtils.getVerCode(context))
 				.append("to")
@@ -41,7 +41,7 @@ public class PatchUtils {
 
 	public static String getPatchFilePath(@NonNull Context context, int newVersionCode) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(StorageUtils.getCacheRootDirPath())
+		sb.append(StorageUtils.getAppCacheRootDirPath())
 				.append("/update/patch/")
 				.append(AppUtils.getVerCode(context))
 				.append("to")

@@ -24,7 +24,7 @@ import java.util.Comparator;
  * @author jie.liu
  */
 public class ImageFileCache {
-	private static final String CACHE_DIR = StorageUtils.getCacheRootDirPath() + "/ImageCache";
+	private static final String CACHE_DIR = StorageUtils.getAppCacheRootDirPath() + "/ImageCache";
 	private static final String WHOLESALE_CONV = ".cache";
 
 	private static final int MB = 1024 * 1024;
@@ -180,7 +180,7 @@ public class ImageFileCache {
 	 * 
 	 **/
 	private String getDirectory() {
-		String dir = StorageUtils.getSDCardPath() + File.separator + CACHE_DIR;
+		String dir = StorageUtils.getExternalStorageDirectoryPath() + File.separator + CACHE_DIR;
 		return dir;
 	}
 

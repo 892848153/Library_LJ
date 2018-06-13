@@ -25,7 +25,7 @@ public enum OkHttpManager {
     static {
         // Interceptor有两种,详情见https://github.com/square/okhttp/wiki/Interceptors
         // 开启缓存响应数据功能  http://www.devtf.cn/?p=1264
-        final File baseDir = new File(StorageUtils.getSDCardPath(), OKHTTP_CACHE_DIR);
+        final File baseDir = new File(StorageUtils.getExternalStorageDirectoryPath(), OKHTTP_CACHE_DIR);
         sOkHttpClient = new OkHttpClient.Builder()
                 .cache(new Cache(baseDir, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE))
                 .addInterceptor(CommonHeadersInterceptor.getInstance())

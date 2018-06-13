@@ -35,7 +35,9 @@ public class ContextUtil {
 	}
 
 	public static void pushToActivity(Context from, Intent intent) {
-		from.startActivity(intent);
+		if (intent.resolveActivity(from.getPackageManager()) != null) {
+			from.startActivity(intent);
+		}
 	}
 
 	/**
