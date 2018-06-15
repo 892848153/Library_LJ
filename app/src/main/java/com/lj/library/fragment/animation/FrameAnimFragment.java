@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.util.LogUtil;
+import com.lj.library.util.UiUtils;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -37,7 +38,7 @@ public class FrameAnimFragment extends BaseFragment implements View.OnClickListe
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
-
+        mRootView.setPadding(0, UiUtils.getStatusBarHeight(mContext), 0, 0);
     }
 
     @OnClick({R.id.xml_btn, R.id.java_btn})
@@ -55,7 +56,7 @@ public class FrameAnimFragment extends BaseFragment implements View.OnClickListe
                 mAnimDraw = new AnimationDrawable();
                 for (int i = 1; i <= 9; i++) {
                     //根据资源名称和目录获取R.java中对应的资源ID
-                    int id = getResources().getIdentifier("img000" + i, "drawable", mActivity.getPackageName());
+                    int id = getResources().getIdentifier("img000" + i, "drawable", mContext.getPackageName());
                     //根据资源ID获取到Drawable对象
                     Drawable drawable = getResources().getDrawable(id);
                     //将此帧添加到AnimationDrawable中

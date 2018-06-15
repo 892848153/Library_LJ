@@ -33,6 +33,8 @@ public class BannerFragment extends BaseFragment {
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
+//        StatusBarUtils.overflowStatusBar(mContext, true);
+//        StatusBarUtils.setFitsSystemWindows(mContext, false);
         PagerAdapter<Menu> pagerAdapter = new BannerAdapter();
         List<Menu> list = new ArrayList<Menu>();
         list.add(new Menu());
@@ -54,7 +56,7 @@ public class BannerFragment extends BaseFragment {
 
         @Override
         public View getView(int position, Menu data) {
-            View view = LayoutInflater.from(mActivity).inflate(
+            View view = LayoutInflater.from(mContext).inflate(
                     R.layout.banner_item, null);
             ScaledImageView iv = (ScaledImageView) view.findViewById(R.id.iv);
             iv.setFrameWeight(660, 300);

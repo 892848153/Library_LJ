@@ -43,7 +43,7 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
     @Override
     protected void initComp(Bundle savedInstanceState) {
         List<Menu> list = buildMenus();
-        mAdapter = new MenuAdapter(list, mActivity);
+        mAdapter = new MenuAdapter(list, mContext);
         mListView.setAdapter(mAdapter);
     }
 

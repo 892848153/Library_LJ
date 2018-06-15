@@ -5,21 +5,27 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.lj.library.BuildConfig;
+import com.lj.library.R;
 import com.lj.library.bean.UserInfo;
 import com.lj.library.constants.Constants;
 import com.lj.library.dao.realm.MyMigration;
 import com.lj.library.dao.realm.MySchemaModule;
+import com.lj.library.util.FontSwitcherUtils;
 import com.lj.library.util.PreferenceUtil;
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.FormatStrategy;
+import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.tencent.smtt.sdk.QbSdk;
 
 import java.security.SecureRandom;
@@ -82,15 +88,18 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sInstance = this;
+        setTheme(R.style.AppTheme);
         mRefWatcher = LeakCanary.install(this);
         Stetho.initializeWithDefaults(this);
 
         restoreUserInfoFromPref();
         initStrictMode();
+        initLogger();
         initBugly();
         initRealm();
         initFresco();
         initQbSdk();
+        switchFont();
 
         // Thread.setDefaultUncaughtExceptionHandler(new
         // MyUncaughtExceptionHandler());
@@ -116,6 +125,23 @@ public class MyApplication extends Application {
     }
 
     /**
+     * 初始化Logger
+     */
+    private void initLogger() {
+        FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                // (Optional) Global tag for every log. Default PRETTY_LOGGER
+                .tag("Library_LJ")
+                .build();
+
+        Logger.addLogAdapter(new AndroidLogAdapter(formatStrategy) {
+            @Override
+            public boolean isLoggable(final int priority, @Nullable final String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
+    }
+
+    /**
      * 初始化Bugly
      */
     private void initBugly() {
@@ -128,6 +154,7 @@ public class MyApplication extends Application {
     private void initRealm() {
         byte[] key = new byte[64];
         new SecureRandom().nextBytes(key);
+        Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .name("default.realm")  //在Context.getFileDir()的路径下生成一个该名字的文件
                 .encryptionKey(key)  //AES-256加密的key
@@ -152,6 +179,10 @@ public class MyApplication extends Application {
         if (!QbSdk.isTbsCoreInited()) {
             QbSdk.preInit(this);
         }
+    }
+
+    private void switchFont() {
+        FontSwitcherUtils.switchFont(this);
     }
 
     /**
@@ -217,6 +248,6 @@ public class MyApplication extends Application {
 
 
         // 安装tinker
-        Beta.installTinker();
+//        Beta.installTinker();
     }
 }

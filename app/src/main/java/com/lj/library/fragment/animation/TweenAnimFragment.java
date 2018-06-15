@@ -66,7 +66,7 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
      * 透明动画.
      */
     private void alphaImpl() {
-        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.alpha_demo);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.alpha_demo);
         mImageView.startAnimation(animation);
 
 //        AlphaAnimation alphaAnimation = createAlphaAnimation();
@@ -75,7 +75,7 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
 
     // 旋转动画
     private void rotateImpl() {
-        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.rotate_demo);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.rotate_demo);
         mImageView.startAnimation(animation);
 
 //        RotateAnimation rotateAnimation = createRotateAnimation();
@@ -84,7 +84,7 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
 
     // 缩放动画
     private void scaleImpl() {
-        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.scale_demo);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.scale_demo);
         mImageView.startAnimation(animation);
 
 //        ScaleAnimation scaleAnimation = createScaleAnimation();
@@ -94,7 +94,7 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
     // 移动效果
     private void translateImpl() {
         // XML文件
-        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.translate_demo);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.translate_demo);
         animation.setRepeatCount(Animation.INFINITE);//循环显示
         mImageView.startAnimation(animation);
 
@@ -110,7 +110,7 @@ public class TweenAnimFragment extends BaseFragment implements View.OnClickListe
 
     // 综合实现set_demo.xml中的动画
     private void setAll() {
-        Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.set_demo);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.set_demo);
         mImageView.startAnimation(animation);
 
 //        AnimationSet animationSet = new AnimationSet(false);

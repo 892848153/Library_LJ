@@ -2,6 +2,7 @@ package com.lj.library.util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.StatFs;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -21,17 +22,17 @@ import java.util.List;
 
 /**
  * /data/data/packagename文件夹为内部存储，访问不需要申请权限.<br/>
- *
+ * <p>
  * /sdcard/Android/data/packagename文件夹为外部存储上的私有存储目录，
  * 从 Android 4.4 开始，读取或写入应用私有目录中的文件不再需要 READ_EXTERNAL_STORAGE 或 WRITE_EXTERNAL_STORAGE 权限。<br/>
- *
+ * <p>
  * /sdcard文件夹下除Android目录下的所有文件都是外部存储上的共有文件.<br/>
- *
+ * <p>
  * 只有{@link #getExternalFilesDirs}方法才有可能访问你插入的sdcard，其他的方法都是访问primary external storage的.
- *
- *
- *
- *
+ * <p>
+ * <p>
+ * <p>
+ * <p>
  * Created by jie.liu on 16/8/23.
  */
 public class StorageUtils {
@@ -202,16 +203,16 @@ public class StorageUtils {
      * 在 Android 4.3 和更低版本中，此方法也会返回一个 File 数组，但其中始终仅包含一个条目。
      *
      * @param context
-     * @param type The type of files directory to return. May be {@code null}
-     *            for the root of the files directory or one of the following
-     *            constants for a subdirectory:
-     *            {@link android.os.Environment#DIRECTORY_MUSIC},
-     *            {@link android.os.Environment#DIRECTORY_PODCASTS},
-     *            {@link android.os.Environment#DIRECTORY_RINGTONES},
-     *            {@link android.os.Environment#DIRECTORY_ALARMS},
-     *            {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
-     *            {@link android.os.Environment#DIRECTORY_PICTURES}, or
-     *            {@link android.os.Environment#DIRECTORY_MOVIES}.
+     * @param type    The type of files directory to return. May be {@code null}
+     *                for the root of the files directory or one of the following
+     *                constants for a subdirectory:
+     *                {@link android.os.Environment#DIRECTORY_MUSIC},
+     *                {@link android.os.Environment#DIRECTORY_PODCASTS},
+     *                {@link android.os.Environment#DIRECTORY_RINGTONES},
+     *                {@link android.os.Environment#DIRECTORY_ALARMS},
+     *                {@link android.os.Environment#DIRECTORY_NOTIFICATIONS},
+     *                {@link android.os.Environment#DIRECTORY_PICTURES}, or
+     *                {@link android.os.Environment#DIRECTORY_MOVIES}.
      * @return
      */
     public static File[] getExternalFilesDirs(@NonNull Context context, String type) {
@@ -291,6 +292,28 @@ public class StorageUtils {
             return Environment.getExternalStorageDirectory();
         }
         return null;
+    }
+
+    public long getFreeSpace(String dir) {
+        StatFs statFs = new StatFs(dir);
+        long availableBlocks;
+        long blockSize;
+
+        availableBlocks = statFs.getAvailableBlocksLong();
+        blockSize = statFs.getBlockSizeLong();
+        return availableBlocks * blockSize;
+    }
+
+    public long getUsedSpace(String dir) {
+        StatFs statFs = new StatFs(dir);
+        long availableBlocks;
+        long blockSize;
+        long totalBlocks;
+
+        availableBlocks = statFs.getAvailableBlocksLong();
+        blockSize = statFs.getBlockSizeLong();
+        totalBlocks = statFs.getBlockCountLong();
+        return (totalBlocks - availableBlocks) * blockSize;
     }
 
     /**

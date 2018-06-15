@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import com.lj.library.R;
 import com.lj.library.activity.base.BaseViewAction;
-import com.lj.library.application.SampleApplicationLike;
+//import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.util.Logger;
 
 import butterknife.ButterKnife;
@@ -33,7 +33,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
     /**
      * 解决 {@link #getActivity()} 为null的bug
      **/
-    protected Activity mActivity;
+    protected Activity mContext;
 
     protected View mRootView;
 
@@ -52,16 +52,16 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.mActivity = activity;
+        this.mContext = activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!(mActivity instanceof BackHandlerInterface)) {
+        if (!(mContext instanceof BackHandlerInterface)) {
             throw new ClassCastException("Hosting Activity must implement BackHandledInterface");
         } else {
-            this.mBackHandlerInterface = (BackHandlerInterface) mActivity;
+            this.mBackHandlerInterface = (BackHandlerInterface) mContext;
         }
     }
 
@@ -96,7 +96,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
     }
 
     public void setContentView(int layoutId) {
-        setContentView(View.inflate(mActivity, layoutId, null));
+        setContentView(View.inflate(mContext, layoutId, null));
     }
 
     public void setContentView(View view) {
@@ -176,7 +176,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
      */
     protected LayoutInflater setTheme(LayoutInflater inflater) {
         // 给Fragment设置主题,主题传递0，则采用系统的默认主题
-        final Context contextThemeWrapper = new ContextThemeWrapper(mActivity, 0);
+        final Context contextThemeWrapper = new ContextThemeWrapper(mContext, 0);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater;
     }
@@ -185,7 +185,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
     public void onDestroy() {
         super.onDestroy();
         //        MyApplication.getRefWatcher().watch(this);
-        SampleApplicationLike.getRefWatcher().watch(this);
+//        SampleApplicationLike.getRefWatcher().watch(this);
     }
 
     @Override
@@ -208,7 +208,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
 
     @Override
     public View initAppBar() {
-        return View.inflate(mActivity, R.layout.include_normal_header, null);
+        return View.inflate(mContext, R.layout.include_normal_header, null);
     }
 
     @Override
@@ -227,12 +227,12 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
 
     @Override
     public View initLoadingLayout() {
-        return View.inflate(mActivity, R.layout.include_loading, null);
+        return View.inflate(mContext, R.layout.include_loading, null);
     }
 
     @Override
     public View initLoadingErrorLayout() {
-        View loadingErrorLayout = View.inflate(mActivity, R.layout.include_loading_error_layout, null);
+        View loadingErrorLayout = View.inflate(mContext, R.layout.include_loading_error_layout, null);
         loadingErrorLayout.findViewById(R.id.retry_btn).setOnClickListener(this);
         return loadingErrorLayout;
     }

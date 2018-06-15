@@ -51,11 +51,11 @@ public class MainFragment extends BaseFragment {
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
-        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        Toolbar toolbar = mRootView.findViewById(R.id.toolbar);
         toolbar.setTitle(getString(R.string.app_name));
 
         List<Menu> list = buildMenus();
-        mAdapter = new MenuAdapter(list, mActivity);
+        mAdapter = new MenuAdapter(list, mContext);
         mListView.setAdapter(mAdapter);
     }
 
@@ -91,14 +91,14 @@ public class MainFragment extends BaseFragment {
                 e.printStackTrace();
             }
         } else if (Activity.class.isAssignableFrom(menu.target)){
-                ContextUtil.pushToActivity(mActivity, menu.target);
+                ContextUtil.pushToActivity(mContext, menu.target);
         }
     }
 
     @Override
     public boolean onBackPressed() {
         LogUtil.d(this, "onBackPressed");
-        mActivity.finish();
+        mContext.finish();
         return true;
     }
 }

@@ -12,13 +12,13 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.lj.library.R;
-import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UiUtils;
 
 import butterknife.ButterKnife;
+
 
 /**
  * 基础类.
@@ -36,8 +36,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-//        MyApplication.getInstance().addActivity(mContext);
-        SampleApplicationLike.getInstance().addActivity(mContext);
 
         /** initViews   **/
         int layoutId = initLayout(savedInstanceState);
@@ -117,8 +115,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BackHand
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        MyApplication.getInstance().removeActivity(mContext);
-        SampleApplicationLike.getInstance().removeActivity(mContext);
         RxBus.getInstance().unregister(this);
     }
 

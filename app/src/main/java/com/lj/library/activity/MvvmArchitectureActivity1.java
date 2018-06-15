@@ -3,11 +3,11 @@ package com.lj.library.activity;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.android.databinding.library.baseAdapters.BR;
 import com.lj.library.R;
-import com.lj.library.activity.base.BaseActivity3;
+import com.lj.library.activity.base.BaseActivity4;
 import com.lj.library.databinding.MyArchitecture1ActivityBinding;
 import com.lj.library.util.Logger;
+import com.lj.library.util.StatusBarUtils;
 
 import java.util.Random;
 
@@ -15,12 +15,7 @@ import java.util.Random;
  * @author LJ.Liu
  * @date 2018/4/25.
  */
-public class MvvmArchitectureActivity1 extends BaseActivity3<MyArchitecture1ActivityBinding, MvvmArchitectureViewModel1> {
-
-    @Override
-    protected int initVariableId() {
-        return BR.viewModel;
-    }
+public class MvvmArchitectureActivity1 extends BaseActivity4<MyArchitecture1ActivityBinding, MvvmArchitectureViewModel1> {
 
     @Override
     protected MvvmArchitectureViewModel1 initViewModel() {
@@ -34,6 +29,7 @@ public class MvvmArchitectureActivity1 extends BaseActivity3<MyArchitecture1Acti
 
     @Override
     protected void initComp(final Bundle savedInstanceState) {
+        mBinding.setViewModel(mViewModel);
         loadContent();
     }
 
@@ -45,9 +41,11 @@ public class MvvmArchitectureActivity1 extends BaseActivity3<MyArchitecture1Acti
                 if (i == 1) {
                     Logger.i("show no network layout, random:" + i);
                     showErrorLayout();
+                    StatusBarUtils.overflowStatusBar(mContext, true);
                 } else {
                     Logger.i("show content layout, random:" + i);
                     showContentLayout();
+                    StatusBarUtils.overflowStatusBar(mContext, true, R.color.colorPrimary);
                 }
             }
         }, 2000L);

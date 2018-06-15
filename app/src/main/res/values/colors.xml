@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F44336</color>     <!-- app bar的底色-->
-    <color name="colorPrimaryDark">#D32F2F</color> <!-- 状态栏的底色-->
+    <!--<color name="colorPrimaryDark">#D32F2F</color> &lt;!&ndash; 状态栏的底色&ndash;&gt;-->
+    <color name="colorPrimaryDark">@android:color/transparent</color> <!-- 状态栏的底色-->
     <color name="colorAccent">#FF4081</color>      <!-- 全局色调，查看http://892848153.iteye.com/blog/2313507 -->
 
     <color name="mainBlack">#333333</color>

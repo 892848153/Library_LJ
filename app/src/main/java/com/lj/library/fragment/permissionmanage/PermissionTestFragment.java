@@ -44,10 +44,10 @@ public class PermissionTestFragment extends BaseFragment {
     public void pickContact(View view) {
         //ContextCompat.checkSelfPermission()在targetSdkVersion<23时
         // 即使是Android6.0的手机也会一直返回PackageManager.permission.PERMISSION_GRANTED
-        if (PermissionChecker.checkSelfPermission(mActivity, Manifest.permission.READ_CONTACTS)
+        if (PermissionChecker.checkSelfPermission(mContext, Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             if (shouldShowRequestPermissionRationale(Manifest.permission.READ_CONTACTS)) {
-                Toaster.showShort(mActivity, "需要此权限来选取联系人信息");
+                Toaster.showShort(mContext, "需要此权限来选取联系人信息");
             }
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CONTACT);
         } else {
@@ -77,10 +77,10 @@ public class PermissionTestFragment extends BaseFragment {
             return;
         }
 
-        if (resultCode == mActivity.RESULT_OK && requestCode == REQUEST_CONTACT) {
-            ContentResolver reContentResolver = mActivity.getContentResolver();
+        if (resultCode == mContext.RESULT_OK && requestCode == REQUEST_CONTACT) {
+            ContentResolver reContentResolver = mContext.getContentResolver();
             Uri contactData = data.getData();
-            Cursor cursor = mActivity.managedQuery(contactData, null, null, null, null);
+            Cursor cursor = mContext.managedQuery(contactData, null, null, null, null);
             cursor.moveToFirst();
             String username = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
             String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));

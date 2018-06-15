@@ -41,7 +41,7 @@ public class ArchitectureFragment extends BaseFragment {
     @Override
     protected void initComp(Bundle savedInstanceState) {
         List<Menu> list = buildMenus();
-        mAdapter = new MenuAdapter(list, mActivity);
+        mAdapter = new MenuAdapter(list, mContext);
         mListView.setAdapter(mAdapter);
     }
 
@@ -68,7 +68,7 @@ public class ArchitectureFragment extends BaseFragment {
                 e.printStackTrace();
             }
         } else if (Activity.class.isAssignableFrom(menu.target)){
-            ContextUtil.pushToActivity(mActivity, menu.target);
+            ContextUtil.pushToActivity(mContext, menu.target);
         }
     }
 

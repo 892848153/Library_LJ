@@ -16,7 +16,6 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.lj.library.R;
-import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.util.Logger;
 import com.lj.library.util.RxBus;
 import com.lj.library.util.UiUtils;
@@ -47,7 +46,6 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         super.onCreate(savedInstanceState);
         mContext = this;
 
-        SampleApplicationLike.getInstance().addActivity(mContext);
         overflowStatusBar();
 
         mBinding = DataBindingUtil.inflate(getLayoutInflater(), initLayout(savedInstanceState), null, false);
@@ -62,31 +60,44 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
         mViewModel.onRegisterRxBus();
     }
 
+    /**
+     * 点击左上角返回按钮
+     *
+     * @param view
+     */
+    public void onBack(View view) {
+        finish();
+    }
+
     protected void overflowStatusBar() {
         overflowStatusBar(R.color.colorPrimary);
     }
 
+    /**
+     * Android 4.4采用半透明标题栏方式把布局顶到状态栏底下，5.0开始不用设置半透明状态栏也可以把布局顶到状态栏底下.
+     * 不管是采用半透明状态栏的方式还是别的方式，只要把布局顶到状态栏底下，那么android:windowSoftInputMode="adjustResize"
+     * 将失效。只有在根布局设置android:fitsSystemWindows="true"才可以让上面的属性生效
+     * 不过设置了android:fitsSystemWindows="true"那么布局又不能顶到状态栏底下了，这是个矛盾.
+     */
     protected void overflowStatusBar(@ColorRes int statusBarBgColorRes) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            addStatusViewWithColor(this, statusBarBgColorRes);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                //5.x开始需要把颜色设置透明，否则导航栏会呈现系统默认的浅灰色
-                Window window = getWindow();
-                View decorView = window.getDecorView();
-                //两个 flag 要结合使用，表示让应用的主体内容占用系统状态栏的空间但不会覆盖状态栏
-                int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | decorView.getSystemUiVisibility();
-                decorView.setSystemUiVisibility(option);
-                window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-                window.setStatusBarColor(Color.TRANSPARENT);
-                //导航栏颜色也可以正常设置
-//                window.setNavigationBarColor(Color.TRANSPARENT);
-            } else {
-                Window window = getWindow();
-                WindowManager.LayoutParams attributes = window.getAttributes();
-                // WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION;
-                attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-                window.setAttributes(attributes);
-            }
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        addStatusBarHolderWithColor(this, statusBarBgColorRes);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            // 5.0开始可以采用这段代码把布局顶到状态栏底下。
+            Window window = getWindow();
+            View decorView = window.getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | decorView.getSystemUiVisibility();
+            decorView.setSystemUiVisibility(option);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(Color.TRANSPARENT);
+        } else {
+            // 4.4系统只能采用"半透明状态栏"的方式把布局顶到状态栏底下
+            Window window = getWindow();
+            WindowManager.LayoutParams attributes = window.getAttributes();
+            attributes.flags |= WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
+            window.setAttributes(attributes);
         }
     }
 
@@ -95,39 +106,47 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
      *
      * @param activity
      */
-    private void addStatusViewWithColor(Activity activity, int colorId) {
+    private void addStatusBarHolderWithColor(Activity activity, int colorId) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        removeStatusBarHolderIfExist();
+
         ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
         View rootView = contentView.getChildAt(0);
-        if (rootView != null && rootView.getId() == R.id.status_bar_holder_id) {
-            contentView.removeView(rootView);
-        }
-
         int statusBarHeight = UiUtils.getStatusBarHeight(this);
-        if (rootView != null) {
-            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) rootView.getLayoutParams();
-            layoutParams.topMargin = statusBarHeight;
-            rootView.setLayoutParams(layoutParams);
-        }
 
-        View statusBarView = new View(activity);
-        statusBarView.setId(STATUS_BAR_HOLDER_ID);
+        setViewTopMargin(rootView, statusBarHeight);
+
+        View statusBarHolder = new View(activity);
+        statusBarHolder.setId(STATUS_BAR_HOLDER_ID);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, statusBarHeight);
-        statusBarView.setBackgroundResource(colorId);
-        contentView.addView(statusBarView, 0, lp);
+        statusBarHolder.setBackgroundResource(colorId);
+        contentView.addView(statusBarHolder, 0, lp);
     }
 
-    protected void removeStatusView() {
+    /**
+     * 图片需要顶上状态栏时使用此方法.
+     */
+    protected void removeStatusBarHolderIfExist() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
         ViewGroup contentView = UiUtils.getAndroidContentView(mContext);
-        View statusView = contentView.getChildAt(0);
-        if (statusView != null && statusView.getId() == STATUS_BAR_HOLDER_ID) {
+        View statusBarHolder = contentView.getChildAt(0);
+        if (statusBarHolder != null && statusBarHolder.getId() == STATUS_BAR_HOLDER_ID) {
             contentView.removeViewAt(0);
 
             View rootView = contentView.getChildAt(0);
-            if (rootView != null) {
-                FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) rootView.getLayoutParams();
-                layoutParams.topMargin = 0;
-                rootView.setLayoutParams(layoutParams);
-            }
+            setViewTopMargin(rootView, 0);
+        }
+    }
+
+    private void setViewTopMargin(final View view, final int topMargin) {
+        if (view != null) {
+            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) view.getLayoutParams();
+            layoutParams.topMargin = topMargin;
+            view.setLayoutParams(layoutParams);
         }
     }
 
@@ -257,7 +276,6 @@ public abstract class BaseActivity3<T extends ViewDataBinding, VM extends BaseVi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SampleApplicationLike.getInstance().removeActivity(mContext);
         RxBus.getInstance().unregister(this);
         mViewModel.onRemoveRxBus();
         mViewModel.onDestroy();

@@ -53,7 +53,7 @@ public class LayoutTransitionFragment extends BaseFragment implements CompoundBu
         mChangeDisAppear.setOnCheckedChangeListener(this);
 
         // 创建一个GridLayout
-        mGridLayout = new GridLayout(mActivity);
+        mGridLayout = new GridLayout(mContext);
         // 设置每列5个按钮
         mGridLayout.setColumnCount(5);
         // 添加到布局中
@@ -67,7 +67,7 @@ public class LayoutTransitionFragment extends BaseFragment implements CompoundBu
 
     @OnClick(R.id.add_btn)
     public void onClick(View v) {
-        final Button button = new Button(mActivity);
+        final Button button = new Button(mContext);
         button.setText(String.valueOf(++mVal));
         mGridLayout.addView(button, Math.min(1, mGridLayout.getChildCount()));
         button.setOnClickListener(mGridItemClickListener);

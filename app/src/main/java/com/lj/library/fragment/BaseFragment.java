@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lj.library.R;
-import com.lj.library.application.SampleApplicationLike;
+//import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.http.apache.HttpHelper;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.RxBus;
@@ -32,7 +32,7 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
     /**
      * 解决 {@link #getActivity()} 为null的bug
      **/
-    protected Activity mActivity;
+    protected Activity mContext;
 
     protected View mRootView;
 
@@ -43,16 +43,16 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.mActivity = activity;
+        this.mContext = activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!(mActivity instanceof BackHandlerInterface)){
+        if(!(mContext instanceof BackHandlerInterface)){
             throw new ClassCastException("Hosting Activity must implement BackHandledInterface");
         }else{
-            this.mBackHandlerInterface = (BackHandlerInterface)mActivity;
+            this.mBackHandlerInterface = (BackHandlerInterface) mContext;
         }
     }
 
@@ -143,14 +143,14 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
      */
     protected LayoutInflater setTheme(LayoutInflater inflater) {
         // 给Fragment设置主题,主题传递0，则采用系统的默认主题
-        final Context contextThemeWrapper = new ContextThemeWrapper(mActivity, 0);
+        final Context contextThemeWrapper = new ContextThemeWrapper(mContext, 0);
         LayoutInflater localInflater = inflater.cloneInContext(contextThemeWrapper);
         return localInflater;
     }
 
     @Override
     public void onHttpNetworkNotFound(String path) {
-        Toaster.showShort(mActivity, "未检测到可用的网络");
+        Toaster.showShort(mContext, "未检测到可用的网络");
         dismissDialogIfNeeded();
     }
 
@@ -161,13 +161,13 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
 
     @Override
     public void onHttpError(String path, Exception exception) {
-        Toaster.showShort(mActivity, "网络连接异常，请重试");
+        Toaster.showShort(mContext, "网络连接异常，请重试");
         dismissDialogIfNeeded();
     }
 
     @Override
     public void onHttpError(String path, int response) {
-        Toaster.showShort(mActivity, "网络连接超时，请重试");
+        Toaster.showShort(mContext, "网络连接超时，请重试");
         dismissDialogIfNeeded();
     }
 
@@ -201,7 +201,7 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
     public void onDestroy() {
         super.onDestroy();
 //        MyApplication.getRefWatcher().watch(this);
-        SampleApplicationLike.getRefWatcher().watch(this);
+//        SampleApplicationLike.getRefWatcher().watch(this);
     }
 
     @Override

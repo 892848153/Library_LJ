@@ -58,7 +58,7 @@ public class ViewAnimFragment extends BaseFragment implements View.OnClickListen
         @Override
         public void run() {
             LogUtil.i(this, "START");
-            mActivity.runOnUiThread(mUpdateBlueBall);
+            mContext.runOnUiThread(mUpdateBlueBall);
         }
     };
 

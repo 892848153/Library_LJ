@@ -49,7 +49,7 @@ public class AnimatorInflaterFragment extends BaseFragment implements View.OnCli
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void scaleX() {
-        Animator animator = AnimatorInflater.loadAnimator(mActivity, R.animator.scalex);
+        Animator animator = AnimatorInflater.loadAnimator(mContext, R.animator.scalex);
         mImageView.setPivotY(mImageView.getHeight() / 2);
         mImageView.setPivotX(mImageView.getWidth() / 2);
         animator.setTarget(mImageView);
@@ -58,7 +58,7 @@ public class AnimatorInflaterFragment extends BaseFragment implements View.OnCli
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void scaleXandScaleY() {
-        Animator animator = AnimatorInflater.loadAnimator(mActivity, R.animator.scale);
+        Animator animator = AnimatorInflater.loadAnimator(mContext, R.animator.scale);
         mImageView.setPivotX(0);
         mImageView.setPivotY(0);
         animator.setTarget(mImageView);

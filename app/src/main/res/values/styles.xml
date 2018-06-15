@@ -26,8 +26,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <!-- 修改Theme.AppCompat下主题中的属性，更改全局色调，查看：http://892848153.iteye.com/blog/2313507-->
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- 修改Theme.AppCompat下主题中的属性，更改状态栏的底色，5.0及以上系统才有效-->
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <!-- 修改Theme.AppCompat下主题中的属性，更改状态栏的底色，5.0及以上系统才有效,
+             必须设置成透明色，因为从5.0开始就可以在不设置半透明状态栏的情况下把布局顶到状态栏底下了，
+             此时如果在这里给状态栏设置颜色，那么Activity跳转的那段时间，状态栏有一个颜色，会很丑-->
+        <item name="colorPrimaryDark">@android:color/transparent</item>
         <!-- 替换字体需要用到这个，app默认字体设置成serif，然后在application中替换serif字体为自定义字体-->
         <item name="android:typeface">serif</item>
         <!--全局的列表分割线-->

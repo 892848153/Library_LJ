@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lj.library.R;
-import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.fragment.BackHandlerInterface;
 import com.lj.library.fragment.FragmentBackManager;
 import com.lj.library.util.Logger;
@@ -52,7 +51,6 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-        SampleApplicationLike.getInstance().addActivity(mContext);
 
         super.setContentView(R.layout.activity_base1);
         mRootLayout = (LinearLayout) findViewById(R.id.root_layout);
@@ -167,7 +165,6 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        SampleApplicationLike.getInstance().removeActivity(mContext);
         RxBus.getInstance().unregister(this);
     }
 

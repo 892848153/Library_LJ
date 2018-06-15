@@ -22,7 +22,7 @@ public class SmartUpdateFragment extends BaseFragment {
 
     @Override
     protected void initComp(Bundle savedInstanceState) {
-//        String localApkPath = AppUtils.getSourceApkPath(mActivity, mActivity.getPackageName());
+//        String localApkPath = AppUtils.getSourceApkPath(mContext, mContext.getPackageName());
 //        String localApkMd5 = getMd5ByFile(new File(localApkPath));
 //        // localApkSign跟本地版本号一起发送到服务器请求最新版本,服务器验证
 //        // 若版本号不是最新的, 并且localApkMd5与服务器上的一致,
@@ -32,17 +32,17 @@ public class SmartUpdateFragment extends BaseFragment {
 //        // 假设网络请求返回, 并且下载好了patch文件,
 //        int newVerCode = 510;
 //        // 将旧apk和patch合成新的APK文件
-//        int patchResult = PatchUtils.patch(AppUtils.getSourceApkPath(mActivity, mActivity.getPackageName()),
-//                PatchUtils.getNewApkFilePath(mActivity, newVerCode),
-//                PatchUtils.getPatchFilePath(mActivity, newVerCode));
+//        int patchResult = PatchUtils.patch(AppUtils.getSourceApkPath(mContext, mContext.getPackageName()),
+//                PatchUtils.getNewApkFilePath(mContext, newVerCode),
+//                PatchUtils.getPatchFilePath(mContext, newVerCode));
 //
 //        // 合成成功
 //        if (patchResult == 0) {
-//            File newApkFile = new File(PatchUtils.getNewApkFilePath(mActivity, newVerCode));
+//            File newApkFile = new File(PatchUtils.getNewApkFilePath(mContext, newVerCode));
 //            String newApkMd5 = getMd5ByFile(newApkFile);
 //            // 校验合成的APK文件是否正确,"2sdnfaf3489rq2jif"为服务器返回的正确的新APK文件的MD5值
 //            if (newApkMd5.equals("2sdnfaf3489rq2jif")) {
-//                AppUtils.installApp(mActivity, newApkFile);
+//                AppUtils.installApp(mContext, newApkFile);
 //            }
 //        }
     }

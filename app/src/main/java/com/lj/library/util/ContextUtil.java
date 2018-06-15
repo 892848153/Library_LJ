@@ -1,19 +1,22 @@
 package com.lj.library.util;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.lj.library.application.SampleApplicationLike;
+import com.lj.library.application.MyApplication;
 import com.lj.library.bean.UserInfo;
 
 import java.util.List;
+
 
 public class ContextUtil {
 
@@ -42,14 +45,14 @@ public class ContextUtil {
 
 	/**
 	 * 如果没有登录即跳到登录页面.
-	 * 
+	 *
 	 * @param from
 	 * @param to
 	 */
 	public static void pushToActivityWithLogin(Context from, Class<?> to) {
 		Intent intent = null;
-//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
-		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
+		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetClass = to;
 			// intent = new Intent(from, LoginActivity.class);
@@ -61,10 +64,10 @@ public class ContextUtil {
 	}
 
 	public static void pushToActivityWithLogin(Context from, Class<?> to,
-			Bundle bundle) {
+											   Bundle bundle) {
 		Intent intent = null;
-//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
-		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
+		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetClass = to;
 			sBundle = bundle;
@@ -78,8 +81,8 @@ public class ContextUtil {
 	}
 
 	public static void pushToActivityWithLogin(Context context, Intent intent) {
-//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
-		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
+		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo == null) {
 			sTargetIntent = intent;
 			// intent = new Intent(context, LoginActivity.class);
@@ -95,7 +98,7 @@ public class ContextUtil {
 	 * {@link #pushToActivityWithLogin(Context, Intent)},
 	 * {@link #pushToActivityWithLogin(Context, Class, Bundle)}
 	 * 方法跳转界面，结果没有跳转到想要的界面，而是跳转到登陆页面。登陆成功后，可以调用此方法 继续跳转到先前想要跳转到的页面(跳转所带的参数依然存在)。
-	 * 
+	 *
 	 * @param from
 	 */
 	public static void pushToRecentlyActivity(Context from) {
@@ -103,8 +106,8 @@ public class ContextUtil {
 			return;
 		}
 
-//		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
-		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
+		UserInfo userInfo = MyApplication.getInstance().getUserInfo();
+//		UserInfo userInfo = SampleApplicationLike.getInstance().getUserInfo();
 		if (userInfo != null) {
 			performPushToRecentlyActivity(from);
 
@@ -129,8 +132,18 @@ public class ContextUtil {
 	}
 
 	public static String getIMEI(Context context) {
-		return ((TelephonyManager) context
-				.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+		if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+			//    ActivityCompat#requestPermissions
+			// here to request the missing permissions, and then overriding
+			//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+			//                                          int[] grantResults)
+			// to handle the case where the user grants the permission. See the documentation
+			// for ActivityCompat#requestPermissions for more details.
+			return ((TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+		} else {
+			return null;
+		}
 	}
 
 	/**
