@@ -16,26 +16,46 @@
     </style>
 
     <!-- Application theme.   mce_bogus="1" -->
-	<!--<style name="AppBaseTheme" parent="android:Theme.Light.NoTitleBar"></style>-->
+	<!--<style name="AppBaseTheme" parent="@android:style/Theme.Light.NoTitleBar"></style>-->
     <!-- Activity继承v7包的AppCompatActivity的话，主题需要继承v7包的Theme.AppCompat下的主题-->
 	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+
+        <!-- Original AppCompat attributes. -->
         <!-- 修改Theme.AppCompat下主题中的属性，更改app bar的底色.ActionBar/ToolBar都是叫app bar-->
+        <!--   color for the app bar and other primary UI elements -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <!-- 修改Theme.AppCompat下主题中的属性，更改全局色调，查看：http://892848153.iteye.com/blog/2313507-->
+        <!--   a secondary color for controls like checkboxes and text fields -->
         <item name="colorAccent">@color/colorAccent</item>
         <!-- 修改Theme.AppCompat下主题中的属性，更改状态栏的底色，5.0及以上系统才有效,
              必须设置成透明色，因为从5.0开始就可以在不设置半透明状态栏的情况下把布局顶到状态栏底下了，
              此时如果在这里给状态栏设置颜色，那么Activity跳转的那段时间，状态栏有一个颜色，会很丑-->
+        <!--   a darker variant of the primary color, used for
+           the status bar (on Android 5.0+) and contextual app bars -->
         <item name="colorPrimaryDark">@android:color/transparent</item>
+        <!--&lt;!&ndash; New MaterialComponents attributes. &ndash;&gt;-->
+        <!--<item name="colorSecondary">?attr/colorPrimary</item>-->
+        <!--<item name="scrimBackground">@color/mtrl_scrim_color</item>-->
+        <!--<item name="snackbarButtonStyle">?attr/borderlessButtonStyle</item>-->
+
         <!-- 替换字体需要用到这个，app默认字体设置成serif，然后在application中替换serif字体为自定义字体-->
         <item name="android:typeface">serif</item>
         <!--全局的列表分割线-->
         <item name="android:listDivider">@drawable/common_sp_line_red</item>
+        <!-- 更改全局button的style，默认是 Widget.AppCompat.Button-->
+        <!-- if you want to apply this style to all buttons, you can declare it in your theme's buttonStyle-->
+        <!-- 使用AppCompat Theme的情况下，需要把buttonStyle更改成@style/Widget.AppCompat.Button.Colored-->
+        <!-- 按钮背景才会默认用colorAccent着色, 其他控件都正常着色。使用MaterialComponents Theme不需要更改，一切正常-->
+        <item name="buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
+        <!-- 更改全局editText的style，默认是 Widget.AppCompat.EditText-->
+        <item name="editTextStyle">@style/Widget.AppCompat.EditText</item>
+        <!-- AppCompat主题 Button默认文字全部大写, 需要在此更改-->
+        <item name="textAllCaps">false</item>
     </style>
-	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specific to a particular API-level can go here. -->
+	<style name="AppTheme" parent="AppBaseTheme">		<!-- All customizations that are NOT specifibuc to a particular API-level can go here. -->
 	</style>
 	<!-- 自定义dialog -->
 	<style name="BaseDialogTheme" parent="Theme.AppCompat.Dialog">
