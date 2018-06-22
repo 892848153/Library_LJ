@@ -18,6 +18,10 @@
     <!-- Application theme.   mce_bogus="1" -->
 	<!--<style name="AppBaseTheme" parent="@android:style/Theme.Light.NoTitleBar"></style>-->
     <!-- Activity继承v7包的AppCompatActivity的话，主题需要继承v7包的Theme.AppCompat下的主题-->
+    <!--要使用Material Design的控件，最好选用MaterialComponents的主题，虽然AppCompat的主题在大多数情况下也可以实现Material的效果-->
+    <!--不过AppCompat主题需要给控件添加额外的属性，甚至有些效果还会出不来。注意：不管使用MaterialComponents类型的主题-->
+    <!--还是AppCompat类型的主题，在5.0以下的系统都是没有Ripple效果和阴影的。-->
+    <!--详情:https://github.com/material-components/material-components-android/blob/master/docs/getting-started.md-->
 	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@null</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
