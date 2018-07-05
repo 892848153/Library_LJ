@@ -3,6 +3,9 @@ package com.lj.library.util;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
+import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.view.View;
 
 /**
@@ -10,6 +13,23 @@ import android.view.View;
  * @date 2018/6/11.
  */
 public class AnimatorUtils {
+
+    /**
+     * Elements that begin and end at rest use standard easing.
+     * They speed up quickly and slow down gradually,
+     * in order to emphasize the end of the transition.
+     */
+    public static final TimeInterpolator STANDARD_EASING = new FastOutSlowInInterpolator();
+    /**
+     * Incoming elements are animated using deceleration easing,
+     * which starts a transition at peak velocity
+     * (the fastest point of an element’s movement) and ends at rest.
+     */
+    public static final TimeInterpolator DECELERATE_EASING = new LinearOutSlowInInterpolator();
+    /**
+     * Elements exiting a screen use acceleration easing, where they start at rest and end at peak velocity.
+     */
+    public static final TimeInterpolator ACCELERATE_EASING = new FastOutLinearInInterpolator();
 
     public static ObjectAnimator getAlphaAnimator(View target, long duration, TimeInterpolator interpolator, float... values) {
         return getAnimator(target, View.ALPHA.getName(), duration, interpolator, values);

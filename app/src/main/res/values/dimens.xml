@@ -15,4 +15,19 @@
     <dimen name="common_normal_text_size">14dp</dimen>
     <dimen name="common_large_text_size">16dp</dimen>
     <dimen name="common_xlarge_text_size">18dp</dimen>
+
+    <!-- icon animation duration by google recommended-->
+    <integer name="common_simple_anim_time">100</integer>
+    <integer name="common_average_anim_time">200</integer>
+    <integer name="common_complex_anim_time">500</integer>
+
+    <!-- 隐藏消失类型的动画耗时一般比出现类型动画的耗时短50ms-->
+    <!-- https://material.io/design/motion/speed.html#easing-->
+    <!-- 移动半个屏幕左右的展开收缩动画适合用medium耗时，比如Bottom Sheet弹出收缩-->
+    <integer name="common_collapse_medium_anim_time">200</integer>
+    <integer name="common_expand_medium_anim_time">250</integer>
+    <!-- 移动接近或者整个屏幕的动画适合用large耗时, 比如recycler item点击进入下一页-->
+    <integer name="common_collapse_large_anim_time">250</integer>
+    <integer name="common_expand_large_anim_time">300</integer>
+
 </resources>
