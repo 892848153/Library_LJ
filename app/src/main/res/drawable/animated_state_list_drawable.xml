@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- provide a different drawable for each state-->
+    <item android:id="@+id/pressed" android:drawable="@drawable/img0001"
+        android:state_pressed="true"/>
+    <item android:id="@+id/focused" android:drawable="@drawable/img0002"
+        android:state_focused="true"/>
+    <item android:id="@+id/default_"
+        android:drawable="@drawable/img0003"/>
+
+    <!-- specify a transition 状态切换时的过渡动画 -->
+    <transition android:fromId="@+id/default_" android:toId="@+id/pressed">
+        <animation-list>
+            <item android:duration="500" android:drawable="@drawable/img0004"/>
+            <item android:duration="500" android:drawable="@drawable/img0005"/>
+
+            <!-- 最终会停留在最后一帧-->
+            <item android:duration="500" android:drawable="@drawable/img0001"/>
+        </animation-list>
+    </transition>
+</animated-selector>
