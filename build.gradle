@@ -13,7 +13,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.5.3'
-        classpath 'io.realm:realm-gradle-plugin:5.1.0'
+        classpath "io.realm:realm-gradle-plugin:6.0.2"
         classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.12'
         classpath 'com.tencent.bugly:symtabfileuploader:latest.release'
 //        // tinkersupport插件, 其中lastest.release指拉取最新版本，也可以指定明确版本号，例如1.0.4

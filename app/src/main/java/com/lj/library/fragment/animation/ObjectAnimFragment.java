@@ -15,6 +15,7 @@ import com.lj.library.fragment.animation.objanim.AnimatorSetFragment;
 import com.lj.library.fragment.animation.objanim.LayoutTransitionFragment;
 import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
+import com.lj.library.fragment.animation.objanim.StateListAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.TypeEvaluateFragment;
 import com.lj.library.fragment.animation.objanim.ValueAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
@@ -54,6 +55,7 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         menuList.add(new Menu(AnimatorSetFragment.class, "AnimatorSet Demo"));
         menuList.add(new Menu(AnimatorInflaterFragment.class, "AnimatorInflater Demo"));
         menuList.add(new Menu(LayoutTransitionFragment.class, "LayoutTransition Demo"));
+        menuList.add(new Menu(StateListAnimatorFragment.class, "StateListAnimator Demo"));
         menuList.add(new Menu(PropertyValueHolderFragment.class, "PropertyValueHolder Demo"));
         menuList.add(new Menu(TypeEvaluateFragment.class, "TypeEvaluate Demo"));
         menuList.add(new Menu(ViewAnimFragment.class, "ViewAnim Demo"));

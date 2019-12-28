@@ -31,10 +31,10 @@
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.TabHostActivity"/>
         <activity android:name=".activity.WebViewActivity"/>
-        <activity android:name=".activity.MvvmArchitectureActivity1"/>
         <activity android:name=".activity.X5WebViewActivity"
                   android:configChanges="orientation|screenSize|keyboardHidden"
                   android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".activity.MvvmArchitectureActivity1"/>
         <activity
             android:name="com.tencent.smtt.sdk.VideoActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"

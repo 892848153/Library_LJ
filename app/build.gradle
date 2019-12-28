@@ -4,10 +4,10 @@ if(isBuildModule.toBoolean()) {
 } else {
     apply plugin: 'com.android.library'
 }
-apply plugin: 'realm-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'realm-android'
 apply plugin: 'AndResGuard'
 apply plugin: 'bugly'
 apply plugin: 'packer'
@@ -76,13 +76,19 @@ android {
         exclude 'META-INF/NOTICE.txt'
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
     // 解决lint检查出错误导致打包失败的问题
     lintOptions {
         abortOnError false
     }
+//    viewBinding {
+//        enabled = true
+//    }
     // 启动DataBinding
     dataBinding {
         enabled = true
@@ -176,8 +182,8 @@ dependencies {
 
     // 渠道打包工具
     implementation 'com.mcxiaoke.gradle:packer-helper:1.0.9'
-    implementation "androidx.core:core-ktx:+"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 }
 
 // AndResGuard 配置开始----------------------------------
