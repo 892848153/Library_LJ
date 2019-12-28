@@ -1,6 +1,6 @@
 package com.lj.library.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Base64;
 
 import java.security.MessageDigest;

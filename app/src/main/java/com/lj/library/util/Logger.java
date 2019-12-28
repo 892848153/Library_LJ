@@ -1,7 +1,7 @@
 package com.lj.library.util;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.orhanobut.logger.LogAdapter;
 import com.orhanobut.logger.Printer;

@@ -5,6 +5,9 @@ if(isBuildModule.toBoolean()) {
     apply plugin: 'com.android.library'
 }
 apply plugin: 'realm-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'AndResGuard'
 apply plugin: 'bugly'
 apply plugin: 'packer'
@@ -97,7 +100,7 @@ configurations.all {
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             if (!requested.name.startsWith("multidex") && !requested.name.startsWith("constraint")) {
-                details.useVersion "${APPCOMPAT_VERSION}"
+//                details.useVersion "${APPCOMPAT_VERSION}"
             }
         }
     }
@@ -110,18 +113,18 @@ dependencies {
     implementation 'com.orhanobut:logger:2.2.0'
 
     // butterknife
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    kapt 'com.jakewharton:butterknife-compiler:10.2.1'
 
     // okhttp + retrofit + rxandroid
     // rxandroid1
     implementation 'io.reactivex:rxandroid:1.2.1'
     // rxandroid2
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
 // Because RxAndroid releases are few and far between, it is recommended you also
 // explicitly depend on RxJava's latest version for bug fixes and new features.
 // (see https://github.com/ReactiveX/RxJava/releases for latest 2.x.x version)
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.13'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
     implementation "com.squareup.okhttp3:okhttp:${OKHTTP_VERSION}"
     implementation "com.squareup.okhttp3:logging-interceptor:${OKHTTP_VERSION}"
     implementation "com.squareup.retrofit2:retrofit:${RETROFIT_VERSION}"
@@ -134,23 +137,23 @@ dependencies {
     testImplementation "com.squareup.leakcanary:leakcanary-android-no-op:${LEAK_CANARY_VERSION}"
 
     // support 兼容包
-    implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    implementation "com.android.support:design:${APPCOMPAT_VERSION}"
-    implementation "com.android.support:support-v4:${APPCOMPAT_VERSION}"
-    implementation "com.android.support:appcompat-v7:${APPCOMPAT_VERSION}"
-    implementation "com.android.support:recyclerview-v7:${APPCOMPAT_VERSION}"
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.annotation:annotation:1.1.0'
 
     // dagger2
-    implementation 'com.google.dagger:dagger:2.8'
+    implementation 'com.google.dagger:dagger:2.16'
     // android-apt插件-引入dagger-compiler包, 不会编译到最后的源码中
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.8'
+    kapt 'com.google.dagger:dagger-compiler:2.16'
 
     // 单元测试-引入junit包, 会自动引入hamcrest包
     testImplementation 'junit:junit:4.12'
 
     // Mock方式的包mockito
-    testImplementation 'org.mockito:mockito-core:2.0.76-beta'
+    testImplementation 'org.mockito:mockito-core:2.19.0'
 
     // google的protobuf运行时环境
     implementation 'com.google.protobuf:protobuf-java:3.4.0'
@@ -166,13 +169,15 @@ dependencies {
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 
     // bugly升级SDK已经集成crash上报功能
-    implementation 'com.tencent.bugly:crashreport_upgrade:1.3.5'
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
 
     // 其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
-    implementation 'com.tencent.bugly:nativecrashreport:3.3.1'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
 
     // 渠道打包工具
     implementation 'com.mcxiaoke.gradle:packer-helper:1.0.9'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 // AndResGuard 配置开始----------------------------------
@@ -234,5 +239,8 @@ andResGuard {
         artifact = 'com.tencent.mm:SevenZip:1.2.12'
         //path = "/usr/local/bin/7za"
     }
+}
+repositories {
+    mavenCentral()
 }
 // AndResGuard 配置结束---------------------------------

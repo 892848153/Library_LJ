@@ -1,11 +1,11 @@
 package com.lj.library.activity;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
+import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.core.view.GravityCompat;
 import android.view.MenuItem;
 
 import com.lj.library.R;
@@ -13,7 +13,6 @@ import com.lj.library.activity.base.BaseActivity4;
 import com.lj.library.activity.base.BaseViewModel;
 import com.lj.library.databinding.ActivityMainBinding;
 import com.lj.library.fragment.MainFragment;
-import com.lj.library.util.StatusBarUtils;
 
 public class MainActivity extends BaseActivity4<ActivityMainBinding, BaseViewModel> implements NavigationView.OnNavigationItemSelectedListener{
 

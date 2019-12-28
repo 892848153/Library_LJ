@@ -1,6 +1,8 @@
 package com.lj.library.util;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +89,7 @@ public class RxBus {
      * 移除tag下具体的观察者.<p/>
      *
      * 不需要调用{@link Subscription#unsubscribe()}也不会造成内存泄漏，
-     * 先看持有关系: {@link Observable}-> {@link rx.Subscriber} ->{@link android.app.Activity}/{@link android.support.v4.app.Fragment}
+     * 先看持有关系: {@link Observable}-> {@link rx.Subscriber} ->{@link android.app.Activity}/{@link Fragment}
      * 一旦我们的RxBus不再持有{@link Observable}，由于{@link Observable}的{@link rx.Observable.OnSubscribe}
      * 中不会有耗时的工作，所以{@link Observable}可以很快被回收
      *

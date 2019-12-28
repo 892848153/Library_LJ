@@ -58,7 +58,7 @@ public class LayoutTransitionFragment extends BaseFragment implements CompoundBu
         mGridLayout.setColumnCount(5);
         // 添加到布局中
         mViewGroup.addView(mGridLayout);
-        // 默认动画全部开启
+        // 除了LayoutTransition.CHANGING，默认LayoutTransition中CHANGE_APPEARING,CHANGE_DISAPPEARING, APPEARING, DISAPPEARING的动画都是开启的
         mTransition = new LayoutTransition();
         mTransition.setAnimator(LayoutTransition.APPEARING, (mAppear
                 .isChecked() ? ObjectAnimator.ofFloat(null, "scaleX", 0, 1) : null));

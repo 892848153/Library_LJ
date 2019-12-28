@@ -11,7 +11,7 @@ import java.util.Set;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.support.v4.util.LruCache;
+import androidx.collection.LruCache;
 
 import com.lj.library.util.BitmapUtils;
 import com.lj.library.util.LogUtil;

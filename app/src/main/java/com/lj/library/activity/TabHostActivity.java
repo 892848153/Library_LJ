@@ -1,8 +1,8 @@
 package com.lj.library.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTabHost;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTabHost;
 import android.view.View;
 import android.widget.TextView;
 

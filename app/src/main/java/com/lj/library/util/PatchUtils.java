@@ -1,7 +1,7 @@
 package com.lj.library.util;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * 类说明： 	APK Patch工具类.

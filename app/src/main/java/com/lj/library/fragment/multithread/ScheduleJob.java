@@ -1,6 +1,6 @@
 package com.lj.library.fragment.multithread;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import java.util.Calendar;
 import java.util.concurrent.DelayQueue;
@@ -9,7 +9,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import bolts.Task;
 
 /**
  * 用DelayQueue实现ScheduleThreadPool的功能.
@@ -73,7 +72,7 @@ public class ScheduleJob {
         mDelayQueue.put(k);
     }
 
-    public boolean endTask(Task<Runnable> task){
+    public boolean endTask(DelayedElement<Runnable> task){
         return mDelayQueue.remove(task);
     }
 

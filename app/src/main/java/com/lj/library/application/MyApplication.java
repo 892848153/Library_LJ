@@ -5,8 +5,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import android.support.annotation.Nullable;
-import android.support.multidex.MultiDex;
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;

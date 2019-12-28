@@ -3,8 +3,8 @@ package com.lj.library.util;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
-import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import android.text.TextUtils;
 
 import com.lj.library.constants.Constants;
