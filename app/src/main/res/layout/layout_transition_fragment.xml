@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingTop="48dp"
     android:animateLayoutChanges="true">
 <!--    android:layoutAnimation="@anim/alpha_demo"   animate the group's children after the first layout.-->
     <!-- android:animateLayoutChanges="true"  会调用ViewGroup的setLayoutTransition(new LayoutTransition()) -->
@@ -42,5 +43,12 @@
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="CHANGE_DISAPPEARING "/>
+
+    <Button
+        android:id="@+id/changing_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="triggerChangingTransition"
+        android:text="CHANGING"/>
 
 </LinearLayout>
