@@ -1,4 +1,4 @@
-package com.lj.library.fragment.animation.objanim;
+package com.lj.library.fragment.animation;
 
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -15,7 +14,6 @@ import android.widget.GridLayout;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BaseFragment;
-import com.lj.library.util.AnimatorUtils;
 import com.lj.library.util.LogUtil;
 
 import butterknife.BindView;

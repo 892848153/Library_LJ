@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+    android:id="@+id/recycler_view"
+    android:layoutAnimation="@anim/layout_animation"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <!--    android:layoutAnimation="@anim/layout_animation"   animate the group's children after the first layout.-->
+
+    <!-- 仅在RecyclerView第一次加载数据时，有效果。若后续调用适配器调用.notifyDataSetChanged()，
+         动画效果不再呈现。即使调用getLayoutAnimation()获取ListView的LayoutAnimationController对象简称lac，
+         然后lac调用start()方法重新执行动画效果，动画效果依然不会呈现，假如想每次数据更新时，都呈现此效果，
+         只能够在每次调用notifyDataSetChanged()之前，重新设定LayoutAnimationController，
+         即每次都进行代码定义LayoutAnimation,此效果才会出现-->
+
+</androidx.recyclerview.widget.RecyclerView>

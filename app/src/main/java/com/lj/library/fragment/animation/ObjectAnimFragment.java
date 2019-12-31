@@ -12,7 +12,6 @@ import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorInflaterFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorSetFragment;
-import com.lj.library.fragment.animation.objanim.LayoutTransitionFragment;
 import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
 import com.lj.library.fragment.animation.objanim.StateListAnimatorFragment;

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layoutAnimation xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animation="@anim/slide_bottom_in"
+    android:animationOrder="normal"
+    android:delay="30%"
+    android:interpolator="@android:anim/linear_interpolator">
+
+    <!--animationOrder// normal:按照Item的顺序， reverse:按照item的倒序, random:随机 -->
+    <!-- delay  子元素开始动画的时间延迟, 比如子元素入场动画的时间周期为300ms，那么  0.5 / 50% 就代表每个子元素都需要延迟150ms才能播放入场动画。
+         总体来说，第一个子元素延迟150ms开始播放入场动画，第二个子元素延迟300ms开始播放入场动画，依次类推-->
+</layoutAnimation>
