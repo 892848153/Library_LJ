@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/my_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:text="Reveal animations provide users visual continuity when you show or hide a group of UI elements. The ViewAnimationUtils.createCircularReveal() method enables you to animate a clipping circle to reveal or hide a view. This animation is provided in the ViewAnimationUtils class, which is available for Android 5.0 (API level 21) and higher.\n
+    The ViewAnimationUtils.createCircularReveal() animation takes five parameters. The first parameter is the view that you want to either hide or show on screen. The next two parameters are the x and y coordinates for the center of the clipping circle. Typically this will be the center of the view, but you can also use the point the user touched so the animation starts where they selected. The fourth parameter is the starting radius of the clipping circle.
+
+In the above example, the initial radius is set to 0 so the view to be displayed will be hidden by the circle. The last parameter is the final radius of the circle. When displaying a view make sure the final radius is larger than the view itself so the view can be fully revealed before the animation finishes.\n
+In this case the initial radius of the clipping circle is set to be as large as the view so the view will be visible before the animation starts. The final radius is set to 0 so the view will be hidden when the animation finishes. It's important to add a listener to the animation so the view's visibility can be set to INVISIBLE when the animation completes."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_show"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Show View With circular reveal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/my_view" />
+
+    <Button
+        android:id="@+id/btn_hide"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Hide View With circular reveal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_show" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

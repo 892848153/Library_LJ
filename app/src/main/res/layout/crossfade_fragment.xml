@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView style="?android:textAppearanceMedium"
+            android:lineSpacingMultiplier="1.2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Crossfade animations (also known as dissolve) gradually fade out one View or ViewGroup while simultaneously fading in another. This animation is useful for situations where you want to switch content or views in your app. The crossfade animation shown here uses ViewPropertyAnimator, which is available for Android 3.1 (API level 12) and higher.
+
+Here's an example of a crossfade from a progress indicator to some text content.
+First, you need to create the two views that you want to crossfade. The following example creates a progress indicator and a scrollable text view:\n
+Set up the crossfade animation
+To set up the crossfade animation:
+
+Create member variables for the views that you want to crossfade. You need these references later when modifying the views during the animation.
+For the view that is being faded in, set its visibility to GONE. This prevents the view from taking up layout space and omits it from layout calculations, speeding up processing.
+Cache the config_shortAnimTime system property in a member variable. This property defines a standard 'short' duration for the animation. This duration is ideal for subtle animations or animations that occur very frequently. config_longAnimTime and config_mediumAnimTime are also available if you wish to use them.
+Here's an example using the layout from the previous code snippet as the activity content view: \n
+Crossfade the views
+Now that the views are properly set up, crossfade them by doing the following:
+
+For the view that is fading in, set the alpha value to 0 and the visibility to VISIBLE. (Remember that it was initially set to GONE.) This makes the view visible but completely transparent.
+For the view that is fading in, animate its alpha value from 0 to 1. For the view that is fading out, animate the alpha value from 1 to 0.
+Using onAnimationEnd() in an Animator.AnimatorListener, set the visibility of the view that was fading out to GONE. Even though the alpha value is 0, setting the view's visibility to GONE prevents the view from taking up layout space and omits it from layout calculations, speeding up processing."
+            android:padding="16dp" />
+
+    </ScrollView>
+
+    <ProgressBar android:id="@+id/loading_spinner"
+        style="?android:progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+</FrameLayout>
