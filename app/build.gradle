@@ -28,6 +28,7 @@ android {
         versionCode rootProject.ext.VERSION_CODE
         versionName rootProject.ext.VERSION_NAME
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true // 使用support library加载vector drawable
     }
     sourceSets {
         main {

@@ -53,7 +53,6 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         menuList.add(new Menu(ValueAnimatorFragment.class, "ValueAnimator Demo"));
         menuList.add(new Menu(AnimatorSetFragment.class, "AnimatorSet Demo"));
         menuList.add(new Menu(AnimatorInflaterFragment.class, "AnimatorInflater Demo"));
-        menuList.add(new Menu(LayoutTransitionFragment.class, "LayoutTransition Demo"));
         menuList.add(new Menu(StateListAnimatorFragment.class, "StateListAnimator Demo"));
         menuList.add(new Menu(PropertyValueHolderFragment.class, "PropertyValueHolder Demo"));
         menuList.add(new Menu(TypeEvaluateFragment.class, "TypeEvaluate Demo"));
