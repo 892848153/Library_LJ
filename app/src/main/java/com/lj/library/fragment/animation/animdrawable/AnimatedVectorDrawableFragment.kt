@@ -16,7 +16,7 @@ import com.lj.library.fragment.BaseFragment
  *    没有引入Support Library则就是使用此方案
  * 2. 使用Support Library中的VectorDrawableCompat, AnimatedVectorDrawableCompat类使低版本的系统也能使用矢量图
  *    在build.gradle文件中加入
- *    <p>
+ *    <pre>
  *        android {
              defaultConfig {
                 vectorDrawables.useSupportLibrary = true
@@ -26,7 +26,7 @@ import com.lj.library.fragment.BaseFragment
            dependencies {
               compile 'com.android.support:appcompat-v7:23.2.0'
             }
- *        </p>
+ *     </pre>
  *
  */
 class AnimatedVectorDrawableFragment: BaseFragment() {

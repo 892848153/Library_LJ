@@ -13,6 +13,7 @@ import com.lj.library.fragment.BaseFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorInflaterFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorSetFragment;
 import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
+import com.lj.library.fragment.animation.objanim.PathInterpolatorFragment;
 import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
 import com.lj.library.fragment.animation.objanim.StateListAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.TypeEvaluateFragment;
@@ -57,6 +58,7 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         menuList.add(new Menu(PropertyValueHolderFragment.class, "PropertyValueHolder Demo"));
         menuList.add(new Menu(TypeEvaluateFragment.class, "TypeEvaluate Demo"));
         menuList.add(new Menu(ViewAnimFragment.class, "ViewAnim Demo"));
+        menuList.add(new Menu(PathInterpolatorFragment.class, "PathInterpolator Demo"));
         return menuList;
     }
 
