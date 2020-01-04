@@ -1,4 +1,4 @@
-package com.lj.library.fragment.animation
+package com.lj.library.fragment.animation.revealhide
 
 import android.os.Bundle
 import android.view.View
@@ -11,10 +11,6 @@ import com.lj.library.R
 import com.lj.library.adapter.MenuAdapter
 import com.lj.library.bean.Menu
 import com.lj.library.fragment.BaseFragment
-import com.lj.library.fragment.animation.animdrawable.AnimatedVectorDrawableFragment
-import com.lj.library.fragment.animation.revealhide.CardFlipFragment
-import com.lj.library.fragment.animation.revealhide.CircularRevealFragment
-import com.lj.library.fragment.animation.revealhide.CrossfadeFragment
 import java.util.ArrayList
 
 /**

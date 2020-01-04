@@ -12,6 +12,7 @@ import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorInflaterFragment;
 import com.lj.library.fragment.animation.objanim.AnimatorSetFragment;
+import com.lj.library.fragment.animation.objanim.DynamicAnimationFragment;
 import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.PathInterpolatorFragment;
 import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
@@ -19,6 +20,7 @@ import com.lj.library.fragment.animation.objanim.StateListAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.TypeEvaluateFragment;
 import com.lj.library.fragment.animation.objanim.ValueAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
+import com.lj.library.fragment.animation.revealhide.RevealOrHideViewFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +60,9 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         menuList.add(new Menu(PropertyValueHolderFragment.class, "PropertyValueHolder Demo"));
         menuList.add(new Menu(TypeEvaluateFragment.class, "TypeEvaluate Demo"));
         menuList.add(new Menu(ViewAnimFragment.class, "ViewAnim Demo"));
+        menuList.add(new Menu(RevealOrHideViewFragment.class, "Reveal Or Hide View Demo"));
         menuList.add(new Menu(PathInterpolatorFragment.class, "PathInterpolator Demo"));
+        menuList.add(new Menu(DynamicAnimationFragment.class, "DynamicAnimation Demo"));
         return menuList;
     }
 

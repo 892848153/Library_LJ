@@ -10,6 +10,7 @@ import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.fragment.animation.revealhide.RevealOrHideViewFragment;
 import com.lj.library.util.LogUtil;
 
 import java.util.ArrayList;
@@ -48,7 +49,6 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
         menuList.add(new Menu(LayoutAnimationFragment.class, "LayoutAnimation Demo"));
         menuList.add(new Menu(LayoutTransitionFragment.class, "LayoutTransition Demo"));
         menuList.add(new Menu(AnimatedDrawableFragment.class, "Animated Drawable Demo"));
-        menuList.add(new Menu(RevealOrHideViewFragment.class, "Reveal Or Hide View Demo"));
         return menuList;
     }
 

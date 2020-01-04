@@ -185,6 +185,8 @@ dependencies {
     implementation 'com.mcxiaoke.gradle:packer-helper:1.0.9'
     implementation "androidx.core:core-ktx:1.1.0"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // FlingAnimation support library
+    implementation "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
 }
 
 // AndResGuard 配置开始----------------------------------
