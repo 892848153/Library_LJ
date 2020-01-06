@@ -17,6 +17,7 @@ import com.lj.library.fragment.animation.objanim.ObjectAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.PathInterpolatorFragment;
 import com.lj.library.fragment.animation.objanim.PropertyValueHolderFragment;
 import com.lj.library.fragment.animation.objanim.StateListAnimatorFragment;
+import com.lj.library.fragment.animation.objanim.TouchToZoomAnimationFragment;
 import com.lj.library.fragment.animation.objanim.TypeEvaluateFragment;
 import com.lj.library.fragment.animation.objanim.ValueAnimatorFragment;
 import com.lj.library.fragment.animation.objanim.ViewAnimFragment;
@@ -63,6 +64,7 @@ public class ObjectAnimFragment extends BaseFragment implements AdapterView.OnIt
         menuList.add(new Menu(RevealOrHideViewFragment.class, "Reveal Or Hide View Demo"));
         menuList.add(new Menu(PathInterpolatorFragment.class, "PathInterpolator Demo"));
         menuList.add(new Menu(DynamicAnimationFragment.class, "DynamicAnimation Demo"));
+        menuList.add(new Menu(TouchToZoomAnimationFragment.class, "TouchToZoomAnimation Demo"));
         return menuList;
     }
 
