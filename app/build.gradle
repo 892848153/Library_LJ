@@ -46,13 +46,21 @@ android {
         releaseConfig {
             keyAlias 'lj'
             keyPassword '2021516'
-            storeFile file('/Users/liujie_gyh/Documents/ljkeystore')
+            storeFile file('..\\lj.jks')
             storePassword '2021516'
-            v2SigningEnabled false
+            v1SigningEnabled true
+            v2SigningEnabled true
         }
     }
     buildTypes {
         release {
+            minifyEnabled true //启动proguard
+            shrinkResources true // 编译阶段去除无用的资源
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
+        }
+
+        debug {
             minifyEnabled true //启动proguard
             shrinkResources true // 编译阶段去除无用的资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

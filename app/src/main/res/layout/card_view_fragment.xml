@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="app:cardUseCompatPadding=false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cv_1"
+            app:layout_constraintEnd_toEndOf="@+id/cv_1"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_1"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="false"
+            app:layout_constraintEnd_toStartOf="@+id/cv_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_1">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/jugg" />
+
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cv_1"
+            app:layout_constraintBottom_toBottomOf="@+id/cv_1"/>
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="app:cardUseCompatPadding=true"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/cv_2"
+            app:layout_constraintEnd_toEndOf="@+id/cv_2"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_2"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="10dp"
+            app:cardUseCompatPadding="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cv_1"
+            app:layout_constraintTop_toBottomOf="@+id/tv_2">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/jugg" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/tv_UseCompatPadding"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="在Android 5.0及以下的系统中，CardView会添加一个额外的padding来绘制阴影，但是在5.0以上的系统中是没有这个padding的，是直接绘制阴影。所以设置这个属性仅仅是对5.0以上的CardView有作用。
+\n设置为false的时CardView不会专门去添加padding来绘制阴影（5.0以上系统）。
+\n设置为true时，5.0以上的CardView会和5.0以下的保持一致，添加padding后绘制阴影。"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_2" />
+
+        <View
+            android:id="@+id/v_divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_UseCompatPadding"/>
+
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="app:cardPreventCornerOverlap=false"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider"
+            app:layout_constraintStart_toStartOf="@+id/cv_3"
+            app:layout_constraintEnd_toEndOf="@+id/cv_3"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_3"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="10dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintEnd_toStartOf="@+id/cv_4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_3">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/jugg" />
+
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/cv_3"
+            app:layout_constraintBottom_toBottomOf="@+id/cv_3"/>
+
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="app:cardPreventCornerOverlap=true"
+            app:layout_constraintTop_toBottomOf="@+id/v_divider"
+            app:layout_constraintStart_toStartOf="@+id/cv_4"
+            app:layout_constraintEnd_toEndOf="@+id/cv_4"/>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_4"
+            android:layout_width="0dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            app:cardBackgroundColor="@color/colorPrimary"
+            app:cardCornerRadius="6dp"
+            app:cardElevation="10dp"
+            app:cardPreventCornerOverlap="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cv_3"
+            app:layout_constraintTop_toBottomOf="@+id/tv_4">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:src="@drawable/jugg" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="在5.0以下，CardView不会裁剪卡片的边界来获得圆角（根据测试情况，我的理解是不裁剪content来获得圆角），同时，CardView会给卡片内容添加一个padding，来让内容不和圆角重叠。可以设置app:cardPreventCornerOverlap属性来选择是否添加这个padding。
+\n所以这个属性只在Android5.0以下起作用。
+\n所以设置为true，也就是添加padding，使content不与圆角重叠。
+\n设置为false，不添加padding，content与圆角重叠，圆角被覆盖。"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cv_3" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

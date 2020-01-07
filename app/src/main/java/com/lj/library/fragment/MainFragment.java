@@ -19,6 +19,8 @@ import com.lj.library.fragment.architecture.ArchitectureFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
 import com.lj.library.fragment.http.HttpDemoFragment;
+import com.lj.library.fragment.materialdesign.CardViewFragment;
+import com.lj.library.fragment.materialdesign.MaterialDesignFragment;
 import com.lj.library.fragment.permissionmanage.PermissionTestFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.fragment.rx.RxJavaFragment;
@@ -63,6 +65,7 @@ public class MainFragment extends BaseFragment {
         List<Menu> menuList = new ArrayList<>();
         menuList.add(new Menu(BannerFragment.class, "Banner Demo"));
         menuList.add(new Menu(AnimationFragment.class, "Animation Demo"));
+        menuList.add(new Menu(MaterialDesignFragment.class, "MaterialDesign Demo"));
         menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
         menuList.add(new Menu(RenderPerformFragment.class, "Render Performance"));
         menuList.add(new Menu(HttpDemoFragment.class, "Http Demo"));

@@ -1,89 +1,36 @@
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/libs/httpcore-4.3.3.jar(**.class)
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/libs/httpmime-4.3.6.jar(**.class)
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/libs/tbs_sdk_thirdapp_v2.2.0.1056_36542_sharewithdownload_withoutGame_obfs_20160816_145431.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/2a648d8994f5cb3811a8063d9d3514a55a2aaba0/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.parse.bolts/bolts-tasks/1.4.0/d85884acf6810a3bbbecb587f239005cbc846dc4/bolts-tasks-1.4.0.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/d2ddd32a707025d07b9a89747b7579d0f542c221/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/5e48a430d96de563b3e80a28bf7484407f85058d/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.6.1/b9d63507329a7178e026fc334f87587ee5070ac5/gson-2.6.1.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.nineoldandroids/library/2.4.0/e9b63380f3a242dbdbf103a2355ad7e43bad17cb/library-2.4.0.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/adapter-rxjava/2.0.2/a60c039ba54c73d1133b72178e1b04133c73d13d/adapter-rxjava-2.0.2.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/8a17b99cc3dca4e6483099f6d08dc0096539842c/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/9185daeb2b5ec80ae81ae11a67735366fcbd5ca2/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/8725505466f008aec3e4f0fe6093aa1c43ba5b9b/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/f53f885dadda38c84609d96f20f00dc869863014/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/io.reactivex/rxjava/1.1.4/3cc424c6eda381bf4aee40dc3ccdecc27b2106aa/rxjava-1.1.4.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/cd2ace41c7d1b084c715a9f007682c74da54546e/output/jars/classes.jar(**.class)
--injars '/Applications/Android Studio 3.app/Contents/gradle/m2repository/com/android/databinding/baseLibrary/2.3.0/baseLibrary-2.3.0.jar'(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/io.realm/realm-annotations/3.1.2/16025e7ab07f180a0068e2ea42db5f5f77462051/realm-annotations-3.1.2.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.4.1/381fc1096ba65040d8e80ea43b2e1d9bad02345e/logging-interceptor-3.4.1.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.mcxiaoke.gradle/packer-helper/1.0.9/8536609c21b7cc667604adcab2a1c3ce1855d9e3/packer-helper-1.0.9.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/90c6e629292cfb8e16de12dd33ed082b064c6f01/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/63334f0fa36fa7fcad2916db8594831e92f7992e/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/9376a4be542fa40c0d36e856e081b552b90f512f/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/aaedc39d0be3c7d4e9d973c23f668aa40f19484b/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/881911f5ac0101b4f66359aac41b98a388db17e8/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/c87b9febd4feef2efc9f546bdca685769d744350/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/commons-cli/commons-cli/1.2/2bf96b7aa8b611c177d329452af1dc933e14501c/commons-cli-1.2.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.0.2/43eeae0b9fb087bb3194ba59ab63a38a32fbf3e/retrofit-2.0.2.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/6a86d6c6869cd0fc159e0c540b83aa32a3f1df80/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/Documents/work/application/android-sdk-macosx/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/javax.inject/javax.inject/1/6975da39a7040257bd51d21a231b76c915872d38/javax.inject-1.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/4a7f98cebc106bbb0081ad98f454d4807cb64dcd/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/c0515edebc149ee98bb56d9c3e0e5c4e144684c3/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/c08acdc4cf50b4b1dc9f0b50dd0f4894af9897ac/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/63e84f5cd417eba9265162a794983e8884ab08de/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/568810aaf8a9d87725698a53b6628340dc3efa31/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.google.protobuf/protobuf-java/3.0.0-beta-3/ed8c2f9a63cfa770292f8173fd0172bdaa014fe3/protobuf-java-3.0.0-beta-3.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/aa64ca67996cc197ff06d13600868545e4ab9aab/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/d32cb2b60b06f279794b478237c0c44af9cf8e8e/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.wire/wire-runtime/2.2.0/edcc5f389a5ffc0aa6fdcd73480e563affdbd24c/wire-runtime-2.2.0.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/6896010e686e583b7c37dad5a2fb7a3422f5a7fd/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.google.dagger/dagger/2.5/571f4e0451db64a7b41dbeb5f2503986fe5acdb4/dagger-2.5.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/c5c06288ca5b633375943c740a4283d3c97edc3a/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/8bf3dab6c3fe804f035e2ee7b4002059fe68640b/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.jakewharton/butterknife/7.0.1/d5d13ea991eab0252e3710e5df3d6a9d4b21d461/butterknife-7.0.1.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.9.0/f824591a0016efbaeddb8300bee54832a1398cfa/okio-1.9.0.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/fc9a99ddb97e704236d243fda61a0f696feabf7e/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-gson/2.0.2/f8d87f15b94b8d74e7ccf61d7eedb558811cdb30/converter-gson-2.0.2.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/ad086702ad9ccf9bfcc64a01fd3f28ad2d2ee05b/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.4.2/ccde00f7ccc77af5a6d5752e2cb21f6d8998289f/okhttp-3.4.2.jar(**.class)
--injars /Users/liujie_gyh/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/2.0.1/516c03b21d50a644d538de0f0369c620989cd8f0/jsr305-2.0.1.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/4438b3bed1cc52c16d8b4e1a8e6e1c4fccd8c038/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/f86ce1f101e3cdca5038b9d6663f71f9b6fa1a90/output/jars/classes.jar(**.class)
--injars /Users/liujie_gyh/.android/build-cache/5e48a430d96de563b3e80a28bf7484407f85058d/output/data-binding(**.class)
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/intermediates/transforms/mergeJavaRes/release/jars/2/1f/main.jar(!**.class)
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/intermediates/transforms/mergeJavaRes/release/folders/2/1f/main(!**.class)
--injars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/intermediates/transforms/RealmTransformer/release/folders/1/1/realm(**.class)
--outjars /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/intermediates/transforms/proguard/release/jars/3/1f/main.jar
+# This is a configuration file for ProGuard.
+# http://proguard.sourceforge.net/index.html#manual/usage.html
+#
+# Starting with version 2.2 of the Android plugin for Gradle, this file is distributed together with
+# the plugin and unpacked at build-time. The files in $ANDROID_HOME are no longer maintained and
+# will be ignored by new version of the Android plugin for Gradle.
 
--libraryjars /Users/liujie_gyh/Documents/work/application/android-sdk-macosx/platforms/android-25/android.jar
--libraryjars /Users/liujie_gyh/Documents/work/application/android-sdk-macosx/platforms/android-25/optional/org.apache.http.legacy.jar
-
--forceprocessing
--dontshrink
--printusage /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/usage.txt
+# Optimization is turned off by default. Dex does not like code run
+# through the ProGuard optimize steps (and performs some
+# of these optimizations on its own).
+# Note that if you want to enable optimization, you cannot just
+# include optimization flags in your own project configuration file;
+# instead you will need to point to the
+# "proguard-android-optimize.txt" file instead of this one from your
+# project.properties file.
 -dontoptimize
--printmapping /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/mapping.txt
--dontusemixedcaseclassnames
--keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod,*Annotation*,*Annotation*
--dontpreverify
--verbose
--dontnote com.android.vending.licensing.ILicensingService,com.google.vending.licensing.ILicensingService,com.google.android.vending.licensing.ILicensingService,android.support.**,android.net.http.**,org.apache.http.**,org.apache.commons.codec.**,rx.Observable,io.realm.internal.SyncObjectServerFacade
--dontwarn android.support.**,android.support.**,com.tencent.bugly.**,***,javax.**,io.realm.**,com.facebook.stetho.**
--printconfiguration /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/proguardConfig.txt
--dump /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/dump.txt
--printseeds /Users/liujie_gyh/Documents/work/program/github/Library_LJ/app/build/outputs/mapping/release/seeds.txt
 
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+
+# Preserve some attributes that may be required for reflection.
+-keepattributes *Annotation*,Signature,InnerClasses,EnclosingMethod
 
 -keep public class com.google.vending.licensing.ILicensingService
-
 -keep public class com.android.vending.licensing.ILicensingService
-
 -keep public class com.google.android.vending.licensing.ILicensingService
+-dontnote com.android.vending.licensing.ILicensingService
+-dontnote com.google.vending.licensing.ILicensingService
+-dontnote com.google.android.vending.licensing.ILicensingService
 
 # For native methods, see http://proguard.sourceforge.net/manual/examples.html#native
--keepclasseswithmembers,allowshrinking class * {
+-keepclasseswithmembernames class * {
     native <methods>;
 }
 
@@ -99,12 +46,12 @@
 }
 
 # For enumeration classes, see http://proguard.sourceforge.net/manual/examples.html#enumerations
--keepclassmembers enum  * {
+-keepclassmembers enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
 
--keepclassmembers class * extends android.os.Parcelable {
+-keepclassmembers class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
 
@@ -114,522 +61,617 @@
 
 # Preserve annotated Javascript interface methods.
 -keepclassmembers class * {
-    @android.webkit.JavascriptInterface
-    <methods>;
+    @android.webkit.JavascriptInterface <methods>;
 }
+
+# The support libraries contains references to newer platform versions.
+# Don't warn about those in case this app is linking against an older
+# platform version. We know about them, and they are safe.
+-dontnote android.support.**
+-dontnote androidx.**
+-dontwarn android.support.**
+-dontwarn androidx.**
+
+# This class is deprecated, but remains for backward compatibility.
+-dontwarn android.util.FloatMath
 
 # Understand the @Keep support annotation.
 -keep class android.support.annotation.Keep
+-keep class androidx.annotation.Keep
 
--keep @android.support.annotation.Keep class * {
-    <fields>;
-    <methods>;
+-keep @android.support.annotation.Keep class * {*;}
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <methods>;
 }
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep
-    <methods>;
+    @androidx.annotation.Keep <methods>;
 }
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep
-    <fields>;
+    @android.support.annotation.Keep <fields>;
 }
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep
-    <init>(...);
+    @androidx.annotation.Keep <fields>;
 }
+
+-keepclasseswithmembers class * {
+    @android.support.annotation.Keep <init>(...);
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+# These classes are duplicated between android.jar and org.apache.http.legacy.jar.
+-dontnote org.apache.http.**
+-dontnote android.net.http.**
+
+# These classes are duplicated between android.jar and core-lambda-stubs.jar.
+-dontnote java.lang.invoke.**
+
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in /Users/liujie_gyh/Documents/work/application/android-sdk-macosx/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the proguardFiles
+# directive in build.gradle.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+-printconfiguration proguardConfig.txt   #输出混淆的配置到文件里面，最终的混淆配置并不止这个文件里面的这些内容
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-verbose
+-dontshrink
+-dontoptimize
+-dontnote android.net.http.**
+-dontnote org.apache.http.**
+-dontnote org.apache.commons.codec.**
 
 -keep public class com.google.vending.licensing.ILicensingService
-
 -keep public class com.android.vending.licensing.ILicensingService
-
--keepclasseswithmembers,allowshrinking class * {
+-keepclasseswithmembernames class * {
     native <methods>;
 }
 
 -keepclasseswithmembers class * {
-    public <init>(android.content.Context,android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet);
 }
 
 -keepclasseswithmembers class * {
-    public <init>(android.content.Context,android.util.AttributeSet,int);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
 }
 
 -keepclassmembers public class * extends android.view.View {
-    void set*(***);
-    *** get*();
+   void set*(***);
+   *** get*();
 }
 
 -keepclassmembers class * extends android.app.Activity {
-    public void *(android.view.View);
+   public void *(android.view.View);
 }
 
--keepclassmembers enum  * {
+-keepclassmembers enum * {
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
 
--keep class * extends android.os.Parcelable {
-    public static final android.os.Parcelable$Creator *;
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
 }
 
--keep class android.support.v4.view.ViewPager {
-    <fields>;
-    <methods>;
-}
+-keep class android.support.v4.view.ViewPager{*;}
+-dontwarn android.support.**
 
--keep class sun.misc.Unsafe {
-    <fields>;
-    <methods>;
-}
+-keep class sun.misc.Unsafe { *; }
+-keep class com.hct.zc.bean.** { *; }
+-keep class com.hct.zc.http.result.** { *; }
 
--keep class com.hct.zc.bean.** {
-    <fields>;
-    <methods>;
-}
-
--keep class com.hct.zc.http.result.** {
-    <fields>;
-    <methods>;
-}
-
--keep public class [your_pkg].R$* {
+-keep public class [your_pkg].R$*{
     public static final int *;
 }
+-dontwarn com.tencent.bugly.**
+-keep public class com.tencent.bugly.**{*;}
+-keep class android.support.**{*;}
+-dontwarn ***
+#-dontwarn com.google.protobuf.**
 
--keep public class com.tencent.bugly.** {
-    <fields>;
-    <methods>;
-}
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:22
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:67
+-keep class androidx.core.content.FileProvider { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:40
+-keep class com.lj.library.activity.MainActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:47
+-keep class com.lj.library.activity.MvpArchitectureActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:48
+-keep class com.lj.library.activity.MvvmArchitectureActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:49
+-keep class com.lj.library.activity.MvvmArchitectureActivity1 { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:30
+-keep class com.lj.library.activity.SplashActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:41
+-keep class com.lj.library.activity.TabHostActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:42
+-keep class com.lj.library.activity.WebViewActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:43
+-keep class com.lj.library.activity.X5WebViewActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:22
+-keep class com.lj.library.application.MyApplication { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:89
+-keep class com.squareup.leakcanary.DisplayLeakService { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:94
+-keep class com.squareup.leakcanary.internal.DisplayLeakActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:85
+-keep class com.squareup.leakcanary.internal.HeapAnalyzerService { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:108
+-keep class com.squareup.leakcanary.internal.RequestStoragePermissionActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:126
+-keep class com.tencent.bugly.beta.tinker.TinkerResultService { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:62
+-keep class com.tencent.bugly.beta.ui.BetaActivity { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:117
+-keep class com.tencent.bugly.beta.utils.BuglyFileProvider { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:50
+-keep class com.tencent.smtt.sdk.VideoActivity { <init>(); }
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_title_material.xml:57
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_material.xml:52
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_button_bar_material.xml:43
+-keep class android.widget.Space { <init>(...); }
 
--keep class android.support.** {
-    <fields>;
-    <methods>;
-}
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_select_dialog_material.xml:23
+-keep class androidx.appcompat.app.AlertController$RecycleListView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_action_menu_item_layout.xml:17
+-keep class androidx.appcompat.view.menu.ActionMenuItemView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_expanded_menu_layout.xml:17
+-keep class androidx.appcompat.view.menu.ExpandedMenuView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_popup_menu_item_layout.xml:17
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_list_menu_item_layout.xml:17
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_cascading_menu_item_layout.xml:20
+-keep class androidx.appcompat.view.menu.ListMenuItemView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_toolbar.xml:27
+-keep class androidx.appcompat.widget.ActionBarContainer { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_toolbar.xml:43
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_action_mode_bar.xml:19
+-keep class androidx.appcompat.widget.ActionBarContextView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_toolbar.xml:17
+-keep class androidx.appcompat.widget.ActionBarOverlayLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_action_menu_layout.xml:17
+-keep class androidx.appcompat.widget.ActionMenuView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_activity_chooser_view.xml:19
+-keep class androidx.appcompat.widget.ActivityChooserView$InnerLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_material.xml:18
+-keep class androidx.appcompat.widget.AlertDialogLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_button_bar_material.xml:26
+-keep class androidx.appcompat.widget.ButtonBarLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_content_include.xml:19
+-keep class androidx.appcompat.widget.ContentFrameLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_title_material.xml:45
+-keep class androidx.appcompat.widget.DialogTitle { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_simple_overlay_action_mode.xml:23
+-keep class androidx.appcompat.widget.FitWindowsFrameLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_simple.xml:17
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_dialog_title_material.xml:22
+-keep class androidx.appcompat.widget.FitWindowsLinearLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_search_view.xml:75
+-keep class androidx.appcompat.widget.SearchView$SearchAutoComplete { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\include_toolbar.xml:8
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_toolbar.xml:36
+-keep class androidx.appcompat.widget.Toolbar { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_simple_overlay_action_mode.xml:32
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_screen_simple.xml:25
+-keep class androidx.appcompat.widget.ViewStubCompat { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:21
+-keep class androidx.cardview.widget.CardView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\state_list_animator_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\path_interpolator_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\my_architecture1_activity.xml:11
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\item_text.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\include_normal_header.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\dynamic_animation_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\circular_reveal_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:7
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_flip_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_back_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\animated_vector_drawable_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\animated_state_list_drawable_fragment.xml:2
+-keep class androidx.constraintlayout.widget.ConstraintLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_bottom_sheet_dialog.xml:26
+-keep class androidx.coordinatorlayout.widget.CoordinatorLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:2
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_material.xml:41
+-keep class androidx.core.widget.NestedScrollView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\activity_main.xml:5
+-keep class androidx.drawerlayout.widget.DrawerLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tab_host_activity.xml:15
+-keep class androidx.fragment.app.FragmentTabHost { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\layout_animation_fragment.xml:2
+-keep class androidx.recyclerview.widget.RecyclerView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\include_toolbar.xml:2
+-keep class com.google.android.material.appbar.AppBarLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_bottom_navigation_item.xml:27
+-keep class com.google.android.material.internal.BaselineLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_text_input_password_icon.xml:18
+-keep class com.google.android.material.internal.CheckableImageButton { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_navigation_item.xml:17
+-keep class com.google.android.material.internal.NavigationMenuItemView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_navigation_menu.xml:17
+-keep class com.google.android.material.internal.NavigationMenuView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\activity_main.xml:18
+-keep class com.google.android.material.navigation.NavigationView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\mtrl_layout_snackbar.xml:18
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_layout_snackbar.xml:18
+-keep class com.google.android.material.snackbar.Snackbar$SnackbarLayout { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\mtrl_layout_snackbar_include.xml:18
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_layout_snackbar_include.xml:18
+-keep class com.google.android.material.snackbar.SnackbarContentLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\type_evaluate_fragment.xml:7
+-keep class com.lj.library.widget.AnimatorView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\banner_fragment.xml:17
+-keep class com.lj.library.widget.CustomView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\banner_item.xml:2
+-keep class com.lj.library.widget.ScaledImageView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\x5_webview_activity.xml:16
+-keep class com.lj.library.widget.X5WebView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\relativelayout_uitest.xml:18
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linearlayout_uitest.xml:18
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linear_weight_uitest.xml:12
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\framelayout_uitest.xml:18
+-keep class com.lj.library.widget.renderperform.CustomButton { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linearlayout_uitest.xml:24
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\framelayout_uitest.xml:2
+-keep class com.lj.library.widget.renderperform.CustomFrameLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\lvitem_main_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linearlayout_uitest.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linear_weight_uitest.xml:2
+-keep class com.lj.library.widget.renderperform.CustomLinearLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\main_fragment.xml:9
+-keep class com.lj.library.widget.renderperform.CustomListView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\relativelayout_uitest.xml:2
+-keep class com.lj.library.widget.renderperform.CustomRelativeLayout { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\relativelayout_uitest.xml:12
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\lvitem_main_fragment.xml:7
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linearlayout_uitest.xml:12
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\linear_weight_uitest.xml:16
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\framelayout_uitest.xml:12
+-keep class com.lj.library.widget.renderperform.CustomTextView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\banner_view.xml:3
+-keep class com.lj.library.widget.viewpager.MyViewPager { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\banner_fragment.xml:7
+-keep class com.lj.library.widget.viewpager.banner.BannerView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\fddc0a3d8f74023244d0aca3bf2c7c14\jetified-leakcanary-android-1.5.4\res\layout\leak_canary_ref_row.xml:24
+-keep class com.squareup.leakcanary.internal.DisplayLeakConnectorView { <init>(...); }
+
+# Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\fddc0a3d8f74023244d0aca3bf2c7c14\jetified-leakcanary-android-1.5.4\res\layout\leak_canary_ref_row.xml:40
+-keep class com.squareup.leakcanary.internal.MoreDetailsView { <init>(...); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\layout_transition_fragment.xml:11
+-keepclassmembers class * { *** addBtn(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tween_anim_fragment.xml:23
+-keepclassmembers class * { *** alphaImpl(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tween_anim_fragment.xml:30
+-keepclassmembers class * { *** rotateImpl(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tween_anim_fragment.xml:38
+-keepclassmembers class * { *** scaleImpl(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tween_anim_fragment.xml:54
+-keepclassmembers class * { *** setAll(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\tween_anim_fragment.xml:46
+-keepclassmembers class * { *** translateImpl(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\layout_transition_fragment.xml:46
+-keepclassmembers class * { *** triggerChangingTransition(android.view.View); }
+
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\view_anim_fragment.xml:17
+-keepclassmembers class * { *** viewAnim(android.view.View); }
+
 
 -keep class io.realm.annotations.RealmModule
-
 -keep @io.realm.annotations.RealmModule class *
+-keep @interface io.realm.annotations.RealmModule { *; }
+-keep class io.realm.annotations.RealmModule { *; }
 
 -keep class io.realm.internal.Keep
-
--keep @io.realm.internal.Keep class * {
-    <fields>;
-    <methods>;
-}
+-keep @io.realm.internal.Keep class * { *; }
 
 -keep class io.realm.internal.KeepMember
+-keep @io.realm.internal.KeepMember class * { @io.realm.internal.KeepMember *; }
 
--keep @io.realm.internal.KeepMember class * {
-    @io.realm.internal.KeepMember
-    <fields>;
-    @io.realm.internal.KeepMember
-    <methods>;
-}
-
+-dontwarn javax.**
+-dontwarn io.realm.**
 -keep class io.realm.RealmCollection
-
 -keep class io.realm.OrderedRealmCollection
-
--keepclasseswithmembers,allowshrinking class io.realm.** {
+-keepclasseswithmembernames class io.realm.** {
     native <methods>;
 }
 
+-dontnote rx.Observable
+
+# It's OK not to exist SyncObjectServerFacade in base library.
+-dontnote io.realm.internal.SyncObjectServerFacade
+-dontwarn android.databinding.ViewDataBinding
+-dontwarn android.databinding.ViewDataBinding$LiveDataListener
+
+# instant apps load these via reflection so we need to keep them.
+-keep public class * extends android.databinding.DataBinderMapper
+
+
+-dontwarn com.squareup.haha.guava.**
+-dontwarn com.squareup.haha.perflib.**
+-dontwarn com.squareup.haha.trove.**
+-dontwarn com.squareup.leakcanary.**
+-keep class com.squareup.haha.** { *; }
+-keep class com.squareup.leakcanary.** { *; }
+
+# Marshmallow removed Notification.setLatestEventInfo()
+-dontwarn android.app.Notification
+# Retain generated class which implement Unbinder.
+-keep public class * implements butterknife.Unbinder { public <init>(**, android.view.View); }
+
+# Prevent obfuscation of types which use ButterKnife annotations since the simple name
+# is used to reflectively look up the generated ViewBinding.
+-keep class butterknife.*
+-keepclasseswithmembernames class * { @butterknife.* <methods>; }
+-keepclasseswithmembernames class * { @butterknife.* <fields>; }
+
+-dontwarn java.util.concurrent.Flow*
 # Copyright (C) 2015 The Android Open Source Project
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # CoordinatorLayout resolves the behaviors of its child components with reflection.
--keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior {
-    public <init>(android.content.Context,android.util.AttributeSet);
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
     public <init>();
 }
 
-# Copyright (C) 2016 The Android Open Source Project
-# 
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior
+-keepattributes *Annotation*
+
+# Copyright (C) 2018 The Android Open Source Project
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# keep setters in VectorDrawables so that animations can still work.
--keepclassmembers class android.support.graphics.drawable.VectorDrawableCompat$* {
-    void set*(***);
-    *** get*();
-}
 
+# Ensure that reflectively-loaded inflater is not obfuscated. This can be
+# removed when we stop supporting AAPT1 builds.
+-keepnames class androidx.appcompat.app.AppCompatViewInflater
+
+# aapt is not able to read app::actionViewClass and app:actionProviderClass to produce proguard
+# keep rules. Add a commonly used SearchView to the keep list until b/109831488 is resolved.
+-keep class androidx.appcompat.widget.SearchView { <init>(...); }
 # Copyright (C) 2015 The Android Open Source Project
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #      http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 # When layoutManager xml attribute is used, RecyclerView inflates
-# LayoutManagers' constructors using reflection.
--keep public class * extends android.support.v7.widget.RecyclerView$LayoutManager {
-    public <init>(...);
+#LayoutManagers' constructors using reflection.
+-keep public class * extends androidx.recyclerview.widget.RecyclerView$LayoutManager {
+    public <init>(android.content.Context, android.util.AttributeSet, int, int);
+    public <init>();
 }
 
--keep class com.facebook.stetho.** {
+-keepclassmembers class androidx.recyclerview.widget.RecyclerView {
+    public void suppressLayout(boolean);
+    public boolean isLayoutSuppressed();
+}
+# Copyright (C) 2017 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Keep a field in transition that is used to keep a reference to weakly-referenced object
+-keepclassmembers class androidx.transition.ChangeBounds$* extends android.animation.AnimatorListenerAdapter {
+  androidx.transition.ChangeBounds$ViewBounds mViewBounds;
+}
+
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# CoordinatorLayout resolves the behaviors of its child components with reflection.
+-keep public class * extends androidx.coordinatorlayout.widget.CoordinatorLayout$Behavior {
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
+}
+
+# Make sure we keep annotations for CoordinatorLayout's DefaultBehavior and ViewPager's DecorView
+-keepattributes *Annotation*
+
+# Copyright (C) 2016 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# keep setters in VectorDrawables so that animations can still work.
+-keepclassmembers class androidx.vectordrawable.graphics.drawable.VectorDrawableCompat$* {
+   void set*(***);
+   *** get*();
+}
+
+# aapt2 is not (yet) keeping FQCNs defined in the appComponentFactory <application> attribute
+-keep class androidx.core.app.CoreComponentFactory
+
+-keep public class * implements androidx.versionedparcelable.VersionedParcelable
+-keep public class android.support.**Parcelizer { *; }
+-keep public class androidx.**Parcelizer { *; }
+-keep public class androidx.versionedparcelable.ParcelImpl
+
+-keepattributes *Annotation*
+
+-keepclassmembers enum androidx.lifecycle.Lifecycle$Event {
     <fields>;
-    <methods>;
 }
 
-# view res/layout/design_bottom_navigation_item.xml #generated:26
--keep class android.support.design.internal.BaselineLayout {
+-keep !interface * implements androidx.lifecycle.LifecycleObserver {
+}
+
+-keep class * implements androidx.lifecycle.GeneratedAdapter {
     <init>(...);
 }
 
-# view res/layout/design_navigation_item.xml #generated:17
--keep class android.support.design.internal.NavigationMenuItemView {
-    <init>(...);
+-keepclassmembers class ** {
+    @androidx.lifecycle.OnLifecycleEvent *;
+}
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.ViewModel {
+    <init>();
 }
 
-# view res/layout/design_navigation_menu.xml #generated:17
--keep class android.support.design.internal.NavigationMenuView {
-    <init>(...);
+-keepclassmembers,allowobfuscation class * extends androidx.lifecycle.AndroidViewModel {
+    <init>(android.app.Application);
 }
 
-# view res/layout/design_layout_snackbar_include.xml #generated:18
--keep class android.support.design.internal.SnackbarContentLayout {
-    <init>(...);
+# Copyright (C) 2019 The Android Open Source Project
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+-keepclassmembers,allowobfuscation class * implements androidx.savedstate.SavedStateRegistry$AutoRecreated {
+    <init>();
 }
 
-# view res/layout/include_toolbar.xml #generated:2
--keep class android.support.design.widget.AppBarLayout {
-    <init>(...);
+-keep,allowobfuscation @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
 }
 
-# view res/layout/design_text_input_password_icon.xml #generated:18
--keep class android.support.design.widget.CheckableImageButton {
-    <init>(...);
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
 }
 
-# view res/layout/design_bottom_sheet_dialog.xml #generated:17
--keep class android.support.design.widget.CoordinatorLayout {
-    <init>(...);
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
 }
 
-# view res/layout/activity_main.xml #generated:45
--keep class android.support.design.widget.NavigationView {
-    <init>(...);
-}
-
-# view res/layout/design_layout_snackbar.xml #generated:18
-# view sw600dp-v13/res/layout-sw600dp-v13/design_layout_snackbar.xml #generated:18
--keep class android.support.design.widget.Snackbar$SnackbarLayout {
-    <init>(...);
-}
-
-# view res/layout/tab_host_activity.xml #generated:15
--keep class android.support.v4.app.FragmentTabHost {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:64
--keep class android.support.v4.content.FileProvider {
-    <init>(...);
-}
-
-# view res/layout/activity_main.xml #generated:19
--keep class android.support.v4.widget.DrawerLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_material.xml #generated:41
--keep class android.support.v4.widget.NestedScrollView {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_button_bar_material.xml #generated:43
-# view res/layout/abc_alert_dialog_material.xml #generated:52
-# view res/layout/abc_alert_dialog_material.xml #generated:66
-# view res/layout/abc_alert_dialog_title_material.xml #generated:56
--keep class android.support.v4.widget.Space {
-    <init>(...);
-}
-
-# view res/layout/abc_select_dialog_material.xml #generated:23
--keep class android.support.v7.app.AlertController$RecycleListView {
-    <init>(...);
-}
-
-# view res/layout/abc_action_menu_item_layout.xml #generated:17
--keep class android.support.v7.view.menu.ActionMenuItemView {
-    <init>(...);
-}
-
-# view res/layout/abc_expanded_menu_layout.xml #generated:17
--keep class android.support.v7.view.menu.ExpandedMenuView {
-    <init>(...);
-}
-
-# view res/layout/abc_list_menu_item_layout.xml #generated:17
-# view res/layout/abc_popup_menu_item_layout.xml #generated:17
--keep class android.support.v7.view.menu.ListMenuItemView {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:27
--keep class android.support.v7.widget.ActionBarContainer {
-    <init>(...);
-}
-
-# view res/layout/abc_action_mode_bar.xml #generated:19
-# view res/layout/abc_screen_toolbar.xml #generated:43
--keep class android.support.v7.widget.ActionBarContextView {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:17
--keep class android.support.v7.widget.ActionBarOverlayLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_action_menu_layout.xml #generated:17
--keep class android.support.v7.widget.ActionMenuView {
-    <init>(...);
-}
-
-# view res/layout/abc_activity_chooser_view.xml #generated:19
--keep class android.support.v7.widget.ActivityChooserView$InnerLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_material.xml #generated:18
--keep class android.support.v7.widget.AlertDialogLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_button_bar_material.xml #generated:26
--keep class android.support.v7.widget.ButtonBarLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_content_include.xml #generated:19
--keep class android.support.v7.widget.ContentFrameLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_alert_dialog_title_material.xml #generated:45
--keep class android.support.v7.widget.DialogTitle {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_simple_overlay_action_mode.xml #generated:23
--keep class android.support.v7.widget.FitWindowsFrameLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_dialog_title_material.xml #generated:22
-# view res/layout/abc_screen_simple.xml #generated:17
--keep class android.support.v7.widget.FitWindowsLinearLayout {
-    <init>(...);
-}
-
-# view res/layout/abc_search_view.xml #generated:75
--keep class android.support.v7.widget.SearchView$SearchAutoComplete {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_toolbar.xml #generated:36
-# view res/layout/include_toolbar.xml #generated:8
--keep class android.support.v7.widget.Toolbar {
-    <init>(...);
-}
-
-# view res/layout/abc_screen_simple.xml #generated:25
-# view res/layout/abc_screen_simple_overlay_action_mode.xml #generated:32
--keep class android.support.v7.widget.ViewStubCompat {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:41
--keep class com.lj.library.activity.MainActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:31
--keep class com.lj.library.activity.SplashActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:42
--keep class com.lj.library.activity.TabHostActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:43
--keep class com.lj.library.activity.WebViewActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:44
--keep class com.lj.library.activity.X5WebViewActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:25
--keep class com.lj.library.application.SampleApplication {
-    <init>(...);
-}
-
-# view res/layout/type_evaluate_fragment.xml #generated:7
--keep class com.lj.library.widget.AnimatorView {
-    <init>(...);
-}
-
-# view res/layout/banner_item.xml #generated:2
--keep class com.lj.library.widget.ScaledImageView {
-    <init>(...);
-}
-
-# view res/layout/x5_webview_activity.xml #generated:7
--keep class com.lj.library.widget.X5WebView {
-    <init>(...);
-}
-
-# view res/layout/framelayout_uitest.xml #generated:18
-# view res/layout/linear_weight_uitest.xml #generated:12
-# view res/layout/linear_weight_uitest.xml #generated:22
-# view res/layout/linearlayout_uitest.xml #generated:18
-# view res/layout/relativelayout_uitest.xml #generated:18
--keep class com.lj.library.widget.renderperform.CustomButton {
-    <init>(...);
-}
-
-# view res/layout/framelayout_uitest.xml #generated:2
-# view res/layout/framelayout_uitest.xml #generated:6
-# view res/layout/linearlayout_uitest.xml #generated:24
--keep class com.lj.library.widget.renderperform.CustomFrameLayout {
-    <init>(...);
-}
-
-# view res/layout/linear_weight_uitest.xml #generated:2
-# view res/layout/linear_weight_uitest.xml #generated:6
-# view res/layout/linearlayout_uitest.xml #generated:2
-# view res/layout/linearlayout_uitest.xml #generated:6
-# view res/layout/lvitem_main_fragment.xml #generated:2
--keep class com.lj.library.widget.renderperform.CustomLinearLayout {
-    <init>(...);
-}
-
-# view res/layout/main_fragment.xml #generated:9
--keep class com.lj.library.widget.renderperform.CustomListView {
-    <init>(...);
-}
-
-# view res/layout/relativelayout_uitest.xml #generated:2
-# view res/layout/relativelayout_uitest.xml #generated:6
--keep class com.lj.library.widget.renderperform.CustomRelativeLayout {
-    <init>(...);
-}
-
-# view res/layout/framelayout_uitest.xml #generated:12
-# view res/layout/linear_weight_uitest.xml #generated:16
-# view res/layout/linearlayout_uitest.xml #generated:12
-# view res/layout/linearlayout_uitest.xml #generated:28
-# view res/layout/lvitem_main_fragment.xml #generated:7
-# view res/layout/relativelayout_uitest.xml #generated:12
--keep class com.lj.library.widget.renderperform.CustomTextView {
-    <init>(...);
-}
-
-# view res/layout/banner_view.xml #generated:3
--keep class com.lj.library.widget.viewpager.MyViewPager {
-    <init>(...);
-}
-
-# view res/layout/banner_fragment.xml #generated:6
--keep class com.lj.library.widget.viewpager.banner.BannerView {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:82
--keep class com.tencent.bugly.beta.tinker.TinkerResultService {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:60
--keep class com.tencent.bugly.beta.ui.BetaActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:48
--keep class com.tencent.smtt.sdk.VideoActivity {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:93
--keep class com.tencent.tinker.lib.service.DefaultTinkerResultService {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:85
--keep class com.tencent.tinker.lib.service.TinkerPatchService {
-    <init>(...);
-}
-
-# view AndroidManifest.xml #generated:89
--keep class com.tencent.tinker.lib.service.TinkerPatchService$InnerService {
-    <init>(...);
-}
-
-# onClick res/layout/layout_transition_fragment.xml #generated:8
--keepclassmembers class * {
-    *** addBtn(...);
-}
-
-# onClick res/layout/tween_anim_fragment.xml #generated:23
--keepclassmembers class * {
-    *** alphaImpl(...);
-}
-
-# onClick res/layout/tween_anim_fragment.xml #generated:30
--keepclassmembers class * {
-    *** rotateImpl(...);
-}
-
-# onClick res/layout/tween_anim_fragment.xml #generated:38
--keepclassmembers class * {
-    *** scaleImpl(...);
-}
-
-# onClick res/layout/tween_anim_fragment.xml #generated:54
--keepclassmembers class * {
-    *** setAll(...);
-}
-
-# onClick res/layout/tween_anim_fragment.xml #generated:46
--keepclassmembers class * {
-    *** translateImpl(...);
-}
-
-# onClick res/layout/view_anim_fragment.xml #generated:17
--keepclassmembers class * {
-    *** viewAnim(...);
-}
+-keep class com.facebook.stetho.** { *; }
+-dontwarn com.facebook.stetho.**
+-ignorewarnings
