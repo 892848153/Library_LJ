@@ -12,6 +12,7 @@ class CardViewFragment: BaseFragment() {
     override fun initLayout(savedInstanceState: Bundle?): Int {
         return R.layout.card_view_fragment
     }
+
     override fun initComp(savedInstanceState: Bundle?) {
     }
 }

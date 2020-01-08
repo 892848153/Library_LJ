@@ -299,6 +299,7 @@
 # Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\my_architecture1_activity.xml:11
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\item_text.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\include_normal_header.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\elevation_and_shadow_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\dynamic_animation_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\circular_reveal_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:7
@@ -311,6 +312,7 @@
 # Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_bottom_sheet_dialog.xml:26
 -keep class androidx.coordinatorlayout.widget.CoordinatorLayout { <init>(...); }
 
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\elevation_and_shadow_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:2
 # Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_material.xml:41
 -keep class androidx.core.widget.NestedScrollView { <init>(...); }

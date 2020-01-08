@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="android:elevation=5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/iv_1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:clickable="true"
+            android:background="@color/colorPrimary"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:elevation="5dp"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_1"/>
+
+        <TextView
+            android:id="@+id/tv_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="android:elevation=5dp， 不过包裹了一层父布局FrameLayout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_1" />
+
+        <FrameLayout
+            android:id="@+id/fl_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_2">
+            <!-- 阴影是绘制在父布局上的，父布局没有留下空间给阴影即使你设置了elevation也不会有阴影效果 。
+                 父布局设置了padding属性也不行，padding的空间是不会绘制任何东西的。 可以在child上设置margin来获取绘制阴影的空间-->
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@color/colorPrimary"
+            android:elevation="5dp" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_22"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="阴影是由父布局绘制在父布局上的，父布局没有留下空间给阴影即使你设置了elevation也不会有阴影效果\n
+            父布局设置了padding属性也不行，padding的空间是不会绘制任何东西的。 可以在child上设置margin来获取绘制阴影的空间"
+            app:layout_constraintStart_toEndOf="@+id/fl_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fl_2" />
+
+        <Space
+            android:id="@+id/space_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/fl_2"/>
+
+        <ImageView
+            android:id="@+id/iv_3"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:background="@color/colorAccent"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:elevation="1dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/space_3"/>
+
+        <TextView
+            android:id="@+id/tv_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="红色色块elevation=1dp, 橘色色块虽然elevation=5dp，不过结果却是红色色块在橘色色块上面。
+            elevation只在直接的parent中有效，因为橘色色块在FrameLayout中，而FrameLayout的elevation为0dp, 所以虽然橘色色块的
+            elevation=5dp，但是它却在elevation=1dp的红色色块下面"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_3" />
+
+
+        <TextView
+            android:id="@+id/tv_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="@dimen/common_large_text_size"
+            android:text="OutlineProvider"
+            android:layout_marginTop="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_3"/>
+
+        <TextView
+            android:id="@+id/tv_44"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:text="Outline代表了图形对象的外部形状和触摸反馈的水波区域。
+            View的背景图决定了View的outline，outline决定阴影的形状。
+            此背景图是圆角的，则阴影的形状也是圆角的。"
+            android:layout_margin="20dp"
+            android:elevation="5dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/common_sp_rounded_rectangle_with_red_bg"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_4"/>
+
+        <TextView
+            android:id="@+id/tv_5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="修改android:outlineProvider属性"
+            android:textSize="@dimen/common_xlarge_text_size"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_44"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_55"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:outlineProvider="background"
+            android:text="默认outlineProvider=background，系统提供了三个默认的outlineProvider实现,1.background, 2.bounds, 3.paddedBounds"
+            android:gravity="center"
+            android:elevation="5dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/common_sp_round_red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_5"/>
+        <!--  android:outlineProvider  系统提供三个OutlineProvider的详细代码可以看 android.view.ViewOutlineProvider
+            background：Default outline provider for Views, which queries the Outline from the View's background,
+            or generates a 0 alpha, rectangular Outline the size of the View if a background isn't present.
+
+            none：无outlineProvider，则无阴影
+
+            bounds：Maintains the outline of the View to match its rectangular bounds, at 1.0f alpha.
+
+            paddedBounds：Maintains the outline of the View to match its rectangular padded bounds, at 1.0f alpha.
+        -->
+
+        <TextView
+            android:id="@+id/tv_6"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:text="自定义OutlineProvider属性"
+            android:gravity="center"
+            android:elevation="5dp"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/common_sp_round_red"
+            app:layout_constraintTop_toBottomOf="@+id/tv_55"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Clip View 裁剪View"
+            android:textSize="@dimen/common_xlarge_text_size"
+            android:layout_marginTop="50dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_77"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:text="Clip View可以把View剪裁成你想要的Outline。裁剪的结果只会影响整个View的视觉效果，
+                          实际上View还是矩形的，它的触摸区域还是矩形的。只支持裁剪成rectangle，circle，round rectangle。"
+            android:gravity="center"
+            android:elevation="5dp"
+            android:layout_margin="20dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:background="@drawable/common_sp_round_red"
+            app:layout_constraintTop_toBottomOf="@+id/tv_7"
+            app:layout_constraintStart_toStartOf="parent" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
