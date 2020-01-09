@@ -1,16 +1,16 @@
 package com.lj.library.fragment.animation;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.fragment.app.Fragment;
 
 import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
-import com.lj.library.fragment.animation.revealhide.RevealOrHideViewFragment;
 import com.lj.library.util.LogUtil;
 
 import java.util.ArrayList;
@@ -49,6 +49,7 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
         menuList.add(new Menu(LayoutAnimationFragment.class, "LayoutAnimation Demo"));
         menuList.add(new Menu(LayoutTransitionFragment.class, "LayoutTransition Demo"));
         menuList.add(new Menu(AnimatedDrawableFragment.class, "Animated Drawable Demo"));
+        menuList.add(new Menu(TransitionAndSceneFragment.class, "Transition and Scene Demo"));
         return menuList;
     }
 

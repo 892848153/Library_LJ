@@ -35,7 +35,6 @@ class ElevationAndShadowFragment: BaseFragment() {
         // 一个Outline能不能用于裁剪View，需要看Outline.canClip()方法的返回值
         // 裁剪View很耗性能
         tv_77.clipToOutline = true   // ImageView的话,clipToOutline是clip成android:src的图片的Outline而不是background
-        tv_77.setou
     }
 
     override fun initLayout(savedInstanceState: Bundle?): Int {

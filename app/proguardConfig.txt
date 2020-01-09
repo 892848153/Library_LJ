@@ -294,6 +294,7 @@
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:21
 -keep class androidx.cardview.widget.CardView { <init>(...); }
 
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\transition_and_scene_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\state_list_animator_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\path_interpolator_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\my_architecture1_activity.xml:11
@@ -305,13 +306,16 @@
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_flip_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_back_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\b_scene.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\animated_vector_drawable_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\animated_state_list_drawable_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\a_scene.xml:2
 -keep class androidx.constraintlayout.widget.ConstraintLayout { <init>(...); }
 
 # Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\11c126f1ce2cb49e5acfabffe522d5cb\material-1.0.0\res\layout\design_bottom_sheet_dialog.xml:26
 -keep class androidx.coordinatorlayout.widget.CoordinatorLayout { <init>(...); }
 
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\transition_and_scene_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\elevation_and_shadow_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:2
 # Referenced at C:\Users\89284\.gradle\caches\transforms-2\files-2.1\1ca70d721d4632bb3f317d3bd7a25022\appcompat-1.1.0\res\layout\abc_alert_dialog_material.xml:41
