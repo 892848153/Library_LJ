@@ -1,4 +1,4 @@
-package com.lj.library.fragment.animation;
+package com.lj.library.fragment.animation.transition;
 
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;

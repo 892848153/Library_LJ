@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -15,6 +12,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.lj.library.R;
 import com.lj.library.fragment.BackHandlerInterface;
@@ -58,7 +59,7 @@ public abstract class BaseActivity1 extends AppCompatActivity implements BackHan
 
         View appBar = initAppBar();
         if (appBar != null && appBar.getParent() == null) {
-            int height = (int) (48 * getResources().getDisplayMetrics().density);
+            int height = UiUtils.getStatusBarHeight(this);
             mRootLayout.addView(appBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
             View back = appBar.findViewById(R.id.back_iv);
             if (back != null) {

@@ -190,7 +190,7 @@
 
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:22
 -keep class androidx.core.app.CoreComponentFactory { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:67
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:68
 -keep class androidx.core.content.FileProvider { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:40
 -keep class com.lj.library.activity.MainActivity { <init>(); }
@@ -200,6 +200,8 @@
 -keep class com.lj.library.activity.MvvmArchitectureActivity { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:49
 -keep class com.lj.library.activity.MvvmArchitectureActivity1 { <init>(); }
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:66
+-keep class com.lj.library.activity.SecondTransitionActivity { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:30
 -keep class com.lj.library.activity.SplashActivity { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:41
@@ -210,19 +212,19 @@
 -keep class com.lj.library.activity.X5WebViewActivity { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:22
 -keep class com.lj.library.application.MyApplication { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:89
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:90
 -keep class com.squareup.leakcanary.DisplayLeakService { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:94
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:95
 -keep class com.squareup.leakcanary.internal.DisplayLeakActivity { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:85
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:86
 -keep class com.squareup.leakcanary.internal.HeapAnalyzerService { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:108
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:109
 -keep class com.squareup.leakcanary.internal.RequestStoragePermissionActivity { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:126
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:127
 -keep class com.tencent.bugly.beta.tinker.TinkerResultService { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:62
 -keep class com.tencent.bugly.beta.ui.BetaActivity { <init>(); }
-# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:117
+# Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:118
 -keep class com.tencent.bugly.beta.utils.BuglyFileProvider { <init>(); }
 # Referenced at D:\github\Library_LJ\app\build\intermediates\merged_manifests\debug\armeabi-v7a\AndroidManifest.xml:50
 -keep class com.tencent.smtt.sdk.VideoActivity { <init>(); }
@@ -296,12 +298,15 @@
 
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\transition_and_scene_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\state_list_animator_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\shared_element_transition_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\second_transition_activity.xml:5
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\path_interpolator_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\build\intermediates\incremental\mergeDebugResources\stripped.dir\layout\my_architecture1_activity.xml:11
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\item_text.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\include_normal_header.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\elevation_and_shadow_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\dynamic_animation_fragment.xml:2
+# Referenced at D:\github\Library_LJ\app\src\main\res\layout\content_transition_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\circular_reveal_fragment.xml:2
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_view_fragment.xml:7
 # Referenced at D:\github\Library_LJ\app\src\main\res\layout\card_flip_fragment.xml:2

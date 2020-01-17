@@ -1,14 +1,14 @@
 <resources>
 
     <!-- animation 样式 -->
-    <style name="activityAnimation" parent="@android:style/Animation">
+    <style name="activityAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_right_in</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_left_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_left_in</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_right_out</item>
     </style>
 
-    <style name="activityBottomInBottomOutAnimation" parent="@android:style/Animation">
+    <style name="activityBottomInBottomOutAnimation" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_bottom_in</item>
         <item name="android:activityOpenExitAnimation">@anim/slide_bottom_out</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_bottom_in</item>
@@ -18,14 +18,22 @@
     <!-- Application theme.   mce_bogus="1" -->
 	<!--<style name="AppBaseTheme" parent="@android:style/Theme.Light.NoTitleBar"></style>-->
     <!-- Activity继承v7包的AppCompatActivity的话，主题需要继承v7包的Theme.AppCompat下的主题-->
-    <!--要使用Material Design的控件，最好选用MaterialComponents的主题，虽然AppCompat的主题在大多数情况下也可以实现Material的效果-->
+    <!--要使用Material Design的控件，最好选用Theme.MaterialComponents下的主题，虽然AppCompat的主题在大多数情况下也可以实现Material的效果-->
     <!--不过AppCompat主题需要给控件添加额外的属性，甚至有些效果还会出不来。注意：不管使用MaterialComponents类型的主题-->
     <!--还是AppCompat类型的主题，在5.0以下的系统都是没有Ripple效果和阴影的。-->
     <!--详情:https://github.com/material-components/material-components-android/blob/master/docs/getting-started.md-->
 	<style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@null</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowSoftInputMode">stateAlwaysHidden</item>
+
         <item name="android:windowAnimationStyle">@style/activityAnimation</item>
+        <!--  <item name="android:windowXXXXAnimation"></item> 定义的是Window的动画效果，
+        Window一般包括Activity里面的PhoneWindow， Dialog里面的子Window。
+          或者我们可以把Window动画效果都挪到android:windowAnimationStyle里面去管理-->
+<!--        <item name="android:windowEnterAnimation"></item>-->
+<!--        <item name="android:windowExitAnimation"></item>-->
+<!--        <item name="android:windowShowAnimation"></item>-->
+<!--        <item name="android:windowHideAnimation"></item>-->
 
         <!-- Original AppCompat attributes. -->
         <!-- 修改Theme.AppCompat下主题中的属性，更改app bar的底色.ActionBar/ToolBar都是叫app bar-->

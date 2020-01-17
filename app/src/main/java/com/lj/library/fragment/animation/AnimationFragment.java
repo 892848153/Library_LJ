@@ -11,6 +11,7 @@ import com.lj.library.R;
 import com.lj.library.adapter.MenuAdapter;
 import com.lj.library.bean.Menu;
 import com.lj.library.fragment.BaseFragment;
+import com.lj.library.fragment.animation.transition.TransitionFragment;
 import com.lj.library.util.LogUtil;
 
 import java.util.ArrayList;
@@ -46,10 +47,9 @@ public class AnimationFragment extends BaseFragment implements AdapterView.OnIte
         menuList.add(new Menu(FrameAnimFragment.class, "Frame Anim Demo"));
         menuList.add(new Menu(TweenAnimFragment.class, "Tween Anim Demo"));
         menuList.add(new Menu(ObjectAnimFragment.class, "Object Anim Demo"));
+        menuList.add(new Menu(TransitionFragment.class, "Transition Demo"));
         menuList.add(new Menu(LayoutAnimationFragment.class, "LayoutAnimation Demo"));
-        menuList.add(new Menu(LayoutTransitionFragment.class, "LayoutTransition Demo"));
         menuList.add(new Menu(AnimatedDrawableFragment.class, "Animated Drawable Demo"));
-        menuList.add(new Menu(TransitionAndSceneFragment.class, "Transition and Scene Demo"));
         return menuList;
     }
 

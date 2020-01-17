@@ -3,11 +3,6 @@ package com.lj.library.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,12 +11,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.lj.library.R;
 import com.lj.library.activity.base.BaseViewAction;
-//import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.util.Logger;
+import com.lj.library.util.UiUtils;
 
 import butterknife.ButterKnife;
+
+//import com.lj.library.application.SampleApplicationLike;
 
 /**
  * Created by ocean on 2017/8/21.
@@ -78,7 +81,7 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
 
             View appBar = initAppBar();
             if (appBar != null && appBar.getParent() == null) {
-                int height = (int) (48 * getResources().getDisplayMetrics().density);
+                int height = UiUtils.getStatusBarHeight(mContext);
                 mRootLayout.addView(appBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
                 View back = appBar.findViewById(R.id.back_iv);
                 if (back != null)

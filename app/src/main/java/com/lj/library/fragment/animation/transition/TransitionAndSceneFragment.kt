@@ -1,4 +1,4 @@
-package com.lj.library.fragment.animation
+package com.lj.library.fragment.animation.transition
 
 import android.animation.Animator
 import android.animation.ArgbEvaluator
@@ -66,7 +66,7 @@ class TransitionAndSceneFragment: BaseFragment() {
      */
     private fun transition(endingScene: Scene) {
         // Create a transition instance from a resource file（specify a built-in transition in a resource file）
-        var fadeTransition: Transition = TransitionInflater.from(context!!).inflateTransition(R.transition.fade_transition)
+        var fadeTransition: Transition = TransitionInflater.from(context!!).inflateTransition(R.transition.fade)
         // Create a transition instance in your code
         var fadeTransitionFromCode: Transition = Fade()
 

@@ -3,19 +3,19 @@ package com.lj.library.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.lj.library.R;
-//import com.lj.library.application.SampleApplicationLike;
 import com.lj.library.http.apache.HttpHelper;
 import com.lj.library.util.LogUtil;
 import com.lj.library.util.RxBus;
@@ -23,6 +23,8 @@ import com.lj.library.util.Toaster;
 import com.lj.library.widget.LoadingProgress;
 
 import butterknife.ButterKnife;
+
+//import com.lj.library.application.SampleApplicationLike;
 
 /**
  * Fragment基础类.
@@ -52,9 +54,9 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(!(mContext instanceof BackHandlerInterface)){
+        if (!(mContext instanceof BackHandlerInterface)) {
             throw new ClassCastException("Hosting Activity must implement BackHandledInterface");
-        }else{
+        } else {
             this.mBackHandlerInterface = (BackHandlerInterface) mContext;
         }
     }
@@ -92,11 +94,32 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
      *
      * @param targetFragment
      */
-    public void startFragment(Fragment targetFragment) {
+//    public void startFragment(Fragment targetFragment) {
+//        FragmentManager manager = getActivity().getSupportFragmentManager();
+//        FragmentTransaction transaction = manager.beginTransaction();
+//        transaction.replace(R.id.fragment_container, targetFragment);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//    }
+
+    public void startFragment(Fragment targetFragment, Pair<View, String>... sharedElements) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, targetFragment);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        if (sharedElements == null
+                && targetFragment.getEnterTransition() == null
+                && targetFragment.getExitTransition() == null
+                && targetFragment.getReenterTransition() == null
+                && targetFragment.getReturnTransition() == null) {
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
+
+        if (sharedElements != null) {
+            for (Pair<View, String> elements : sharedElements) {
+                transaction.addSharedElement(elements.first, elements.second);
+            }
+        }
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -220,6 +243,7 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
 
     /**
      * 子类在次方法中返回布局并且初始化.
+     *
      * @param savedInstanceState
      * @return
      */

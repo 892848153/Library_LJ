@@ -1,14 +1,9 @@
 package com.lj.library.activity.base;
 
 import android.app.Activity;
-import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.StringRes;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -16,6 +11,12 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.databinding.ViewDataBinding;
 
 import com.lj.library.R;
 import com.lj.library.databinding.ActivityBase2Binding;
@@ -57,7 +58,7 @@ public abstract class BaseActivity2<T extends ViewDataBinding> extends AppCompat
 
         View appBar = initAppBar();
         if (appBar != null && appBar.getParent() == null) {
-            int height = (int) (48 * getResources().getDisplayMetrics().density);
+            int height = UiUtils.getStatusBarHeight(this);
             mBaseBinding.rootLayout.addView(appBar, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
             View back = appBar.findViewById(R.id.back_iv);
             if (back != null) {
