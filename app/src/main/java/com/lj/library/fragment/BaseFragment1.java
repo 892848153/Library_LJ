@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.StringRes;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -120,11 +121,24 @@ public abstract class BaseFragment1 extends Fragment implements FragmentBackMana
      *
      * @param targetFragment
      */
-    public void startFragment(Fragment targetFragment) {
+    public void startFragment(Fragment targetFragment, Pair<View, String>... sharedElements) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
         transaction.replace(R.id.fragment_container, targetFragment);
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        if (sharedElements == null
+                && targetFragment.getEnterTransition() == null
+                && targetFragment.getExitTransition() == null
+                && targetFragment.getReenterTransition() == null
+                && targetFragment.getReturnTransition() == null) {
+            transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        }
+
+        if (sharedElements != null) {
+            for (Pair<View, String> elements : sharedElements) {
+                transaction.addSharedElement(elements.first, elements.second);
+            }
+        }
         transaction.addToBackStack(null);
         transaction.commit();
     }

@@ -94,14 +94,6 @@ public abstract class BaseFragment extends Fragment implements FragmentBackManag
      *
      * @param targetFragment
      */
-//    public void startFragment(Fragment targetFragment) {
-//        FragmentManager manager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction transaction = manager.beginTransaction();
-//        transaction.replace(R.id.fragment_container, targetFragment);
-//        transaction.addToBackStack(null);
-//        transaction.commit();
-//    }
-
     public void startFragment(Fragment targetFragment, Pair<View, String>... sharedElements) {
         FragmentManager manager = getActivity().getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();

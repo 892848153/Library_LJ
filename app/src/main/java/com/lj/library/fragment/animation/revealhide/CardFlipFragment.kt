@@ -5,6 +5,7 @@ import android.view.View
 import butterknife.OnClick
 import com.lj.library.R
 import com.lj.library.fragment.BaseFragment
+import com.lj.library.fragment.ContentFragment
 
 /**
  * Created by liujie on 2020-01-03.
@@ -40,7 +41,7 @@ class CardFlipFragment: BaseFragment() {
                 // Replace any fragments currently in the container view with a
                 // fragment representing the next page (indicated by the
                 // just-incremented currentPage variable).
-                ?.replace(R.id.fragment_container, CardBackFragment())
+                ?.replace(R.id.fragment_container, ContentFragment())
 
                 // Add this transaction to the back stack, allowing users to press
                 // Back to get to the front of the card.

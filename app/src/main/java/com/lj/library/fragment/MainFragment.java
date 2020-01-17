@@ -2,11 +2,12 @@ package com.lj.library.fragment;
 
 import android.app.Activity;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
 import com.lj.library.R;
 import com.lj.library.activity.TabHostActivity;
@@ -19,13 +20,13 @@ import com.lj.library.fragment.architecture.ArchitectureFragment;
 import com.lj.library.fragment.banner.BannerFragment;
 import com.lj.library.fragment.dagger.DaggerFragment;
 import com.lj.library.fragment.http.HttpDemoFragment;
-import com.lj.library.fragment.materialdesign.CardViewFragment;
 import com.lj.library.fragment.materialdesign.MaterialDesignFragment;
 import com.lj.library.fragment.permissionmanage.PermissionTestFragment;
 import com.lj.library.fragment.renderperform.RenderPerformFragment;
 import com.lj.library.fragment.rx.RxJavaFragment;
 import com.lj.library.fragment.serialization.SerializationFragment;
 import com.lj.library.fragment.update.SmartUpdateFragment;
+import com.lj.library.fragment.viewpager2.ViewPager2Fragment;
 import com.lj.library.util.ContextUtil;
 import com.lj.library.util.LogUtil;
 
@@ -66,7 +67,9 @@ public class MainFragment extends BaseFragment {
         menuList.add(new Menu(BannerFragment.class, "Banner Demo"));
         menuList.add(new Menu(AnimationFragment.class, "Animation Demo"));
         menuList.add(new Menu(MaterialDesignFragment.class, "MaterialDesign Demo"));
+        menuList.add(new Menu(ViewPager2Fragment.class, "ViewPager2 Demo"));
         menuList.add(new Menu(TabHostActivity.class, "TabHostActivity Demo"));
+        menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         menuList.add(new Menu(RenderPerformFragment.class, "Render Performance"));
         menuList.add(new Menu(HttpDemoFragment.class, "Http Demo"));
         menuList.add(new Menu(RxJavaFragment.class, "RxJava Demo"));
@@ -74,7 +77,6 @@ public class MainFragment extends BaseFragment {
         menuList.add(new Menu(PermissionTestFragment.class, "Android6.0 Permission"));
         menuList.add(new Menu(SerializationFragment.class, "Serialization Demo"));
         menuList.add(new Menu(AlgorithmFragment.class, "Algorithm Demo"));
-        menuList.add(new Menu(X5WebViewActivity.class, "WebView Demo"));
         menuList.add(new Menu(SmartUpdateFragment.class, "Smart Update Demo"));
         menuList.add(new Menu(ArchitectureFragment.class, "Architecture"));
         return menuList;
