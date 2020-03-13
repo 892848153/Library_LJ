@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:colorControlHighlight">
+    <!-- android:color   给ripple设置颜色。
+       android:color="?android:colorControlHighlight" 定义ripple的颜色为系统默认的灰色
+      我们可以在App主题里面修改android:colorControlHighlight的颜色
+      或者直接给android:color设置一个水波的颜色-->
+    <!-- android:radius=""： radius of the ripple when fully expanded.
+           Default value is computed based on the size of the ripple’s container.-->
+
+    <item android:drawable="@drawable/common_bg_white_top_bottom_gray_line"/>
+
+</ripple>

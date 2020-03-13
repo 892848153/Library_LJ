@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?android:colorControlHighlight"
+    android:radius="80dp">
+
+    <item android:drawable="@drawable/common_bg_white_cover_gray_with_top_bottom_gray_line"/>
+
+
+
+</ripple>

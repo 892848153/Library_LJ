@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="添加Ripple效果"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/common_xlarge_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="点击查看水波效果"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_1"/>
+
+    <TextView
+        android:id="@+id/tv_11"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="android5.0开始增加RippleDrawable， 带水波效果的Drawable。 android5.0开始button的背景默认就支持水波效果
+         如果想给别的控件增加水波点击效果的话，可以使用android:background=?android:attr/selectableItemBackground>"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_1"/>
+
+    <TextView
+        android:id="@+id/tv_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:text="自定义Ripple效果"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/common_xlarge_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_11"/>
+
+    <Button
+        android:id="@+id/btn_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button自定义背景图片无Ripple效果"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/common_sl_clickable_item_with_top_bottom_gray_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_2"/>
+
+    <Button
+        android:id="@+id/btn_22"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button自定义背景图片使用RippleDrawable"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ripple_btn_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_2"/>
+
+    <Button
+        android:id="@+id/btn_222"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Button自定义背景自定义Ripple颜色"
+        android:textColor="@android:color/holo_green_light"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ripple_color_primary_btn_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_22"/>
+
+    <Button
+        android:id="@+id/btn_2222"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="自定义的Ripple中添加id=@android:id/mask的item。
+        id为mask的item默认是不会显示的，而是在点击的时候出现。\n
+        没有指定id=@android:id/mask的item默认是一直显示的"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ripple_id_mask_btn_bg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_222"/>
+
+    <TextView
+        android:id="@+id/tv_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Ripple范围"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/common_xlarge_text_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_2222"/>
+
+    <Button
+        android:id="@+id/btn_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="水波在控件之内"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:background="?attr/selectableItemBackground"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_3"/>
+
+    <Button
+        android:id="@+id/btn_33"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="水波可以延伸到控件之外"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:background="?selectableItemBackgroundBorderless"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_3"/>
+    <!-- 使用?attr:xxxx或者 ?xxxx指定background， 这样会使用androidx包中的资源。
+         不要使用?android:attr/xxxxx  ，这个是使用系统得资源-->
+
+    <Button
+        android:id="@+id/btn_333"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="水波可以延伸到控件之外，显示Ripple Radius"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:background="@drawable/ripple_radius_btn_bg"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_33"/>
+
+    <ImageView
+        android:id="@+id/iv_3333"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?actionBarItemBackground"
+        android:layout_marginTop="5dp"
+        android:scaleType="centerInside"
+        android:clickable="true"
+        android:src="@drawable/ic_cloud_done_black_24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_333"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

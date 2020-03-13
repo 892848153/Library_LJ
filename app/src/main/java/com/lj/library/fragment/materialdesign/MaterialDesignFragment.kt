@@ -37,6 +37,7 @@ class MaterialDesignFragment: BaseFragment(), OnItemClickListener {
     private fun buildMenus(): List<Menu> {
         val menuList: MutableList<Menu> = ArrayList()
         menuList.add(Menu(ElevationAndShadowFragment::class.java, "ElevationAndShadow Demo"))
+        menuList.add(Menu(RippleFragment::class.java, "Ripple Demo"))
         menuList.add(Menu(CardViewFragment::class.java, "CardView Demo"))
 
         return menuList

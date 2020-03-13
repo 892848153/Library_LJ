@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/colorPrimary">
+
+    <!-- RippleDrawable是LayerDrawable的子类，里面可以包含多个<item>层级.  只有id=android:id/mask的item比较特殊-->
+
+    <!-- 水波的区域被限定在Mask中， Mask是id=android:id/mask的item的drawable，
+         水波只会限定在此drawable中非透明部分对应的区域内部
+         如果没有指定mask，则系统会使用不带mask id的item的drawable创建一个Mask-->
+    <item android:id="@android:id/mask" android:drawable="@drawable/ic_directions_bike_black_24dp"/>
+
+    <item android:drawable="@drawable/common_bg_white_cover_gray_with_top_bottom_gray_line"/>
+
+</ripple>
