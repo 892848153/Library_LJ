@@ -69,7 +69,7 @@ class SharedElementTransitionFragment : BaseFragment() {
             fragmentManager!!.beginTransaction()
                     .replace(R.id.fragment_container, it)
                     .addToBackStack(null)
-                    // 设置transitionName。 addSharedElement()不会给View设置transitionName，所以需要手动使用ViewCompat.setTransitionName方法设置
+                    // addSharedElement()不会给View设置transitionName，所以需要手动使用ViewCompat.setTransitionName方法设置
                     .addSharedElement(iv, ViewCompat.getTransitionName(iv)?:SecondTransitionActivity.TRANSITION_NAME_IMG)
                     .addSharedElement(tv, ViewCompat.getTransitionName(tv)?:SecondTransitionActivity.TRANSITION_NAME_TV)
                     .commit()

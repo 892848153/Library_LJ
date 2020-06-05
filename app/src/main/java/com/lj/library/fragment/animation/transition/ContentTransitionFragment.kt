@@ -37,6 +37,9 @@ import com.lj.library.fragment.BaseFragment
  *
  * 如果没有sharedElements就不传.
  *
+ * Unlike Activity transitions, you do not need Window.FEATURE_ACTIVITY_TRANSITIONS to use Fragment transitions.
+ * You also don’t need Window.FEATURE_CONTENT_TRANSITIONS.
+ *
  * Created by liujie on 2020-01-10.
  */
 class ContentTransitionFragment: BaseFragment() {

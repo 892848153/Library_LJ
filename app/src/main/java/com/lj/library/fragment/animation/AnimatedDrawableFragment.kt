@@ -11,6 +11,7 @@ import com.lj.library.R
 import com.lj.library.adapter.MenuAdapter
 import com.lj.library.bean.Menu
 import com.lj.library.fragment.BaseFragment
+import com.lj.library.fragment.animation.animdrawable.AnimatedImageDrawableFragment
 import com.lj.library.fragment.animation.animdrawable.AnimatedStateListDrawableFragment
 import com.lj.library.fragment.animation.animdrawable.AnimatedVectorDrawableFragment
 import java.util.*
@@ -39,6 +40,7 @@ class AnimatedDrawableFragment: BaseFragment(), AdapterView.OnItemClickListener 
         val menuList: MutableList<Menu> = ArrayList()
         menuList.add(Menu(AnimatedStateListDrawableFragment::class.java, "AnimatedStateListDrawable Demo"))
         menuList.add(Menu(AnimatedVectorDrawableFragment::class.java, "AnimatedVectorDrawable Demo"))
+        menuList.add(Menu(AnimatedImageDrawableFragment::class.java, "AnimatedImageDrawableFragment Demo"))
         return menuList
     }
 

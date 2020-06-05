@@ -152,7 +152,7 @@
         android:id="@+id/btn_333"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="水波可以延伸到控件之外，显示Ripple Radius"
+        android:text="水波可以延伸到控件之外，显示指定Ripple Radius"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:background="@drawable/ripple_radius_btn_bg"

@@ -3,9 +3,10 @@ package com.lj.library.util;
 import android.content.Context;
 import android.os.Environment;
 import android.os.StatFs;
+import android.text.TextUtils;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import android.text.TextUtils;
 
 import com.lj.library.constants.Constants;
 
@@ -257,8 +258,14 @@ public class StorageUtils {
      *             获取/sdcard/Notifications文件夹<br/>
      *             {@link android.os.Environment#DIRECTORY_PICTURES},<br/>
      *             获取/sdcard/Pictures文件夹<br/>
-     *             {@link android.os.Environment#DIRECTORY_MOVIES}<br/>
+     *             {@link android.os.Environment#DIRECTORY_MOVIES},<br/>
      *             获取/sdcard/Movies文件夹<br/>
+     *             {@link android.os.Environment#DIRECTORY_DCIM},<br/>
+     *             获取/sdcard/DCIM文件夹
+     *             {@link android.os.Environment#DIRECTORY_DOCUMENTS},<br/>
+     *             获取/sdcard/Documents文件夹
+     *             {@link android.os.Environment#DIRECTORY_DOWNLOADS},<br/>
+     *             获取/sdcard/Download文件夹
      */
     public static File getExternalStoragePublicDirectory(@NonNull String type) {
         if (isExternalStorageWritable()) {
