@@ -1,7 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- /storage/emulated/0/Download/${applicationId}/.beta/apk-->
-    <external-path name="beta_external_path" path="Download/"/>
-    <!--/storage/emulated/0/Android/data/${applicationId}/files/apk/-->
+    <!-- https://blog.csdn.net/wxz1179503422/article/details/84874171 -->
+    <!-- https://www.jianshu.com/p/5ca42c4c50fc-->
+    <!--
+          root-path 对应DEVICE_ROOT,也就是File DEVICE_ROOT = new File("/")，即根目录，一般不需要配置。
+          files-path对应 content.getFileDir() 获取到的目录。
+          cache-path对应 content.getCacheDir() 获取到的目录
+          external-path对应 Environment.getExternalStorageDirectory() 指向的目录。
+          external-files-path对应 ContextCompat.getExternalFilesDirs() 获取到的目录。
+          external-cache-path对应 ContextCompat.getExternalCacheDirs() 获取到的目录。
+          详情可以查看源码FileProvider.PathStrategy#parsePathStrategy()方法的代码
+
+          FileProvider.PathStrategy里面使用一个HashMap<name, File>保存这些临时允许别人访问的目录。
+          所以name就是hashMap的key, File即临时允许别人访问的目录(不是单个文件)。
+          -->
+
+    <!--  此配置会让FileProvider.PathStrategy中的HashMap.put("beta_external_path",
+           new File(Environment.getExternalStorageDirectory() + "/" + "Download"))
+            最后是否有个斜杆都可以-->
+    <external-path name="beta_external_path" path="Download"/>
+    <!--  此配置会让FileProvider.PathStrategy中的HashMap.put("beta_external_path",
+           new File(Environment.getExternalStorageDirectory() + "/" + "Android/data/")) -->
     <external-path name="beta_external_files_path" path="Android/data/"/>
+
+    <!--  . 表示当前文件夹，此时表示临时授权访问content.getCacheDir()目录-->
+    <cache-path
+        name="cache_share_file"
+        path="."/>
 </paths>

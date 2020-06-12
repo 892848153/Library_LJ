@@ -51,9 +51,14 @@
             android:theme="@android:style/Theme.Translucent" />
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.lj.library.fileProvider"
+            android:authorities="${applicationId}.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
+            <!-- https://blog.csdn.net/wxz1179503422/article/details/84874171
+                 name ：配置当前 FileProvider 的实现类。
+                authorities：配置一个 FileProvider 的名字，它在当前系统内需要是唯一值。
+                exported：表示该 FileProvider 是否需要公开出去，这里不需要，所以是 false。
+                granUriPermissions：是否允许授权文件的临时访问权限。这里需要，所以是 true。-->
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
