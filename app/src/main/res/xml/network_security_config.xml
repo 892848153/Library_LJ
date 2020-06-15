@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!-- 详情看文档 https://developer.android.com/training/articles/security-config?hl=zh-cn#CertificatePinning-->
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <!-- "system" | "user" | "raw resource" -->
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+
+    <!-- 自定义可信 CA -->
+    <domain-config>
+        <domain includeSubdomains="true">android.com</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+
+        <!-- 固定证书-->
+        <pin-set>
+            <pin digest="SHA-256">7HIpactkIAq2Y49orFOOQKurWxmmSFZhBCoQYcRhJ3Y=</pin>
+        </pin-set>
+    </domain-config>
+
+
+    <!-- 配置用于调试的 CA-->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>
