@@ -1,12 +1,15 @@
 package com.lj.library.util;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.TimeInterpolator;
+import android.view.View;
+
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
-import android.view.View;
 
 /**
  * @author LJ.Liu
@@ -93,6 +96,15 @@ public class AnimatorUtils {
     public static ObjectAnimator getAnimator(View target, long duration, TimeInterpolator interpolator, PropertyValuesHolder... propertyValuesHolders) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofPropertyValuesHolder(target, propertyValuesHolders);
         configObjectAnimator(objectAnimator, interpolator, duration);
+        target.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        objectAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                target.setLayerType(View.LAYER_TYPE_NONE, null);
+            }
+        });
+
         return objectAnimator;
     }
 

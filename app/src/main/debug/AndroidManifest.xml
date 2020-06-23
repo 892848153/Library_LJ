@@ -30,10 +30,12 @@
         </activity>
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.TabHostActivity"/>
-        <activity android:name=".activity.WebViewActivity"/>
+        <activity android:name=".activity.WebViewActivity"
+            android:process=":webview"/>
         <activity android:name=".activity.X5WebViewActivity"
                   android:configChanges="orientation|screenSize|keyboardHidden"
-                  android:windowSoftInputMode="stateHidden|adjustResize"/>
+                  android:windowSoftInputMode="stateHidden|adjustResize"
+            android:process=":x5webview"/>
         <activity android:name=".activity.MvpArchitectureActivity"/>
         <activity android:name=".activity.MvvmArchitectureActivity"/>
         <activity android:name=".activity.MvvmArchitectureActivity1"/>
