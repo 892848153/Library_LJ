@@ -4,12 +4,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.TextView;
+
+import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * Created by jie.liu on 16/2/26.
  */
-public class CustomTextView extends TextView {
+public class CustomTextView extends AppCompatTextView {
 
     private static final String TAG = CustomTextView.class.getSimpleName();
 

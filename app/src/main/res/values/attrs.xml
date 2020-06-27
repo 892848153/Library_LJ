@@ -32,4 +32,8 @@
         </attr>
         <attr name="android:text"/>
     </declare-styleable>
+
+    <declare-styleable name="TemplateView">
+        <attr name="tv_color" format="color"/>
+    </declare-styleable>
 </resources>
