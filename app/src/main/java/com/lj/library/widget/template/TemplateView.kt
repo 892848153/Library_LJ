@@ -48,6 +48,14 @@ class TemplateView: View {
         }
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+    }
+
+    override fun onFinishInflate() {
+        super.onFinishInflate()
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         // 需要在此考虑padding，否则设置padding无效。margin属性parent会处理，这里无需关心
