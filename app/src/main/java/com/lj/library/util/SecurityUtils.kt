@@ -2,11 +2,13 @@ package com.lj.library.util
 
 import android.content.Context
 import androidx.security.crypto.EncryptedFile
+import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
+
 
 /**
  * 如果您存储的数据特别敏感或私密，请考虑从 Security 库使用 EncryptedFile 对象，而非 File 对象。
@@ -59,6 +61,23 @@ object SecurityUtils {
         }
 
         return contents
+    }
+
+    fun writeToEncryptedSharedPref(context: Context ) {
+        val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
+
+        val sharedPreferences = EncryptedSharedPreferences.create(
+                "secret_shared_prefs",
+                masterKeyAlias,
+                context,
+                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+
+        // use the shared preferences and editor as you normally would
+
+        // use the shared preferences and editor as you normally would
+        val editor = sharedPreferences.edit()
     }
 
 }

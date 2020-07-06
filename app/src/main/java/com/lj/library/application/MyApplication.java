@@ -5,8 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Build;
 import android.os.StrictMode;
-import androidx.annotation.Nullable;
-import androidx.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -33,8 +31,11 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
+import androidx.multidex.MultiDex;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+
 
 public class MyApplication extends Application {
 

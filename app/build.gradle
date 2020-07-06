@@ -11,6 +11,8 @@ apply plugin: 'realm-android'
 apply plugin: 'AndResGuard'
 apply plugin: 'bugly'
 apply plugin: 'packer'
+//apply plugin: 'dagger.hilt.android.plugin'
+
 
 bugly {
     appId = 'b1e580cd5e' // 注册时分配的App ID
@@ -113,7 +115,7 @@ android {
 
 // 将第三库引用的android support库的版本都改成统一的版本号
 configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    resolutionStrategy.eachDependency { details ->
         def requested = details.requested
         if (requested.group == 'com.android.support') {
             if (!requested.name.startsWith("multidex") && !requested.name.startsWith("constraint")) {
@@ -199,6 +201,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // FlingAnimation support library
     implementation "androidx.dynamicanimation:dynamicanimation-ktx:1.0.0-alpha03"
+    // hilt
+//    implementation "com.google.dagger:hilt-android:2.28-alpha"
+//    kapt "com.google.dagger:hilt-android-compiler:2.28-alpha"
 }
 
 // AndResGuard 配置开始----------------------------------
